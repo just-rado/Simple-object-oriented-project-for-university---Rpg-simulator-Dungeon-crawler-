@@ -1,21 +1,27 @@
 #include <iostream>
-
+#include "Classes.h"
 int main()
 {
-	uint64_t x = 5; 
+	uint64_t x = 7; // 00000101 
 
-	for (uint8_t i = 0; i < 64; ++i)
+
+	uint64_t one = 1;
+	uint64_t find = 0;
+
+	size_t index = 0;
+	size_t size = getAmountOfHeroClasses();
+	for (size_t i = 0; i < size; ++i)
 	{
-		uint64_t y = 1;
-		y = y << i;
-		if ((x & y))
+	
+		find = one << (i %64);
+		find = (find & x);
+		if (find != 0)
 		{
-			std::cout << i << '\n';
+			printHeroClass(static_cast<HeroClass>(i));
 		}
 	}
+
 	
-
-
 
 	return 0;
 }

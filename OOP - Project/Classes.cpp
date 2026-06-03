@@ -1,11 +1,28 @@
 #include "Classes.h"
+#include <iostream>
 
-
-size_t Clasess::getSize()
+size_t getAmountOfHeroClasses()
 {
-
+	return static_cast<size_t>(HeroClass::NUM_CLASSES);
 }
-size_t Classes::optimalSizeForVector()
+
+
+void printHeroClass(HeroClass heroClass)
 {
+	switch (heroClass)
+	{
+	case HeroClass::PALADIN:
+		std::cout << "Paladin\n";
+		break;
+	case HeroClass::MAGE:
+		std::cout << "Mage\n";
+		break;
+	case HeroClass::HEALER:
+		std::cout << "Healer\n";
+		break;
+	default:
+		std::cout << "Unknown class\n";
+		break;
+	}
 
 }

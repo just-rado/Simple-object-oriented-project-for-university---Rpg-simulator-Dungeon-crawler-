@@ -1,7 +1,7 @@
 #pragma once
-
+#include <cstdint> // for uint8_t
 // keeps track of how many hero classes have been created
- enum  class HeroClass : uint8_t
+enum  class HeroClass : uint8_t
 {
 	PALADIN,
 	MAGE,
@@ -9,5 +9,6 @@
 	NUM_CLASSES,
 };
 
- size_t getSize();
- size_t optimalSizeForVector();
+size_t getAmountOfHeroClasses();
+
+void printHeroClass(HeroClass heroClass);

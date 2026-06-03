@@ -6,10 +6,10 @@
 uint64_t Item::nextId = 0;
 
 Item::Item(const std::string& name, Rarity rarity, float cost, float weightInKg,
-	unsigned int requiredLevel, const std::vector<uint64_t>& compatibleClasses) : id(0) , name(name) ,
-	rarity(rarity), cost(cost) , weightInKg(weightInKg) , requiredLevel(requiredLevel) , compatibleClasses(compatibleClasses)
+	unsigned int requiredLevel, const std::vector<uint64_t>& compatibleClasses) : id(nextId), name(name),
+	rarity(rarity), cost(cost), weightInKg(weightInKg), requiredLevel(requiredLevel), compatibleClasses(compatibleClasses)
 {
-	if (name.empty() )
+	if (name.empty())
 	{
 		throw std::invalid_argument("Name cannot be empty");
 	}
@@ -21,12 +21,19 @@ Item::Item(const std::string& name, Rarity rarity, float cost, float weightInKg,
 	{
 		throw std::invalid_argument("Weight cannot be negative");
 	}
-	else if (compatibleClasses.size() * Item::MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64 > UINT8_MAX + 1)
+	else if (compatibleClasses.size() > optimalSizeOfVector())
 	{
 		throw std::invalid_argument("Maximum amout of classes is 255");
 	}
-	this->id = nextId++;
+	nextId++;
 }
+
+Item::Item(const Item& other) : id(nextId), name(other.name), rarity(other.rarity), cost(other.cost) , 
+		weightInKg(other.weightInKg), requiredLevel(other.requiredLevel), compatibleClasses(other.compatibleClasses)
+{
+	++nextId;
+}
+
 
 void Item::printInfo()const
 {
@@ -65,11 +72,11 @@ void Item::printRarity()const
 {
 	switch (this->rarity)
 	{
-	case Rarity::COMMON: 
-		std::cout << "Common\n"; 
+	case Rarity::COMMON:
+		std::cout << "Common\n";
 		break;
 
-	case Rarity::RARE: 
+	case Rarity::RARE:
 		std::cout << "Rare\n";
 		break;
 
@@ -81,13 +88,44 @@ void Item::printRarity()const
 		std::cout << "Legendary\n";
 		break;
 
-	default: 
+	default:
 		std::cout << "Unknown rarity'\n";
 		break;
 	}
 }
 
+size_t Item::optimalSizeOfVector()
+{
+	size_t size = 1;
+	while (true)
+	{
+		if (size * MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64 >= getAmountOfHeroClasses())
+		{
+			return size;
+		}
+		++size;
+	}
+	return size;
+}
+
 void Item::printCompatibleClasses()const
 {
-	
+	uint64_t one = 1;
+	uint64_t find = 0;
+
+	size_t index = 0;
+	size_t size = getAmountOfHeroClasses();
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (size >= MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64)
+		{
+			++index;
+		}
+		find = one << (i % MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64);
+		find = (find & this->compatibleClasses[index]);
+		if (find != 0)
+		{
+			printHeroClass(static_cast<HeroClass>(i));
+		}
+	}
 }
