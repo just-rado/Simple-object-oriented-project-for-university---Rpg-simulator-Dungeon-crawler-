@@ -1,8 +1,11 @@
 #include <iostream>
 #include "Classes.h"
+#include "Armor.h"
+#include "Weapon.h"
+#include "Consumable.h"
 int main()
 {
-	uint64_t x = 7; // 00000101 
+	uint64_t x = 7;
 
 
 	uint64_t one = 1;

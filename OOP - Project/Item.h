@@ -9,13 +9,22 @@ enum class Rarity
 	LEGENDARY
 };
 
+struct ItemData
+{
+	std::string name;
+	Rarity rarity;
+	float cost;
+	float weightInKg;
+	unsigned int requiredLevel;
+	std::vector<uint64_t> compatibleClasses;
+};
+
 
 class Item
 {
 public:
 
-	Item(const std::string& name, Rarity rarity, float cost, float weightInKg,
-		unsigned int requiredLevel, const std::vector<uint64_t>& compatibleClasses);
+	Item(const ItemData& data);
 
 	Item(const Item& other);
 	Item& operator=(const Item& other) = delete;
@@ -29,7 +38,8 @@ public:
 	Rarity getRarity()const;
 	unsigned int getRequiredLevel()const;
 	const std::vector<uint64_t>& getCompatibleClasses()const;
-
+protected:
+	static void getBackId();
 private:
 	const uint64_t id;
 	std::string name;
@@ -46,6 +56,7 @@ private:
 	void printRarity()const;
 	void printCompatibleClasses()const;
 
+	
 
 };
 

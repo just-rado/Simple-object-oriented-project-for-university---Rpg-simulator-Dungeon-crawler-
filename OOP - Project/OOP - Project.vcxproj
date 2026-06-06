@@ -123,13 +123,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Armor.h" />
+    <ClInclude Include="CharacterStats.h" />
     <ClInclude Include="Classes.h" />
+    <ClInclude Include="Consumable.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Relic.h" />
+    <ClInclude Include="Scroll.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Classes.cpp" />
+    <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Relic.cpp" />
+    <ClCompile Include="Scroll.cpp" />
     <ClCompile Include="testtttttt.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

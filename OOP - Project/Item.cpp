@@ -5,9 +5,8 @@
 
 uint64_t Item::nextId = 0;
 
-Item::Item(const std::string& name, Rarity rarity, float cost, float weightInKg,
-	unsigned int requiredLevel, const std::vector<uint64_t>& compatibleClasses) : id(nextId), name(name),
-	rarity(rarity), cost(cost), weightInKg(weightInKg), requiredLevel(requiredLevel), compatibleClasses(compatibleClasses)
+Item::Item(const ItemData& data) : id(nextId), name(data.name), rarity(data.rarity), cost(data.cost), 
+weightInKg(data.weightInKg), requiredLevel(data.requiredLevel), compatibleClasses(data.compatibleClasses)
 {
 	if (name.empty())
 	{
@@ -128,4 +127,10 @@ void Item::printCompatibleClasses()const
 			printHeroClass(static_cast<HeroClass>(i));
 		}
 	}
+}
+
+
+void Item::getBackId()
+{
+	--nextId;
 }
