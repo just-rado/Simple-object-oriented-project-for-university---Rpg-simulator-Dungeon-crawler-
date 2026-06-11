@@ -26,6 +26,7 @@ private:
 	unsigned int dmgValue;
 	float criticalChance;
 
+	static constexpr TypeOfItem itemType = TypeOfItem::WEAPON;
 	static constexpr float MIN_CRITICAL_CHANCE = 0;
 	static constexpr float MAX_CRITICAL_CHANCE = 100;
 };

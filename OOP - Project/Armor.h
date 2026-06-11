@@ -18,5 +18,7 @@ public:
 private:
 	unsigned int protectionValue;
 	CharacterStats modifiers;
+
+	static constexpr TypeOfItem itemType = TypeOfItem::ARMOR;
 };
 

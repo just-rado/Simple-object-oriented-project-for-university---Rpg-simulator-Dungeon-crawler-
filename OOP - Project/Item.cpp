@@ -5,7 +5,7 @@
 
 uint64_t Item::nextId = 0;
 
-Item::Item(const ItemData& data) : id(nextId), name(data.name), rarity(data.rarity), cost(data.cost), 
+Item::Item(const ItemData& data) : id(nextId), name(data.name), rarity(data.rarity), type(data.type) , cost(data.cost), 
 weightInKg(data.weightInKg), requiredLevel(data.requiredLevel), compatibleClasses(data.compatibleClasses)
 {
 	if (name.empty())
@@ -20,19 +20,23 @@ weightInKg(data.weightInKg), requiredLevel(data.requiredLevel), compatibleClasse
 	{
 		throw std::invalid_argument("Weight cannot be negative");
 	}
-	else if (compatibleClasses.size() > optimalSizeOfVector())
+	else if (compatibleClasses.size() != optimalSizeOfVector())
 	{
-		throw std::invalid_argument("Maximum amout of classes is 255");
+		throw std::invalid_argument("Invalid size of vector");
 	}
 	nextId++;
 }
 
-Item::Item(const Item& other) : id(nextId), name(other.name), rarity(other.rarity), cost(other.cost) , 
+Item::Item(const Item& other) : id(nextId), name(other.name), rarity(other.rarity), type(other.type) , cost(other.cost) , 
 		weightInKg(other.weightInKg), requiredLevel(other.requiredLevel), compatibleClasses(other.compatibleClasses)
 {
 	++nextId;
 }
 
+void Item::setTypeOfItem(TypeOfItem type)
+{
+	this->type = type;
+}
 
 void Item::printInfo()const
 {
@@ -57,6 +61,10 @@ const std::string& Item::getName()const
 Rarity Item::getRarity()const
 {
 	return this->rarity;
+}
+TypeOfItem Item::getTypeOfItem()const
+{
+	return this->type;
 }
 unsigned int Item::getRequiredLevel()const
 {
@@ -93,12 +101,12 @@ void Item::printRarity()const
 	}
 }
 
-size_t Item::optimalSizeOfVector()
+size_t Item::optimalSizeOfVector()const
 {
 	size_t size = 1;
 	while (true)
 	{
-		if (size * MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64 >= getAmountOfHeroClasses())
+		if (size * CLASSES_PER_UINT64 >= getAmountOfHeroClasses())
 		{
 			return size;
 		}
@@ -116,11 +124,11 @@ void Item::printCompatibleClasses()const
 	size_t size = getAmountOfHeroClasses();
 	for (size_t i = 0; i < size; ++i)
 	{
-		if (size >= MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64)
+		if (i >= CLASSES_PER_UINT64)
 		{
 			++index;
 		}
-		find = one << (i % MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64);
+		find = one << (i % CLASSES_PER_UINT64);
 		find = (find & this->compatibleClasses[index]);
 		if (find != 0)
 		{
@@ -130,7 +138,3 @@ void Item::printCompatibleClasses()const
 }
 
 
-void Item::getBackId()
-{
-	--nextId;
-}

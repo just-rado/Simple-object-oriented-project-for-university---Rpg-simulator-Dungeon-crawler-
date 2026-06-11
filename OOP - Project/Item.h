@@ -6,13 +6,22 @@ enum class Rarity
 	COMMON,
 	RARE,
 	EPIC,
-	LEGENDARY
+	LEGENDARY,
+};
+enum class TypeOfItem
+{
+	WEAPON,
+	ARMOR,
+	CONSUMABLE,
+	SCROLL,
+	RELIC,
 };
 
 struct ItemData
 {
 	std::string name;
 	Rarity rarity;
+	TypeOfItem type;
 	float cost;
 	float weightInKg;
 	unsigned int requiredLevel;
@@ -36,23 +45,26 @@ public:
 	uint64_t getId()const;
 	const std::string& getName()const;
 	Rarity getRarity()const;
+	TypeOfItem getTypeOfItem()const;
 	unsigned int getRequiredLevel()const;
 	const std::vector<uint64_t>& getCompatibleClasses()const;
+
 protected:
-	static void getBackId();
+	void setTypeOfItem(TypeOfItem type);
 private:
 	const uint64_t id;
 	std::string name;
 	Rarity rarity;
+	TypeOfItem type;
 	float cost;
 	float weightInKg;
 	unsigned int requiredLevel;
 	std::vector<uint64_t> compatibleClasses; // bitmask
 
 	static uint64_t nextId;
-	constexpr static int MAX_AMOUNT_OF_ClASSES_STORED_INSIDE_UINT64 = 64;
+	constexpr static int CLASSES_PER_UINT64 = 64;
 
-	size_t optimalSizeOfVector();
+	size_t optimalSizeOfVector()const;
 	void printRarity()const;
 	void printCompatibleClasses()const;
 

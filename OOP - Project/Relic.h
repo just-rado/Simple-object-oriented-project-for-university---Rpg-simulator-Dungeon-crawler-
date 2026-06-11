@@ -1,11 +1,12 @@
 #pragma once
 #include "Item.h"
+#include "CharacterStats.h"
 
 class Relic: public Item
 {
 public:
 
-	Relic(const ItemData& data);
+	Relic(const ItemData& data , const CharacterStats& modifiers);
 
 	Relic& operator=(const Relic& other) = delete;
 
@@ -14,7 +15,6 @@ public:
 
 
 private:
-	// think what member variables should relic have
-
+	CharacterStats modifiers;
 };
 

@@ -6,9 +6,10 @@ Weapon::Weapon(const ItemData& data, DamageType type, unsigned int dmgValue, flo
 {
 	if (criticalChance < MIN_CRITICAL_CHANCE || criticalChance > MAX_CRITICAL_CHANCE)
 	{
-		getBackId();
 		throw std::invalid_argument("Invalid critical chance");
 	}
+
+	setTypeOfItem(itemType);
 }
 
 Item* Weapon::clone()const

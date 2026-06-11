@@ -1,18 +1,28 @@
 #include "Scroll.h"
 
-
-Scroll::Scroll(const ItemData& data, int spell) : Item(data) , spell(spell)
+Scroll::Scroll(const ItemData& data, const Spell* spell): Item(data)
 {
-	// maybe add logic for spell
+	this->spell = spell->clone();
+
+	setTypeOfItem(type);
 }
+Scroll::Scroll(const Scroll& other): Item(other)
+{
+	this->spell = other.spell->clone();
+}
+Scroll::~Scroll()
+{
+	delete this->spell;
+	this->spell = nullptr;
+}
+
 
 Item* Scroll::clone()const
 {
 	return new Scroll(*this);
 }
 
-
-int Scroll::getSpell()const
+const Spell* Scroll::getSpell()const
 {
-	return this->spell; // remake return type
+	return this->spell;
 }

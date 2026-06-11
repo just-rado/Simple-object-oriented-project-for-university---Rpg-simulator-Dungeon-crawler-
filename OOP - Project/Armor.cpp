@@ -3,7 +3,7 @@
 Armor::Armor(const ItemData& data , unsigned int protectionValue, const CharacterStats& modifiers):
 		Item(data), protectionValue(protectionValue) , modifiers(modifiers)
 {
-
+	setTypeOfItem(itemType);
 }
 
 Item* Armor::clone()const
