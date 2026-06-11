@@ -39,7 +39,7 @@
     <ClInclude Include="Relic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StatusEffects.h">
+    <ClInclude Include="DamageTypeAndEffects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Spell.h">
@@ -52,6 +52,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CleanseSpell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -90,6 +96,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CleanseSpell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

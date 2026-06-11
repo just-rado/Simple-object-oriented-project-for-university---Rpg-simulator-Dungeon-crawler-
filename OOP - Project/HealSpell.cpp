@@ -1,6 +1,6 @@
 #include "HealSpell.h"
 
-HealSpell::HealSpell(EffectOfSpell effect, unsigned int healValue): Spell(type , effect) , healValue(healValue)
+HealSpell::HealSpell(DamageType damageType, unsigned int healValue): Spell(type , damageType) , healValue(healValue)
 {}
 
 

@@ -1,15 +1,15 @@
 #include "Spell.h"
 
-Spell::Spell(TypeOfSpell type, EffectOfSpell effect):type(type) , effect(effect)
+Spell::Spell(TypeOfSpell type, DamageType damageType):type(type) , damageType(damageType)
 {}
 
 TypeOfSpell Spell::getEffect()const
 {
 	return this->type;
 }
-EffectOfSpell Spell::getType()const
+DamageType Spell::getType()const
 {
-	return this->effect;
+	return this->damageType;
 }
 
 

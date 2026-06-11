@@ -5,7 +5,7 @@ class HealSpell: public Spell
 {
 public:
 
-	HealSpell(EffectOfSpell effect, unsigned int healValue);
+	HealSpell(DamageType damageType, unsigned int healValue);
 
 
 	virtual Spell* clone()const override;

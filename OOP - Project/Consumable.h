@@ -1,10 +1,10 @@
 #pragma once
 #include "Item.h"
-#include "StatusEffects.h"
+#include "DamageTypeAndEffects.h"
 class Consumable: public Item
 {
 public:
-	Consumable(const ItemData& data, int hp_modifier, int mp_modifier, StatusEffect removeStatusEffect);
+	Consumable(const ItemData& data, int hp_modifier, int mp_modifier, StatusEffectType removeStatusEffect);
 
 	Consumable& operator=(const Consumable& other) = delete;
 
@@ -12,12 +12,12 @@ public:
 
 	int getHPModifier()const;
 	int getMPModifier()const;
-	StatusEffect getStatusEffectToRemove()const;
+	StatusEffectType getStatusEffectToRemove()const;
 
 private:
 	int HP_Modifier;
 	int MP_Modifier;
-	StatusEffect removeStatusEffect;
+	StatusEffectType removeStatusEffect;
 
 
 	static constexpr TypeOfItem itemType = TypeOfItem::CONSUMABLE;

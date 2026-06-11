@@ -1,6 +1,6 @@
 #include "DamageSpell.h"
 
-DamageSpell::DamageSpell(EffectOfSpell effect, unsigned int dmgValue):Spell(type , effect) , damageValue(dmgValue)
+DamageSpell::DamageSpell(DamageType damageType , unsigned int dmgValue):Spell(type , damageType) , damageValue(dmgValue)
 {}
 
 

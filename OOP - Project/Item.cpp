@@ -5,16 +5,12 @@
 
 uint64_t Item::nextId = 0;
 
-Item::Item(const ItemData& data) : id(nextId), name(data.name), rarity(data.rarity), type(data.type) , cost(data.cost), 
+Item::Item(const ItemData& data) : id(nextId), name(data.name), rarity(data.rarity), type(data.type) , costInGoldCoins(data.costInGoldCoins), 
 weightInKg(data.weightInKg), requiredLevel(data.requiredLevel), compatibleClasses(data.compatibleClasses)
 {
 	if (name.empty())
 	{
 		throw std::invalid_argument("Name cannot be empty");
-	}
-	else if (cost < 0)
-	{
-		throw std::invalid_argument("Cost cannot be negative");
 	}
 	else if (weightInKg < 0)
 	{
@@ -27,7 +23,7 @@ weightInKg(data.weightInKg), requiredLevel(data.requiredLevel), compatibleClasse
 	nextId++;
 }
 
-Item::Item(const Item& other) : id(nextId), name(other.name), rarity(other.rarity), type(other.type) , cost(other.cost) , 
+Item::Item(const Item& other) : id(nextId), name(other.name), rarity(other.rarity), type(other.type) , costInGoldCoins(other.costInGoldCoins) , 
 		weightInKg(other.weightInKg), requiredLevel(other.requiredLevel), compatibleClasses(other.compatibleClasses)
 {
 	++nextId;
@@ -44,7 +40,7 @@ void Item::printInfo()const
 	std::cout << "Name: " << this->name << '\n' << "Id: " << this->id << '\n'
 		<< "Rarity: ";
 	printRarity();
-	std::cout << "Cost: " << this->cost << '\n' << "Weight: " << this->weightInKg << "kg\n"
+	std::cout << "Cost: " << this->costInGoldCoins << '\n' << "Weight: " << this->weightInKg << "kg\n"
 		<< "Required level: " << this->requiredLevel << '\n';
 	printCompatibleClasses();
 
@@ -57,6 +53,14 @@ uint64_t Item::getId()const
 const std::string& Item::getName()const
 {
 	return this->name;
+}
+float Item::getWeight()const
+{
+	return this->weightInKg;
+}
+unsigned int Item::getCost()const
+{
+	return this->costInGoldCoins;
 }
 Rarity Item::getRarity()const
 {

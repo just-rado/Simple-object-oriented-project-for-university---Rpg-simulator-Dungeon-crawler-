@@ -1,19 +1,19 @@
 #pragma once
 #include "Spell.h"
-#include "StatusEffects.h"
+#include "DamageTypeAndEffects.h"
 class CleanseSpell: public Spell
 {
 public:
 
-	CleanseSpell(EffectOfSpell effect, StatusEffect statusEffect);
+	CleanseSpell(DamageType damageType, StatusEffectType statusEffect);
 
 	virtual Spell* clone()const override;
 
-	StatusEffect getStatusEffect()const;
+	StatusEffectType getStatusEffect()const;
 
 
 private:
-	StatusEffect removeStatusEffect;
+	StatusEffectType removeStatusEffect;
 
 
 	static constexpr TypeOfSpell type = TypeOfSpell::CLEANSE;

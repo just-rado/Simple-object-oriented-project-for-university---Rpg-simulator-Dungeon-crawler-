@@ -1,6 +1,6 @@
 #include "Consumable.h"
 
-Consumable::Consumable(const ItemData& data, int hp_modifier, int mp_modifier, StatusEffect removeStatusEffect) :
+Consumable::Consumable(const ItemData& data, int hp_modifier, int mp_modifier, StatusEffectType removeStatusEffect) :
 	Item(data), HP_Modifier(hp_modifier), MP_Modifier(mp_modifier), removeStatusEffect(removeStatusEffect)
 {
 	setTypeOfItem(itemType);
@@ -19,7 +19,7 @@ int Consumable::getMPModifier()const
 {
 	return this->MP_Modifier;
 }
-StatusEffect Consumable::getStatusEffectToRemove()const
+StatusEffectType Consumable::getStatusEffectToRemove()const
 {
 	return this->removeStatusEffect;
 }

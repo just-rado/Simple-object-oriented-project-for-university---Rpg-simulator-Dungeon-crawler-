@@ -1,13 +1,6 @@
 #pragma once
 #include "item.h"
-enum class DamageType
-{
-	PHYSICAL,
-	FIRE,
-	ICE,
-	LIGHTNING,
-
-};
+#include "DamageTypeAndEffects.h"
 class Weapon: public Item
 {
 public:

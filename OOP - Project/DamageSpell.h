@@ -4,7 +4,7 @@ class DamageSpell: public Spell
 {
 public:
 
-	DamageSpell(EffectOfSpell effect, unsigned int dmgValue);
+	DamageSpell(DamageType damageType, unsigned int dmgValue);
 
 
 	virtual Spell* clone()const override;

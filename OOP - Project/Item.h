@@ -22,7 +22,7 @@ struct ItemData
 	std::string name;
 	Rarity rarity;
 	TypeOfItem type;
-	float cost;
+	unsigned int costInGoldCoins;
 	float weightInKg;
 	unsigned int requiredLevel;
 	std::vector<uint64_t> compatibleClasses;
@@ -45,6 +45,8 @@ public:
 	uint64_t getId()const;
 	const std::string& getName()const;
 	Rarity getRarity()const;
+	float getWeight()const;
+	unsigned int getCost()const;
 	TypeOfItem getTypeOfItem()const;
 	unsigned int getRequiredLevel()const;
 	const std::vector<uint64_t>& getCompatibleClasses()const;
@@ -56,7 +58,7 @@ private:
 	std::string name;
 	Rarity rarity;
 	TypeOfItem type;
-	float cost;
+	unsigned int costInGoldCoins;
 	float weightInKg;
 	unsigned int requiredLevel;
 	std::vector<uint64_t> compatibleClasses; // bitmask

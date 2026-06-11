@@ -3,9 +3,10 @@
 // keeps track of how many hero classes have been created
 enum  class HeroClass : uint8_t
 {
-	PALADIN,
+	WARRIOR,
 	MAGE,
 	HEALER,
+	PALADIN,
 	NUM_CLASSES,
 };
 

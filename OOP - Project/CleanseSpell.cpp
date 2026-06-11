@@ -1,6 +1,6 @@
 #include "CleanseSpell.h"
 
-CleanseSpell::CleanseSpell(EffectOfSpell effect ,StatusEffect statusEffect) :Spell(type, effect), removeStatusEffect(statusEffect)
+CleanseSpell::CleanseSpell(DamageType damageType,StatusEffectType statusEffect) :Spell(type, damageType), removeStatusEffect(statusEffect)
 {}
 
 Spell* CleanseSpell::clone()const
@@ -8,7 +8,7 @@ Spell* CleanseSpell::clone()const
 	return new CleanseSpell(*this);
 }
 
-StatusEffect CleanseSpell::getStatusEffect()const
+StatusEffectType CleanseSpell::getStatusEffect()const
 {
 	return this->removeStatusEffect;
 }

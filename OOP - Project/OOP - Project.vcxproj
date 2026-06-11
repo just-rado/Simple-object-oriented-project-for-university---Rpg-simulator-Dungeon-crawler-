@@ -124,26 +124,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Armor.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterStats.h" />
     <ClInclude Include="Classes.h" />
     <ClInclude Include="CleanseSpell.h" />
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="DamageSpell.h" />
     <ClInclude Include="HealSpell.h" />
+    <ClInclude Include="Hero.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Relic.h" />
     <ClInclude Include="Scroll.h" />
     <ClInclude Include="Spell.h" />
-    <ClInclude Include="StatusEffects.h" />
+    <ClInclude Include="DamageTypeAndEffects.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Armor.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Classes.cpp" />
     <ClCompile Include="CleanseSpell.cpp" />
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="DamageSpell.cpp" />
     <ClCompile Include="HealSpell.cpp" />
+    <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Relic.cpp" />
     <ClCompile Include="Scroll.cpp" />
