@@ -4,7 +4,7 @@ class DamageSpell: public Spell
 {
 public:
 
-	DamageSpell(DamageType damageType, unsigned int dmgValue);
+	DamageSpell(const std::string& name, const std::string& description , DamageType damageType, unsigned int dmgValue);
 
 
 	virtual Spell* clone()const override;

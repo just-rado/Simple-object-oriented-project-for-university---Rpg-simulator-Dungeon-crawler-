@@ -14,6 +14,8 @@ struct CharacterData
 {
 	std::string name;
 	CharacterStats mainStats;
+	unsigned int maxHP;
+	unsigned int maxMP;
 	float currentLevel;
 	unsigned int goldCoinsOwned;
 	std::vector<StatusEffect> statusEffects;
@@ -31,12 +33,20 @@ public:
 
 protected:
 	Character(const CharacterData& data);
+	Character() = default;
+	Character(const Character& other) = default;
+	Character& operator=(const Character& other);
 private:
 
 	std::string name;
 	CharacterStats mainStats;
+	unsigned int maxHP;
+	unsigned int maxMP;
 	float currentLevel;
 	unsigned int goldCoinsOwned;
 	std::vector<StatusEffect> statusEffects;
+
+
+
 };
 

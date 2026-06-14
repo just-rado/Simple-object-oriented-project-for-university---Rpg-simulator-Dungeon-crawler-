@@ -1,7 +1,10 @@
 #include "HealSpell.h"
 
-HealSpell::HealSpell(DamageType damageType, unsigned int healValue): Spell(type , damageType) , healValue(healValue)
-{}
+HealSpell::HealSpell(const std::string& name, const std::string& description ,DamageType damageType, unsigned int healValue): 
+	Spell(name, description , type , damageType) , healValue(healValue)
+{
+	
+}
 
 
 Spell* HealSpell::clone()const

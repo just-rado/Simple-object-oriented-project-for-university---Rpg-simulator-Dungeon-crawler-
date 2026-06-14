@@ -5,7 +5,7 @@ class HealSpell: public Spell
 {
 public:
 
-	HealSpell(DamageType damageType, unsigned int healValue);
+	HealSpell(const std::string& name, const std::string& description , DamageType damageType, unsigned int healValue);
 
 
 	virtual Spell* clone()const override;

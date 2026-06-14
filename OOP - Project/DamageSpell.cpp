@@ -1,6 +1,7 @@
 #include "DamageSpell.h"
 
-DamageSpell::DamageSpell(DamageType damageType , unsigned int dmgValue):Spell(type , damageType) , damageValue(dmgValue)
+DamageSpell::DamageSpell(const std::string& name, const std::string& description ,DamageType damageType , unsigned int dmgValue):
+	Spell(name , description , type , damageType) , damageValue(dmgValue)
 {}
 
 

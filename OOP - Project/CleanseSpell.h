@@ -5,7 +5,7 @@ class CleanseSpell: public Spell
 {
 public:
 
-	CleanseSpell(DamageType damageType, StatusEffectType statusEffect);
+	CleanseSpell(const std::string& name, const std::string& description , DamageType damageType, StatusEffectType statusEffect);
 
 	virtual Spell* clone()const override;
 

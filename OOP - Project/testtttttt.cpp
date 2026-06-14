@@ -3,6 +3,9 @@
 #include "Armor.h"
 #include "Weapon.h"
 #include "Consumable.h"
+#include "Hero.h"
+#include "Character.h"
+#include "Room.h"
 int main()
 {
 	uint64_t x = 7;

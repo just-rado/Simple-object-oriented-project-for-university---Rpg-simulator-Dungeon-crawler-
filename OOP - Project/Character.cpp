@@ -1,7 +1,7 @@
 #include "Character.h"
 #include <stdexcept>
-Character::Character(const CharacterData& data) : name(data.name) , mainStats(data.mainStats) , currentLevel(data.currentLevel),
-		goldCoinsOwned(data.goldCoinsOwned) , statusEffects(data.statusEffects)
+Character::Character(const CharacterData& data) : name(data.name) , mainStats(data.mainStats) , maxHP(data.maxHP) , maxMP(data.maxMP),
+		currentLevel(data.currentLevel), goldCoinsOwned(data.goldCoinsOwned) , statusEffects(data.statusEffects)
 {
 	if (name.empty())
 	{
@@ -11,8 +11,37 @@ Character::Character(const CharacterData& data) : name(data.name) , mainStats(da
 	{
 		throw std::invalid_argument("Invalid level");
 	}
+	
 
 }
+
+
+
+Character& Character::operator=(const Character& other)
+{
+	if (this != &other)
+	{
+		std::string oldName = std::move(name);
+		this->name = other.name;
+
+		try
+		{
+			this->statusEffects = other.statusEffects;
+		}
+		catch (...)
+		{
+			this->name = std::move(oldName);
+			throw;
+		}
+		this->mainStats = other.mainStats;
+		this->maxHP = other.maxHP;
+		this->maxMP = other.maxMP;
+		this->currentLevel = other.currentLevel;
+		this->goldCoinsOwned = other.goldCoinsOwned;
+	}
+	return *this;
+}
+
 
 
 const std::string& Character::getName()const

@@ -55,7 +55,7 @@ protected:
 	void setTypeOfItem(TypeOfItem type);
 private:
 	const uint64_t id;
-	std::string name;
+	const std::string name;
 	Rarity rarity;
 	TypeOfItem type;
 	unsigned int costInGoldCoins;

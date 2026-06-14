@@ -2,10 +2,11 @@
 
 struct CharacterStats
 {
-	int HP;
+	int HP; 
 	int MP;
 	int STR;
 	int INT;
 	int AGI;
 	int DEF;
+	 
 };
