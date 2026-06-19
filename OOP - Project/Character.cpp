@@ -7,7 +7,7 @@ Character::Character(const CharacterData& data) : name(data.name) , mainStats(da
 	{
 		throw std::invalid_argument("Character must have a name");
 	}
-	else if (currentLevel < 0)
+	else if (currentLevel <= 0)
 	{
 		throw std::invalid_argument("Invalid level");
 	}
@@ -16,32 +16,15 @@ Character::Character(const CharacterData& data) : name(data.name) , mainStats(da
 }
 
 
-
 Character& Character::operator=(const Character& other)
 {
 	if (this != &other)
 	{
-		std::string oldName = std::move(name);
-		this->name = other.name;
-
-		try
-		{
-			this->statusEffects = other.statusEffects;
-		}
-		catch (...)
-		{
-			this->name = std::move(oldName);
-			throw;
-		}
-		this->mainStats = other.mainStats;
-		this->maxHP = other.maxHP;
-		this->maxMP = other.maxMP;
-		this->currentLevel = other.currentLevel;
-		this->goldCoinsOwned = other.goldCoinsOwned;
+		Character temp(other);
+		swap(temp);
 	}
 	return *this;
 }
-
 
 
 const std::string& Character::getName()const
@@ -64,3 +47,84 @@ const std::vector<StatusEffect>& Character::getStatusEffects()const
 {
 	return this->statusEffects;
 }
+
+void Character::setHP(int newHP)
+{
+	if (newHP > 0)
+	{
+		this->mainStats.HP = newHP;
+	}
+	else
+	{
+		this->mainStats.HP = 0;
+	}
+	
+}
+void Character::setMP(int newMP)
+{
+	if (newMP > 0)
+	{
+		this->mainStats.MP = newMP;
+	}
+	else
+	{
+		this->mainStats.MP = 0;
+	}
+}
+void Character::setSTR(int newSTR)
+{
+	if (newSTR > 0)
+	{
+		this->mainStats.STR = newSTR;
+	}
+	else
+	{
+		this->mainStats.STR = 0;
+	}
+}
+void Character::setINT(int newINT)
+{
+	if (newINT > 0)
+	{
+		this->mainStats.INT = newINT;
+	}
+	else
+	{
+		this->mainStats.INT = 0;
+	}
+}
+void Character::setAGI(int newAGI)
+{
+	if (newAGI > 0)
+	{
+		this->mainStats.AGI = newAGI;
+	}
+	else
+	{
+		this->mainStats.AGI = 0;
+	}
+}
+void Character::setDEF(int newDEF)
+{
+	if (newDEF > 0)
+	{
+		this->mainStats.DEF = newDEF;
+	}
+	else
+	{
+		this->mainStats.DEF = 0;
+	}
+}
+
+
+void Character::swap(Character& other)noexcept
+{
+	std::swap(this->name, other.name);
+	std::swap(this->mainStats, other.mainStats);
+	std::swap(this->maxHP, other.maxHP);
+	std::swap(this->currentLevel, other.currentLevel);
+	std::swap(this->goldCoinsOwned, other.goldCoinsOwned);
+	std::swap(this->statusEffects, other.statusEffects);
+	
+}
+

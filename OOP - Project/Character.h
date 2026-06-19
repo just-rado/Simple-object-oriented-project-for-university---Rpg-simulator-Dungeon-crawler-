@@ -31,11 +31,20 @@ public:
 	unsigned int getGoldCoins()const;
 	const std::vector<StatusEffect>& getStatusEffects()const;
 
+	
+
 protected:
 	Character(const CharacterData& data);
-	Character() = default;
 	Character(const Character& other) = default;
 	Character& operator=(const Character& other);
+	void swap(Character& other)noexcept;
+
+	void setHP(int newHP);
+	void setMP(int newMP);
+	void setSTR(int newSTR);
+	void setINT(int newINT);
+	void setAGI(int newAGI);
+	void setDEF(int newDEF);
 private:
 
 	std::string name;
@@ -45,8 +54,8 @@ private:
 	float currentLevel;
 	unsigned int goldCoinsOwned;
 	std::vector<StatusEffect> statusEffects;
+	
 
-
-
+	
 };
 

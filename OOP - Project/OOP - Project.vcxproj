@@ -140,6 +140,7 @@
     <ClInclude Include="Scroll.h" />
     <ClInclude Include="Spell.h" />
     <ClInclude Include="DamageTypeAndEffects.h" />
+    <ClInclude Include="Warrior.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +160,7 @@
     <ClCompile Include="Scroll.cpp" />
     <ClCompile Include="Spell.cpp" />
     <ClCompile Include="testtttttt.cpp" />
+    <ClCompile Include="Warrior.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

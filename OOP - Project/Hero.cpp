@@ -30,80 +30,173 @@ Hero::Information::~Information()
 
 
 
-Hero::Hero(const CharacterData& mainStats): Character(mainStats)
-{}
+Hero::Hero(const CharacterData& mainStats , HeroClass heroClass): Character(mainStats) , heroClass(heroClass) ,
+			inventory() , equippedItems() , history()
+{
+
+}
 Hero::Hero(const Hero& other): Character(other)
 {
 	handleHeapMemory(other.inventory, other.equippedItems);	
+	this->heroClass = other.heroClass;
 }
 Hero& Hero::operator=(const Hero& other)
 {
 	if (this != &other)
 	{
-		std::vector<Item*> toDeleteInventory = std::move(this->inventory);
-		std::vector<Item*> toDeleteEquippedItems = std::move(this->equippedItems);
-		handleHeapMemory(other.inventory, other.equippedItems);
+		Item* toDeleteInventory[CAPACITY_OF_INVENTORY]{};
+		copyPointers(toDeleteInventory , this->inventory, CAPACITY_OF_INVENTORY);
+
+		Item* toDeleteEquippedItems[MAX_EQUIPPED_ITEMS]{};
+		copyPointers(toDeleteEquippedItems , this->equippedItems, MAX_EQUIPPED_ITEMS);
+		
+		try
+		{
+			handleHeapMemory(other.inventory, other.equippedItems);
+		}
+		catch (...)
+		{
+			copyPointers(this->inventory, toDeleteInventory, CAPACITY_OF_INVENTORY);
+			copyPointers(this->equippedItems, toDeleteEquippedItems, MAX_EQUIPPED_ITEMS);
+			throw;
+		}
+		
 		try
 		{
 			Character::operator=(other);
 		}
 		catch(...)
 		{
-			deleteHeapMemory(this->inventory);
-			this->inventory = std::move(toDeleteInventory);
+			deleteHeapMemory(this->inventory , CAPACITY_OF_INVENTORY);
+			copyPointers(this->inventory, toDeleteInventory, CAPACITY_OF_INVENTORY);
 
-			deleteHeapMemory(this->equippedItems);
-			this->equippedItems = std::move(toDeleteEquippedItems);
+			deleteHeapMemory(this->equippedItems , MAX_EQUIPPED_ITEMS);
+			copyPointers(this->equippedItems, toDeleteEquippedItems, MAX_EQUIPPED_ITEMS);
 			
 			throw;
 		}
-		deleteHeapMemory(toDeleteInventory);
-		deleteHeapMemory(toDeleteEquippedItems);
+		deleteHeapMemory(toDeleteInventory , CAPACITY_OF_INVENTORY);
+		deleteHeapMemory(toDeleteEquippedItems, MAX_EQUIPPED_ITEMS);
+		this->heroClass = other.heroClass;
 	}
 	return *this;
 }
 Hero::~Hero()
 {
-	deleteHeapMemory(this->inventory);
-	deleteHeapMemory(this->equippedItems);
+	deleteHeapMemory(this->inventory , CAPACITY_OF_INVENTORY);
+	deleteHeapMemory(this->equippedItems , MAX_EQUIPPED_ITEMS);
+}
+
+
+void Hero::equipItem(uint64_t itemID)
+{
+	for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
+	{
+		if (inventory[i] && this->inventory[i]->getId() == itemID)
+		{
+			TypeOfItem typeOfItem = this->inventory[i]->getTypeOfItem();
+			size_t slot = getItemSlotFor(typeOfItem);
+			if (slot < MAX_EQUIPPED_ITEMS)
+			{
+				std::swap(this->inventory[i], this->equippedItems[getItemSlotFor(typeOfItem)]);
+			}
+			break;
+		}
+	}
+}
+void Hero::unequipItem(size_t slot)
+{
+	if (slot < MAX_EQUIPPED_ITEMS && this->equippedItems[slot])
+	{
+		for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
+		{
+			if (!this->inventory[i])
+			{
+				std::swap(this->equippedItems[slot], this->inventory[i]);
+				break;
+			}
+		}
+	}
 }
 
 
 
-void Hero::handleHeapMemory(std::vector<Item*> inventory, std::vector<Item*> equippedItems)
+size_t Hero::getItemSlotFor(TypeOfItem type)
 {
-	size_t numberOfEntities = inventory.size();
-	for (size_t i = 0; numberOfEntities; ++i)
+	switch (type)
 	{
-		try
-		{
-			this->inventory.push_back(inventory[i]->clone());
-		}
-		catch (...)
-		{
-			deleteHeapMemory(this->inventory);
-		}
+	case TypeOfItem::WEAPON: return 0;
+		
+	case TypeOfItem::ARMOR: return 1;
+
+	case TypeOfItem::RELIC: return 2;
+
+	default: return 3;
 	}
-	numberOfEntities = equippedItems.size();
-	for (size_t i = 0; i < numberOfEntities; ++i)
-	{
-		try
-		{
-			this->equippedItems.push_back(equippedItems[i]->clone());
-		}
-		catch (...)
-		{
-			deleteHeapMemory(this->inventory);
-			deleteHeapMemory(this->equippedItems);
-		}
-	}
+
 }
-void Hero::deleteHeapMemory(std::vector<Item*> vector)
+
+void Hero::handleHeapMemory(const Item* const (&inventory)[CAPACITY_OF_INVENTORY], const Item* const (&equippedItems)[MAX_EQUIPPED_ITEMS])
 {
-	size_t size = vector.size();
+	size_t inventorySlotIndex = 0;
+	size_t eqippedItemSlotIndex = 0;
+	try
+	{
+		for (size_t i = 0; i < Hero::CAPACITY_OF_INVENTORY; ++i)
+		{
+			++inventorySlotIndex;
+			if (inventory[i])
+			{
+				this->inventory[i] = inventory[i]->clone();
+				
+			}
+		}
+
+		for (size_t i = 0; i < Hero::MAX_EQUIPPED_ITEMS; ++i)
+		{
+			++eqippedItemSlotIndex;
+			if (equippedItems[i])
+			{
+				this->equippedItems[i] = equippedItems[i]->clone();
+			}
+			
+		}
+		
+	}
+	catch(...)
+	{
+		deleteHeapMemory(this->inventory, inventorySlotIndex);
+		deleteHeapMemory(this->equippedItems , eqippedItemSlotIndex);
+		throw;
+	}
+	
+}
+void Hero::deleteHeapMemory(Item* vector[], size_t size)
+{
 	for (size_t i = 0; i < size; ++i)
 	{
 		delete vector[i];
+		vector[i] = nullptr;
 	}
-	vector.clear();
+
 }
+
+
+void Hero::copyPointers(Item* lhs[], Item* rhs[], size_t size)
+{
+	for (size_t i = 0; i < size; ++i)
+	{
+		lhs[i] = rhs[i];
+	}
+}
+
+void Hero::swap(Hero& other)noexcept
+{
+	Character::swap(other);
+	std::swap(this->heroClass, other.heroClass);
+	std::swap(this->inventory, other.inventory);
+	std::swap(this->history, other.history);
+	std::swap(this->equippedItems, other.equippedItems);
+
+}
+

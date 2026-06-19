@@ -4,6 +4,7 @@
 enum  class HeroClass : uint8_t
 {
 	WARRIOR,
+	ACHER,
 	MAGE,
 	HEALER,
 	PALADIN,
