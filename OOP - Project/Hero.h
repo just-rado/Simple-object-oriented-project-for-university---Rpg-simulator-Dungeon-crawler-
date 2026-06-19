@@ -5,6 +5,9 @@
 #include "Battle.h"
 #include "Enemy.h"
 #include "Classes.h"
+
+class Enemy;
+
 class Hero: public Character
 {
 public:
@@ -17,7 +20,11 @@ public:
 	virtual void equipItem(uint64_t itemID);
 	void unequipItem(size_t slot);
 
-	virtual void attackEnemy(const Enemy* enemy) = 0;
+	const Item* getItemFromInvetoryAtIndex(size_t index)const;
+	const Item* getItemFromEquippedItems(TypeOfItem type)const;
+	// collect item 
+	// create history
+	virtual void attackEnemy(Enemy* enemy) = 0;
 
 	virtual Hero* clone()const = 0;
 
@@ -27,6 +34,8 @@ protected:
 	static constexpr unsigned int AGI_TO_DEF_MULTIPLIER = 1;
 
 	static size_t getItemSlotFor(TypeOfItem type);
+
+
 	void swap(Hero& hero)noexcept;
 private:
 	class Information
@@ -56,7 +65,7 @@ private:
 
 	
 	
-	void handleHeapMemory(const Item* const (&inventory)[CAPACITY_OF_INVENTORY], const Item* const (&equippedItems)[MAX_EQUIPPED_ITEMS]);
+	void handleHeapMemory(Item* const (&inventory)[CAPACITY_OF_INVENTORY], Item* const  (&equippedItems)[MAX_EQUIPPED_ITEMS]);
 	static void deleteHeapMemory(Item* vector[] , size_t size);
 
 	static void copyPointers(Item* lhs[], Item* rhs[], size_t size);

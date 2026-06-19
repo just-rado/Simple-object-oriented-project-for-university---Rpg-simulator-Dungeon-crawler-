@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "Classes.h"
 enum class Rarity
 {
 	COMMON,
@@ -42,6 +43,8 @@ public:
 	virtual Item* clone()const = 0;
 	virtual void printInfo()const;
 
+	bool checkIfClassIsCompatible(HeroClass classOfHero)const;
+
 	uint64_t getId()const;
 	const std::string& getName()const;
 	Rarity getRarity()const;
@@ -66,6 +69,7 @@ private:
 	static uint64_t nextId;
 	constexpr static int CLASSES_PER_UINT64 = 64;
 
+	
 	size_t optimalSizeOfVector()const;
 	void printRarity()const;
 	void printCompatibleClasses()const;

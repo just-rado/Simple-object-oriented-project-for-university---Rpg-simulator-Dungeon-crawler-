@@ -5,7 +5,7 @@ class HealSpell: public Spell
 {
 public:
 
-	HealSpell(const std::string& name, const std::string& description , DamageType damageType, unsigned int healValue);
+	HealSpell(const std::string& name, const std::string& description , AgmentationType damageType, unsigned int manaCost , unsigned int healValue);
 
 
 	virtual Spell* clone()const override;
@@ -16,7 +16,7 @@ public:
 private:
 	unsigned int healValue;
 
-	static constexpr TypeOfSpell type = TypeOfSpell::HEAL;
+	static constexpr TypeOfSpell TYPE = TypeOfSpell::HEAL;
 
 };
 

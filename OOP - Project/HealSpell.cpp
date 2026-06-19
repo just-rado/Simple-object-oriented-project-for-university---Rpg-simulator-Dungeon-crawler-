@@ -1,7 +1,7 @@
 #include "HealSpell.h"
 
-HealSpell::HealSpell(const std::string& name, const std::string& description ,DamageType damageType, unsigned int healValue): 
-	Spell(name, description , type , damageType) , healValue(healValue)
+HealSpell::HealSpell(const std::string& name, const std::string& description ,AgmentationType damageType,unsigned int manaCost , unsigned int healValue): 
+	Spell(name, description , TYPE , damageType , manaCost) , healValue(healValue)
 {
 	
 }

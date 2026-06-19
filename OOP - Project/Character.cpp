@@ -11,6 +11,15 @@ Character::Character(const CharacterData& data) : name(data.name) , mainStats(da
 	{
 		throw std::invalid_argument("Invalid level");
 	}
+	else if (data.maxHP < 0 || data.maxMP < 0)
+	{
+		throw std::invalid_argument("Invalid max");
+	}
+	else if (data.mainStats.HP < 0 || data.mainStats.MP < 0 || data.mainStats.STR < 0
+		|| data.mainStats.INT < 0 || data.mainStats.AGI < 0 || data.mainStats.DEF < 0)
+	{
+		throw std::invalid_argument("Invalid main stats");
+	}
 	
 
 }
@@ -31,9 +40,29 @@ const std::string& Character::getName()const
 {
 	return this->name;
 }
-const CharacterStats& Character::getStats()const
+int Character::getHP()const
 {
-	return this->mainStats;
+	return this->mainStats.HP;
+}
+int Character::getMP()const
+{
+	return this->mainStats.MP;
+}
+int Character::getSTR()const
+{
+	return this->mainStats.STR;
+}
+int Character::getINT()const
+{
+	return this->mainStats.INT;
+}
+int Character::getAGI()const
+{
+	return this->mainStats.AGI;
+}
+int Character::getDEF()const
+{
+	return this->mainStats.DEF;
 }
 float Character::getCurrentLevel()const
 {
@@ -47,6 +76,15 @@ const std::vector<StatusEffect>& Character::getStatusEffects()const
 {
 	return this->statusEffects;
 }
+unsigned int Character::getMaxHP()const
+{
+	return this->maxHP;
+}
+unsigned int Character::getMaxMP()const
+{
+	return this->maxMP;
+}
+
 
 void Character::setHP(int newHP)
 {
@@ -116,6 +154,73 @@ void Character::setDEF(int newDEF)
 	}
 }
 
+
+void  Character::updateMaxHP(unsigned int newMaxHP)
+{
+	if (newMaxHP > 0)
+	{
+		this->maxHP = newMaxHP;
+	}
+	else 
+	{
+		this->maxHP = 0;
+	}
+}
+void  Character::updateMaxMP(unsigned int newMaxMP)
+{
+	if (newMaxMP > 0)
+	{
+		this->maxMP = newMaxMP;
+	}
+	else
+	{
+		this->maxMP = 0;
+	}
+}
+void  Character::setGoldCoins(unsigned int newGoldCoins)
+{
+	this->goldCoinsOwned = newGoldCoins;
+}
+void  Character::setLevel(float newLevel)
+{
+	if (newLevel > 1)
+	{
+		this->currentLevel = newLevel;
+	}
+	else
+	{
+		this->currentLevel = 1;
+	}
+}
+void Character::addNewStatusEffect(StatusEffect effect)
+{
+	size_t size = this->statusEffects.size();
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (this->statusEffects[i].typeOfEffect == effect.typeOfEffect)
+		{
+			this->statusEffects[i].duration += effect.duration;
+			return;
+		}
+	}
+	this->statusEffects.push_back(effect);
+}
+void Character::updateStatusEffects()
+{
+	size_t size = this->statusEffects.size();
+	for (size_t i = 0; i < size; )
+	{
+		this->statusEffects[i].duration -= 1;
+		if (this->statusEffects[i].duration == 0)
+		{
+			this->statusEffects.erase(statusEffects.begin() + i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+}
 
 void Character::swap(Character& other)noexcept
 {

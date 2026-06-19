@@ -94,11 +94,14 @@ void Hero::equipItem(uint64_t itemID)
 	{
 		if (inventory[i] && this->inventory[i]->getId() == itemID)
 		{
-			TypeOfItem typeOfItem = this->inventory[i]->getTypeOfItem();
-			size_t slot = getItemSlotFor(typeOfItem);
-			if (slot < MAX_EQUIPPED_ITEMS)
+			if(this->inventory[i]->checkIfClassIsCompatible(this->heroClass) && this->getCurrentLevel() >= this->inventory[i]->getRequiredLevel())
 			{
-				std::swap(this->inventory[i], this->equippedItems[getItemSlotFor(typeOfItem)]);
+				TypeOfItem typeOfItem = this->inventory[i]->getTypeOfItem();
+				size_t slot = getItemSlotFor(typeOfItem);
+				if (slot < MAX_EQUIPPED_ITEMS)
+				{
+					std::swap(this->inventory[i], this->equippedItems[slot]);
+				}
 			}
 			break;
 		}
@@ -119,6 +122,19 @@ void Hero::unequipItem(size_t slot)
 	}
 }
 
+const Item* Hero::getItemFromInvetoryAtIndex(size_t index)const
+{
+	if (index < CAPACITY_OF_INVENTORY)
+	{
+		return this->inventory[index];
+	}
+	return nullptr;
+}
+const Item* Hero::getItemFromEquippedItems(TypeOfItem type)const
+{
+	return this->equippedItems[getItemSlotFor(type)];
+}
+
 
 
 size_t Hero::getItemSlotFor(TypeOfItem type)
@@ -136,7 +152,7 @@ size_t Hero::getItemSlotFor(TypeOfItem type)
 
 }
 
-void Hero::handleHeapMemory(const Item* const (&inventory)[CAPACITY_OF_INVENTORY], const Item* const (&equippedItems)[MAX_EQUIPPED_ITEMS])
+void Hero::handleHeapMemory(Item* const (&inventory)[CAPACITY_OF_INVENTORY],  Item* const  (&equippedItems)[MAX_EQUIPPED_ITEMS])
 {
 	size_t inventorySlotIndex = 0;
 	size_t eqippedItemSlotIndex = 0;

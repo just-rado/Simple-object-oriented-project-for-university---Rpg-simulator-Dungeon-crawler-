@@ -4,23 +4,23 @@
 class Weapon: public Item
 {
 public:
-	Weapon(const ItemData& data, DamageType type , unsigned int dmgValue , float criticalChance);
+	Weapon(const ItemData& data, AgmentationType type , unsigned int dmgValue , unsigned int criticalChance);
 
 	Weapon& operator=(const Weapon& other) = delete;
 
-	DamageType getType()const;
+	AgmentationType getDmgType()const;
 	unsigned int getDmgValue()const;
-	float getCriticalChance()const;
+	unsigned int getCriticalChance()const;
 
 	virtual Item* clone()const override;
 
 private:
-	DamageType type;
+	AgmentationType type;
 	unsigned int dmgValue;
-	float criticalChance;
+	unsigned int criticalChance;
 
 	static constexpr TypeOfItem itemType = TypeOfItem::WEAPON;
-	static constexpr float MIN_CRITICAL_CHANCE = 0;
-	static constexpr float MAX_CRITICAL_CHANCE = 100;
+	static constexpr int MIN_CRITICAL_CHANCE = 0;
+	static constexpr int MAX_CRITICAL_CHANCE = 100;
 };
 

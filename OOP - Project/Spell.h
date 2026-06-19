@@ -15,24 +15,25 @@ class Spell
 {
 public:
 
-	Spell(const std::string& name , const std::string& description , TypeOfSpell type, DamageType damageType);
+	Spell(const std::string& name , const std::string& description , TypeOfSpell type, AgmentationType damageType , unsigned int manaCost);
 
 	virtual ~Spell() = default;
 
 	virtual Spell* clone()const = 0;
 
 	TypeOfSpell getEffect()const;
-	DamageType getType()const;
+	AgmentationType getType()const;
+	unsigned int getManaCost()const;
 	const std::string& getName()const;
 	const std::string& getDescription()const;
 
 private:
 	const std::string name;
 	std::string description;
-
-	DamageType damageType;
-	
 	TypeOfSpell type;
+	AgmentationType damageType;
+	unsigned int manaCost;
+
 
 };
 

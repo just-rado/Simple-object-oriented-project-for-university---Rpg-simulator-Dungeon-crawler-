@@ -11,7 +11,7 @@ public:
 
 	void tauntEnemies();
 
-	virtual void attackEnemy(const Enemy* enemy)override;
+	virtual void attackEnemy(Enemy* enemy)override;
 	virtual Hero* clone()const override;
 
 private:

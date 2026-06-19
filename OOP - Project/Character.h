@@ -26,11 +26,32 @@ class Character
 public:
 	
 	const std::string& getName()const;
-	const CharacterStats& getStats()const;
+	int getHP()const;
+	int getMP()const;
+	int getSTR()const;
+	int getINT()const;
+	int getAGI()const;
+	int getDEF()const;
+	unsigned int getMaxHP()const;
+	unsigned int getMaxMP()const;
+
 	float getCurrentLevel()const;
 	unsigned int getGoldCoins()const;
 	const std::vector<StatusEffect>& getStatusEffects()const;
 
+	void setHP(int newHP);
+	void setMP(int newMP);
+	void setSTR(int newSTR);
+	void setINT(int newINT);
+	void setAGI(int newAGI);
+	void setDEF(int newDEF);
+
+	void updateMaxHP(unsigned int newMaxHP);
+	void updateMaxMP(unsigned int newMaxMP);
+	void setGoldCoins(unsigned int newGoldCoins);
+	void setLevel(float newLevel);
+	void addNewStatusEffect(StatusEffect effect);
+	void updateStatusEffects();
 	
 
 protected:
@@ -39,12 +60,6 @@ protected:
 	Character& operator=(const Character& other);
 	void swap(Character& other)noexcept;
 
-	void setHP(int newHP);
-	void setMP(int newMP);
-	void setSTR(int newSTR);
-	void setINT(int newINT);
-	void setAGI(int newAGI);
-	void setDEF(int newDEF);
 private:
 
 	std::string name;

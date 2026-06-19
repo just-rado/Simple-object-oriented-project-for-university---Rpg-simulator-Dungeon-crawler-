@@ -1,4 +1,7 @@
 #include "Warrior.h"
+#include "Item.h"
+#include "Weapon.h"
+#include <random>
 
 Warrior::Warrior(const std::string& name) : Hero(createWarriorData(name) , Warrior::heroClass) , tauntUsed(false) , 
 					remainingTurnsOfTauntEffect(0)
@@ -8,13 +11,56 @@ Warrior::Warrior(const std::string& name) : Hero(createWarriorData(name) , Warri
 
 void Warrior::tauntEnemies()
 {
-	this->tauntUsed = true;
-	this->remainingTurnsOfTauntEffect = 2;
+	int costOfAbility = 25;
+	if (this->getMP() - costOfAbility >= 0)
+	{
+		this->tauntUsed = true;
+		this->remainingTurnsOfTauntEffect = 2;
+		this->setMP(this->getMP() - costOfAbility);
+	}
+	
 }
 
-void Warrior::attackEnemy(const Enemy* enemy)
+void Warrior::attackEnemy(Enemy* enemy)
 {
-	
+	int inflictDamage = 0;
+	inflictDamage += this->getSTR();
+	const Weapon* weapon = dynamic_cast<const Weapon*>(this->getItemFromEquippedItems(TypeOfItem::WEAPON));
+	if (weapon)
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+
+		std::uniform_int_distribution<> chance(1, 100);
+
+		int amplifier = 1;
+		if (chance(gen) <= weapon->getCriticalChance())
+		{
+			amplifier = 2;
+		}
+
+		inflictDamage += weapon->getDmgValue() * amplifier;
+
+		size_t size = enemy->getNumberOfWeaknesses();
+		AgmentationType damageTypeOfWeapon = weapon->getDmgType();
+		for (size_t i = 0; i < size; ++i)
+		{
+			if (enemy->getWeakTo(i) == damageTypeOfWeapon)
+			{
+				inflictDamage *= 2;
+				break;
+			}
+		}
+	}
+
+	inflictDamage /=  enemy->getDEF();
+	int newHP = enemy->getHP() - inflictDamage;
+	enemy->setHP(newHP);
+	if (enemy->getHP() == 0)
+	{
+		this->setGoldCoins(this->getGoldCoins() + enemy->getGoldCoins());
+		this->setLevel(this->getCurrentLevel() + enemy->getExpGainedForKilling());
+	}
 }
 
 Hero* Warrior::clone()const

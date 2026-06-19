@@ -1,10 +1,8 @@
 #pragma once
-#include <cstdint> // for uint8_t
 // keeps track of how many hero classes have been created
-enum  class HeroClass : uint8_t
+enum  class HeroClass 
 {
 	WARRIOR,
-	ACHER,
 	MAGE,
 	HEALER,
 	PALADIN,

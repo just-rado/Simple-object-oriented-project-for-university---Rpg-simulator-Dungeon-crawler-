@@ -1,6 +1,6 @@
 #pragma once
 
-enum class DamageType
+enum class AgmentationType
 {
 	PHYSICAL,
 	FIRE,

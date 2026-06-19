@@ -79,6 +79,27 @@ const std::vector<uint64_t>& Item::getCompatibleClasses()const
 	return this->compatibleClasses;
 }
 
+bool Item::checkIfClassIsCompatible(HeroClass classOfHero)const
+{
+	int numberOfHeroClass = static_cast<int>(classOfHero);
+	size_t index = 1;
+	while (true)
+	{
+		if (index * CLASSES_PER_UINT64 > numberOfHeroClass)
+		{
+			numberOfHeroClass %= CLASSES_PER_UINT64;
+			uint64_t find = 1;
+			find = (find << numberOfHeroClass);
+			uint64_t check = (find & this->compatibleClasses[index - 1]);
+			return check;
+		}
+		++index;
+	}
+	
+	return false;
+}
+
+
 void Item::printRarity()const
 {
 	switch (this->rarity)

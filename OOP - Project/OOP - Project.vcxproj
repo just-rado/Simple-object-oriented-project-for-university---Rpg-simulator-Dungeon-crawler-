@@ -135,6 +135,7 @@
     <ClInclude Include="HealSpell.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Mage.h" />
     <ClInclude Include="Relic.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="Scroll.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="HealSpell.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Mage.cpp" />
     <ClCompile Include="Relic.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="Scroll.cpp" />
