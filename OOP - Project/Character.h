@@ -46,6 +46,9 @@ public:
 	void setAGI(int newAGI);
 	void setDEF(int newDEF);
 
+	
+	void addCharacterStatsModifiers(const CharacterStats& stats);
+	void removeCharacterStatsModifiers(const CharacterStats& stats);
 	void updateMaxHP(unsigned int newMaxHP);
 	void updateMaxMP(unsigned int newMaxMP);
 	void setGoldCoins(unsigned int newGoldCoins);
@@ -59,6 +62,10 @@ protected:
 	Character(const Character& other) = default;
 	Character& operator=(const Character& other);
 	void swap(Character& other)noexcept;
+
+	static constexpr unsigned int STR_TO_ATTACK_DMG_MULTIPLIER = 2;
+	static constexpr unsigned int INT_TO_SPELL_DMG_MULTIPLIER = 1;
+	static constexpr unsigned int AGI_TO_MISS_CHANCE_MULTIPLIER = 1;
 
 private:
 

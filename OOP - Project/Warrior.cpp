@@ -23,8 +23,9 @@ void Warrior::tauntEnemies()
 
 void Warrior::attackEnemy(Enemy* enemy)
 {
+	// check if it hits agility =miss chance
 	int inflictDamage = 0;
-	inflictDamage += this->getSTR();
+	inflictDamage = this->getSTR() * Character::STR_TO_ATTACK_DMG_MULTIPLIER;
 	const Weapon* weapon = dynamic_cast<const Weapon*>(this->getItemFromEquippedItems(TypeOfItem::WEAPON));
 	if (weapon)
 	{
@@ -60,6 +61,7 @@ void Warrior::attackEnemy(Enemy* enemy)
 	{
 		this->setGoldCoins(this->getGoldCoins() + enemy->getGoldCoins());
 		this->setLevel(this->getCurrentLevel() + enemy->getExpGainedForKilling());
+		// chance to drop a item
 	}
 }
 
@@ -76,11 +78,11 @@ CharacterData Warrior::createWarriorData(const std::string& name)
 	data.mainStats.STR = 30;
 	data.mainStats.INT = 10;
 	data.mainStats.AGI = 5;
-	
-	data.mainStats.DEF = calculateDefence(data.mainStats);
+	data.mainStats.DEF = BASE_DEFENCE;
 
-	data.maxHP = calculateMaxHP(data.mainStats);
-	data.maxMP = calculateMaxMP(data.mainStats);
+	data.maxHP = BASE_HP;
+	data.maxMP = BASE_MP;
+	
 	
 	data.mainStats.HP = data.maxHP;
 	data.mainStats.MP = data.maxMP;
@@ -94,15 +96,3 @@ CharacterData Warrior::createWarriorData(const std::string& name)
 }
 
 
-unsigned int Warrior::calculateMaxHP(const CharacterStats& stats)
-{
-	return Warrior::BASE_HP + stats.STR * Hero::STR_TO_HEALTH_MULTIPLIER;
-}
-unsigned int Warrior::calculateMaxMP(const CharacterStats& stats)
-{
-	return Warrior::BASE_MP + stats.INT * Hero::INT_TO_MANA_MULTIPLIER;
-}
-unsigned int Warrior::calculateDefence(const CharacterStats& stats)
-{
-	return Warrior::BASE_DEFENCE + stats.AGI * Hero::AGI_TO_DEF_MULTIPLIER;
-}

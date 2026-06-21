@@ -1,5 +1,7 @@
 #include "Hero.h"
 #include <stdexcept>
+#include "Armor.h"
+#include "Relic.h"
 Hero::Information::Information()
 {
 	this->battle = nullptr;
@@ -88,38 +90,64 @@ Hero::~Hero()
 }
 
 
-void Hero::equipItem(uint64_t itemID)
+bool Hero::equipItem(uint64_t itemID)
 {
 	for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
 	{
-		if (inventory[i] && this->inventory[i]->getId() == itemID)
+		if (!inventory[i] || this->inventory[i]->getId() != itemID)
 		{
-			if(this->inventory[i]->checkIfClassIsCompatible(this->heroClass) && this->getCurrentLevel() >= this->inventory[i]->getRequiredLevel())
-			{
-				TypeOfItem typeOfItem = this->inventory[i]->getTypeOfItem();
-				size_t slot = getItemSlotFor(typeOfItem);
-				if (slot < MAX_EQUIPPED_ITEMS)
-				{
-					std::swap(this->inventory[i], this->equippedItems[slot]);
-				}
-			}
-			break;
+			continue;
 		}
+
+		if (!this->inventory[i]->checkIfClassIsCompatible(this->heroClass) || this->getCurrentLevel() < this->inventory[i]->getRequiredLevel())
+		{
+			return false;
+		}
+
+		TypeOfItem typeOfItem = this->inventory[i]->getTypeOfItem();
+		size_t slot = getItemSlotFor(typeOfItem);
+	
+		if (typeOfItem == TypeOfItem::ARMOR)
+		{
+			if (this->equippedItems[slot])
+			{
+				Armor* toUneqiupArmor = static_cast<Armor*>(this->equippedItems[slot]);
+				removeCharacterStatsModifiers(toUneqiupArmor->getModifiers());
+			}
+			Armor* toEquipArmor = static_cast<Armor*>(this->inventory[i]);
+			addCharacterStatsModifiers(toEquipArmor->getModifiers());
+		}
+
+		std::swap(this->inventory[i], this->equippedItems[slot]);
+		break;
+		
 	}
+	return true;
 }
-void Hero::unequipItem(size_t slot)
+
+bool Hero::unequipItem(size_t slot)
 {
-	if (slot < MAX_EQUIPPED_ITEMS && this->equippedItems[slot])
+	if (slot >= MAX_EQUIPPED_ITEMS || !this->equippedItems[slot])
 	{
-		for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
+		return false;
+	}
+
+	for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
+	{
+		if (!this->inventory[i])
 		{
-			if (!this->inventory[i])
+			if (this->equippedItems[slot]->getTypeOfItem() == TypeOfItem::ARMOR)
 			{
-				std::swap(this->equippedItems[slot], this->inventory[i]);
-				break;
+				Armor* toUnequip = static_cast<Armor*>(this->equippedItems[slot]);
+				removeCharacterStatsModifiers(toUnequip->getModifiers());
 			}
+
+			std::swap(this->equippedItems[slot], this->inventory[i]);
+			return true;
 		}
 	}
+	return false;
+	
 }
 
 const Item* Hero::getItemFromInvetoryAtIndex(size_t index)const

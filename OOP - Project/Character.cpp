@@ -31,7 +31,7 @@ Character& Character::operator=(const Character& other)
 	{
 		Character temp(other);
 		swap(temp);
-	}
+	} // fix
 	return *this;
 }
 
@@ -154,6 +154,37 @@ void Character::setDEF(int newDEF)
 	}
 }
 
+void Character::addCharacterStatsModifiers(const CharacterStats& stats)
+{
+	setHP(this->mainStats.HP + stats.HP);
+	setMP(this->mainStats.MP + stats.MP);
+	updateMaxHP(this->maxHP + stats.HP);
+	updateMaxMP(this->maxMP + stats.MP);
+
+	setSTR(this->mainStats.STR + stats.STR);
+	setINT(this->mainStats.INT + stats.INT);
+	setAGI(this->mainStats.AGI + stats.AGI);
+	setDEF(this->mainStats.DEF + stats.DEF);
+}
+void Character::removeCharacterStatsModifiers(const CharacterStats& stats)
+{
+	updateMaxHP(this->maxHP - stats.HP);
+	updateMaxMP(this->maxMP - stats.MP);
+	if (this->mainStats.HP > this->maxHP)
+	{
+		setHP(maxHP);
+	}
+	if (this->mainStats.MP > this->maxMP)
+	{
+		setMP(maxMP);
+	}
+
+
+	setSTR(this->mainStats.STR - stats.STR);
+	setINT(this->mainStats.INT - stats.INT);
+	setAGI(this->mainStats.AGI - stats.AGI);
+	setDEF(this->mainStats.DEF - stats.DEF);
+}
 
 void  Character::updateMaxHP(unsigned int newMaxHP)
 {

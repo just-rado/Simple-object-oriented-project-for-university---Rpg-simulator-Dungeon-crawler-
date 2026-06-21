@@ -12,6 +12,7 @@ public:
 
 	virtual Item* clone()const override;
 
+
 	unsigned int getProtectionValue()const;
 	const CharacterStats& getModifiers()const;
 
@@ -20,5 +21,6 @@ private:
 	CharacterStats modifiers;
 
 	static constexpr TypeOfItem itemType = TypeOfItem::ARMOR;
+	
 };
 

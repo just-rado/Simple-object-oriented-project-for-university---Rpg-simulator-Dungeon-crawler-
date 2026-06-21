@@ -23,9 +23,48 @@ Mage::~Mage()
 }
 
 
-void Mage::swap(Mage& other)noexcept
+void Mage::attackEnemy(Enemy* enemy)
 {
 
+}
+
+void Mage::castASpellAtAlly(Hero* hero)
+{
+
+}
+void Mage::castASpellAtEnemy(Enemy* enemy)
+{
+
+}
+
+
+
+CharacterData& Mage::createMageData(const std::string name)
+{
+	CharacterData data;
+	data.name = name;
+
+	data.mainStats.STR = 5;
+	data.mainStats.INT = 30;
+	data.mainStats.AGI = 10;
+	data.mainStats.DEF = BASE_DEFENCE;
+
+	data.maxHP = BASE_HP;
+	data.maxMP = BASE_MP;
+
+	data.mainStats.HP = data.maxHP;
+	data.mainStats.MP = data.maxMP;
+
+	data.currentLevel = 1;
+	data.goldCoinsOwned = 0;
+
+	data.statusEffects.clear();
+}
+
+void Mage::swap(Mage& other)noexcept
+{
+	Hero::swap(other);
+	std::swap(this->spells, other.spells);
 }
 	 
 void Mage::deepCopySpells(const std::vector<Spell*> spells)

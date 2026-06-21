@@ -17,21 +17,22 @@ public:
 	Hero& operator=(const Hero& other);
 	virtual ~Hero();
 
-	virtual void equipItem(uint64_t itemID);
-	void unequipItem(size_t slot);
+	bool equipItem(uint64_t itemID);
+	bool unequipItem(size_t slot);
 
 	const Item* getItemFromInvetoryAtIndex(size_t index)const;
 	const Item* getItemFromEquippedItems(TypeOfItem type)const;
 	// collect item 
+	// drop item
+	// use potion
+	// use scroll
 	// create history
 	virtual void attackEnemy(Enemy* enemy) = 0;
 
 	virtual Hero* clone()const = 0;
 
 protected:
-	static constexpr unsigned int STR_TO_HEALTH_MULTIPLIER = 10;
-	static constexpr unsigned int INT_TO_MANA_MULTIPLIER = 2;
-	static constexpr unsigned int AGI_TO_DEF_MULTIPLIER = 1;
+
 
 	static size_t getItemSlotFor(TypeOfItem type);
 

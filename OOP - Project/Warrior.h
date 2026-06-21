@@ -4,7 +4,7 @@
 #include "Classes.h"
 #include <string>
 
-class Warrior: public Hero
+class Warrior: public virtual Hero
 {
 public:
 	Warrior(const std::string& name);
@@ -18,9 +18,7 @@ private:
 	bool tauntUsed;
 	unsigned int remainingTurnsOfTauntEffect;
 
-	static unsigned int calculateMaxHP(const CharacterStats& stats);
-	static unsigned int calculateMaxMP(const CharacterStats& stats);
-	static unsigned int calculateDefence(const CharacterStats& stats);
+	
 	static CharacterData createWarriorData(const std::string& name);
 
 	static constexpr HeroClass heroClass = HeroClass::WARRIOR;

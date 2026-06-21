@@ -11,6 +11,8 @@ Item* Armor::clone()const
 	return new Armor(*this);
 }
 
+
+
 unsigned int Armor::getProtectionValue()const
 {
 	return this->protectionValue;

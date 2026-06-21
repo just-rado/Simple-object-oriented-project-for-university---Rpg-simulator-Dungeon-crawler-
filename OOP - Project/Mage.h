@@ -11,7 +11,11 @@ public:
 	Mage& operator=(const Mage& other);
 	virtual ~Mage()override;
 
+	void castASpellAtEnemy(Enemy* enemy);
+	void castASpellAtAlly(Hero* hero);
+
 	virtual void attackEnemy(Enemy* enemy);
+	
 
 	virtual Hero* clone()const;
 
@@ -23,10 +27,6 @@ private:
 
 	void deepCopySpells(const std::vector<Spell*> spells);
 	void free(std::vector<Spell*>& spells);
-
-	static unsigned int calculateMaxHP(const CharacterStats& stats);
-	static unsigned int calculateMaxMP(const CharacterStats& stats);
-	static unsigned int calculateDefence(const CharacterStats& stats);
 
 	static CharacterData& createMageData(const std::string name);
 
