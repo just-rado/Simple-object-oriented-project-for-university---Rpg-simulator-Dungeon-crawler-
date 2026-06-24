@@ -11,28 +11,38 @@ public:
 	Mage& operator=(const Mage& other);
 	virtual ~Mage()override;
 
-	void castASpellAtEnemy(Enemy* enemy);
-	void castASpellAtAlly(Hero* hero);
-
-	virtual void attackEnemy(Enemy* enemy);
+	bool learnSpell(const Spell* spell);
+	
+	virtual size_t getNumberOfAbilites()const override;
+	virtual void printAbilities()const override;
+	virtual bool requiresATarget(size_t ability)const override;
+	virtual bool useAbility(size_t ability, Character* character)override;
+	
 	
 
-	virtual Hero* clone()const;
+	size_t getNumberOfSpells()const;
+	const Spell* getSpell(size_t index)const;
+
+	virtual Hero* clone()const override;
+
 
 protected:
 	void swap(Mage& other)noexcept;
+	virtual void updateMainStats(int numberOfTimes)override;
+	bool abilityCastSpellAtCharacter(Character* character, size_t numberOfSpell);
 private:
 	
 	std::vector<Spell*> spells;
 
-	void deepCopySpells(const std::vector<Spell*> spells);
+
+
+	void deepCopySpells(const std::vector<Spell*>& spells);
 	void free(std::vector<Spell*>& spells);
 
-	static CharacterData& createMageData(const std::string name);
+	static CharacterData createMageData(const std::string name);
 
+	static constexpr size_t NUMBER_OF_ABILITIES = 1;
 	static constexpr HeroClass HERO_CLASS = HeroClass::MAGE;
-	static constexpr unsigned int BASE_HP = 300;
-	static constexpr unsigned int BASE_MP = 200;
-	static constexpr unsigned int BASE_DEFENCE = 1;
+	
 };
 

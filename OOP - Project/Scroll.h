@@ -19,6 +19,6 @@ public:
 private:
 	Spell* spell;    
 
-	static constexpr TypeOfItem type = TypeOfItem::SCROLL;
+	static constexpr TypeOfItem ITEM_TYPE = TypeOfItem::SCROLL;
 };
 

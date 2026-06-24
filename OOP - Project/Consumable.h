@@ -14,13 +14,16 @@ public:
 	int getMPModifier()const;
 	StatusEffectType getStatusEffectToRemove()const;
 
+	virtual void applyEffectsOfItem(Character* character)const override;
+
+
 private:
 	int HP_Modifier;
 	int MP_Modifier;
 	StatusEffectType removeStatusEffect;
 
 
-	static constexpr TypeOfItem itemType = TypeOfItem::CONSUMABLE;
+	static constexpr TypeOfItem ITEM_TYPE = TypeOfItem::CONSUMABLE;
 
 };
 

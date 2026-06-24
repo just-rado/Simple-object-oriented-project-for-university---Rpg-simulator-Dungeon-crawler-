@@ -4,15 +4,17 @@ class DamageSpell: public Spell
 {
 public:
 
-	DamageSpell(const std::string& name, const std::string& description , AgmentationType damageType, unsigned int manaCost , unsigned int dmgValue);
+	DamageSpell(const std::string& name, const std::string& description , AugmentationType damageType, unsigned int manaCost,
+		unsigned int levelRequired, int dmgValue);
 
+	virtual bool applyEffectOfSpell(Character* character)const override;
 
 	virtual Spell* clone()const override;
-	unsigned int getDamageValue()const;
+	 int getDamageValue()const;
 
 private:
 
-	unsigned int damageValue;
+	int damageValue;
 
 	static constexpr TypeOfSpell TYPE = TypeOfSpell::DAMAGE;
 };

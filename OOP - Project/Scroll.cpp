@@ -1,10 +1,10 @@
 #include "Scroll.h"
 
-Scroll::Scroll(const ItemData& data, const Spell* spell): Item(data)
+Scroll::Scroll(const ItemData& data, const Spell* spell): Item(data , ITEM_TYPE)
 {
 	this->spell = spell->clone();
 
-	setTypeOfItem(type);
+
 }
 Scroll::Scroll(const Scroll& other): Item(other)
 {

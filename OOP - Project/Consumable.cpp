@@ -1,15 +1,28 @@
 #include "Consumable.h"
 
 Consumable::Consumable(const ItemData& data, int hp_modifier, int mp_modifier, StatusEffectType removeStatusEffect) :
-	Item(data), HP_Modifier(hp_modifier), MP_Modifier(mp_modifier), removeStatusEffect(removeStatusEffect)
+	Item(data , ITEM_TYPE), HP_Modifier(hp_modifier), MP_Modifier(mp_modifier), removeStatusEffect(removeStatusEffect)
 {
-	setTypeOfItem(itemType);
+	
 }
 
 Item* Consumable::clone()const
 {
 	return new Consumable(*this);
 }
+
+
+void Consumable::applyEffectsOfItem(Character* character)const
+{
+	if (!character)
+	{
+		return;
+	}
+	character->setHP(character->getHP() + this->getHPModifier());
+	character->setMP(character->getMP() + this->getMPModifier());
+	character->removeStatusEffect(this->getStatusEffectToRemove());
+}
+
 
 int Consumable::getHPModifier()const
 {

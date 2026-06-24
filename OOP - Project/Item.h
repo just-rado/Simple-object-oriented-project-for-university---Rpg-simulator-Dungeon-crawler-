@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include "Classes.h"
+#include "Character.h"
+#include "DamageTypeAndEffects.h"
 enum class Rarity
 {
 	COMMON,
@@ -22,7 +24,6 @@ struct ItemData
 {
 	std::string name;
 	Rarity rarity;
-	TypeOfItem type;
 	unsigned int costInGoldCoins;
 	float weightInKg;
 	unsigned int requiredLevel;
@@ -34,14 +35,17 @@ class Item
 {
 public:
 
-	Item(const ItemData& data);
+	Item(const ItemData& data , TypeOfItem type);
 
-	Item(const Item& other);
+	Item(const Item& othwer);
 	Item& operator=(const Item& other) = delete;
 
 	virtual ~Item() = default;
 	virtual Item* clone()const = 0;
 	virtual void printInfo()const;
+	virtual void applyEffectsOfItem(Character* character)const;
+	virtual void removeEffectsOfItem(Character* character)const;
+	virtual AugmentationType getAugmentationType()const;
 
 	bool checkIfClassIsCompatible(HeroClass classOfHero)const;
 

@@ -1,38 +1,34 @@
 #pragma once
 #include "Hero.h"
-#include "CharacterStats.h"
-#include "Classes.h"
+#include "Warrior.h"
+#include "Healer.h"
 #include <string>
 
-class Warrior: public virtual Hero
+class Paladin : public Warrior , public Healer
 {
 public:
-	Warrior(const std::string& name);
+	Paladin(const std::string& name);
 
 	virtual void updateStatusOfCharacter()override;
+
 	virtual void printAbilities()const override;
 	virtual size_t getNumberOfAbilites()const override;
 	virtual bool requiresATarget(size_t ability)const override;
 	virtual bool useAbility(size_t ability, Character* character)override;
 
-	bool isTauntUsed()const;
-
+	virtual unsigned int calculateDamage()const override;
+	virtual bool attackEnemy(Enemy* enemy)override;
 	virtual Hero* clone()const override;
-	
+
 protected:
 	virtual void updateMainStats(int numberOfTimes)override;
-	bool abilityTauntEnemies();
-	
 private:
-	bool tauntUsed;
-	unsigned int remainingTurnsOfTauntEffect;
 
-	
-	static CharacterData createWarriorData(const std::string& name);
+	static CharacterData createPaladinData(const std::string& name);
 
-	static constexpr HeroClass HERO_CLASS = HeroClass::WARRIOR;
+	static constexpr HeroClass HERO_CLASS = HeroClass::PALADIN;
 
-	static constexpr size_t NUMBER_OF_ABILITIES = 1;
+	static constexpr size_t NUMBER_OF_ABILITIES = 2;
 
 };
 

@@ -2,8 +2,8 @@
 
 struct CharacterStats
 {
-	int HP; 
-	int MP;
+	int currentHP; 
+	int currentMP;
 	int STR;
 	int INT;
 	int AGI;

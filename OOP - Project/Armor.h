@@ -11,8 +11,8 @@ public:
 	Armor& operator=(const Armor& other) = delete;
 
 	virtual Item* clone()const override;
-
-
+	virtual void applyEffectsOfItem(Character* character)const override;
+	virtual void removeEffectsOfItem(Character* character)const override;
 	unsigned int getProtectionValue()const;
 	const CharacterStats& getModifiers()const;
 
@@ -20,7 +20,7 @@ private:
 	unsigned int protectionValue;
 	CharacterStats modifiers;
 
-	static constexpr TypeOfItem itemType = TypeOfItem::ARMOR;
+	static constexpr TypeOfItem ITEM_TYPE = TypeOfItem::ARMOR;
 	
 };
 

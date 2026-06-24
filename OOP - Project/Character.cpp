@@ -1,7 +1,11 @@
 #include "Character.h"
 #include <stdexcept>
-Character::Character(const CharacterData& data) : name(data.name) , mainStats(data.mainStats) , maxHP(data.maxHP) , maxMP(data.maxMP),
-		currentLevel(data.currentLevel), goldCoinsOwned(data.goldCoinsOwned) , statusEffects(data.statusEffects)
+
+std::random_device Character::rd;
+std::mt19937 Character::gen(Character::rd());
+
+Character::Character(const CharacterData& data , TypeOfCharacter type) : name(data.name) , mainStats(data.mainStats) , maxHP(data.maxHP) , 
+	maxMP(data.maxMP), currentLevel(data.currentLevel), goldCoinsOwned(data.goldCoinsOwned) , statusEffects(data.statusEffects), type(type)
 {
 	if (name.empty())
 	{
@@ -11,11 +15,7 @@ Character::Character(const CharacterData& data) : name(data.name) , mainStats(da
 	{
 		throw std::invalid_argument("Invalid level");
 	}
-	else if (data.maxHP < 0 || data.maxMP < 0)
-	{
-		throw std::invalid_argument("Invalid max");
-	}
-	else if (data.mainStats.HP < 0 || data.mainStats.MP < 0 || data.mainStats.STR < 0
+	else if (data.mainStats.currentHP < 0 || data.mainStats.currentMP < 0 || data.mainStats.STR < 0
 		|| data.mainStats.INT < 0 || data.mainStats.AGI < 0 || data.mainStats.DEF < 0)
 	{
 		throw std::invalid_argument("Invalid main stats");
@@ -24,17 +24,44 @@ Character::Character(const CharacterData& data) : name(data.name) , mainStats(da
 
 }
 
-
 Character& Character::operator=(const Character& other)
 {
 	if (this != &other)
 	{
-		Character temp(other);
-		swap(temp);
-	} // fix
+		std::string tempName;
+		tempName.swap(this->name);
+
+		std::vector<StatusEffect> tempVector;
+		tempVector.swap(this->statusEffects);
+
+		try
+		{
+			this->name = other.name;
+			this->statusEffects = other.statusEffects;
+		}
+		catch (...)
+		{
+			this->name.swap(tempName);
+			this->statusEffects.swap(tempVector);
+			throw;
+		}
+		this->mainStats = other.mainStats;
+		this->maxHP = other.maxHP;
+		this->maxMP = other.maxMP;
+		this->currentLevel = other.currentLevel;
+		this->goldCoinsOwned = other.goldCoinsOwned;
+
+		this->type = other.type;
+
+	} 
 	return *this;
 }
 
+
+const CharacterStats& Character::getStats()const
+{
+	return this->mainStats;
+}
 
 const std::string& Character::getName()const
 {
@@ -42,11 +69,11 @@ const std::string& Character::getName()const
 }
 int Character::getHP()const
 {
-	return this->mainStats.HP;
+	return this->mainStats.currentHP;
 }
 int Character::getMP()const
 {
-	return this->mainStats.MP;
+	return this->mainStats.currentMP;
 }
 int Character::getSTR()const
 {
@@ -72,10 +99,7 @@ unsigned int Character::getGoldCoins()const
 {
 	return this->goldCoinsOwned;
 }
-const std::vector<StatusEffect>& Character::getStatusEffects()const
-{
-	return this->statusEffects;
-}
+
 unsigned int Character::getMaxHP()const
 {
 	return this->maxHP;
@@ -85,28 +109,40 @@ unsigned int Character::getMaxMP()const
 	return this->maxMP;
 }
 
+TypeOfCharacter Character::getType()const
+{
+	return this->type;
+}
 
 void Character::setHP(int newHP)
 {
-	if (newHP > 0)
+	if (newHP > this->maxHP)
 	{
-		this->mainStats.HP = newHP;
+		this->mainStats.currentHP = this->maxHP;
+	}
+	else if (newHP > 0)
+	{
+		this->mainStats.currentHP = newHP;
 	}
 	else
 	{
-		this->mainStats.HP = 0;
+		this->mainStats.currentHP = 0;
 	}
 	
 }
 void Character::setMP(int newMP)
 {
-	if (newMP > 0)
+	if (newMP > this->maxMP)
 	{
-		this->mainStats.MP = newMP;
+		this->mainStats.currentMP = this->maxMP;
+	}
+	else if (newMP > 0)
+	{
+		this->mainStats.currentMP = newMP;
 	}
 	else
 	{
-		this->mainStats.MP = 0;
+		this->mainStats.currentMP = 0;
 	}
 }
 void Character::setSTR(int newSTR)
@@ -156,11 +192,12 @@ void Character::setDEF(int newDEF)
 
 void Character::addCharacterStatsModifiers(const CharacterStats& stats)
 {
-	setHP(this->mainStats.HP + stats.HP);
-	setMP(this->mainStats.MP + stats.MP);
-	updateMaxHP(this->maxHP + stats.HP);
-	updateMaxMP(this->maxMP + stats.MP);
+	updateMaxHP(this->maxHP + stats.currentHP);
+	updateMaxMP(this->maxMP + stats.currentMP);
 
+	setHP(this->mainStats.currentHP + stats.currentHP);
+	setMP(this->mainStats.currentMP + stats.currentMP);
+	
 	setSTR(this->mainStats.STR + stats.STR);
 	setINT(this->mainStats.INT + stats.INT);
 	setAGI(this->mainStats.AGI + stats.AGI);
@@ -168,13 +205,29 @@ void Character::addCharacterStatsModifiers(const CharacterStats& stats)
 }
 void Character::removeCharacterStatsModifiers(const CharacterStats& stats)
 {
-	updateMaxHP(this->maxHP - stats.HP);
-	updateMaxMP(this->maxMP - stats.MP);
-	if (this->mainStats.HP > this->maxHP)
+	if (stats.currentHP > this->maxHP)
+	{
+		updateMaxHP(0);
+	}
+	else
+	{
+		updateMaxHP(this->maxHP - stats.currentHP);
+	}
+	
+	if (stats.currentMP > this->maxMP)
+	{
+		updateMaxMP(0);
+	}
+	else
+	{
+		updateMaxMP(this->maxMP - stats.currentMP);
+	}
+
+	if (this->mainStats.currentHP > this->maxHP)
 	{
 		setHP(maxHP);
 	}
-	if (this->mainStats.MP > this->maxMP)
+	if (this->mainStats.currentMP > this->maxMP)
 	{
 		setMP(maxMP);
 	}
@@ -188,43 +241,43 @@ void Character::removeCharacterStatsModifiers(const CharacterStats& stats)
 
 void  Character::updateMaxHP(unsigned int newMaxHP)
 {
-	if (newMaxHP > 0)
-	{
-		this->maxHP = newMaxHP;
-	}
-	else 
-	{
-		this->maxHP = 0;
-	}
+	this->maxHP = newMaxHP;
 }
 void  Character::updateMaxMP(unsigned int newMaxMP)
 {
-	if (newMaxMP > 0)
-	{
-		this->maxMP = newMaxMP;
-	}
-	else
-	{
-		this->maxMP = 0;
-	}
+	this->maxMP = newMaxMP;
 }
 void  Character::setGoldCoins(unsigned int newGoldCoins)
 {
 	this->goldCoinsOwned = newGoldCoins;
 }
-void  Character::setLevel(float newLevel)
+
+void Character::setLevel(float newLevel)
 {
-	if (newLevel > 1)
+	if (newLevel < this->currentLevel)
 	{
-		this->currentLevel = newLevel;
+		return;
 	}
-	else
+
+	int oldLevel = this->currentLevel;
+	int nLevel = newLevel;
+	if (nLevel > oldLevel)
 	{
-		this->currentLevel = 1;
+		this->removeStatusEffects();
+
+		int levelsGained = nLevel - oldLevel;
+		updateMainStats(levelsGained);
 	}
+	
+	this->currentLevel = newLevel;
+	
 }
-void Character::addNewStatusEffect(StatusEffect effect)
+void Character::addStatusEffect(StatusEffect effect)
 {
+	if (effect.typeOfEffect == StatusEffectType::NONE)
+	{
+		return;
+	}
 	size_t size = this->statusEffects.size();
 	for (size_t i = 0; i < size; ++i)
 	{
@@ -235,6 +288,38 @@ void Character::addNewStatusEffect(StatusEffect effect)
 		}
 	}
 	this->statusEffects.push_back(effect);
+}
+
+void Character::removeStatusEffect(StatusEffectType effect)
+{
+	if (effect == StatusEffectType::NONE)
+	{
+		return;
+	}
+
+	size_t size = this->getNumberOfStatusEffects();
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (this->statusEffects[i].typeOfEffect == effect)
+		{
+			this->statusEffects.erase(this->statusEffects.begin() + i);
+			return;
+		}
+	}
+}
+
+StatusEffect Character::getStatusEffect(size_t index)const
+{
+	if (index >= statusEffects.size())
+	{
+		throw std::out_of_range("Invalid index");
+	}
+		
+	return this->statusEffects[index];
+}
+size_t Character::getNumberOfStatusEffects()const
+{
+	return this->statusEffects.size();
 }
 void Character::updateStatusEffects()
 {
@@ -253,6 +338,17 @@ void Character::updateStatusEffects()
 	}
 }
 
+void Character::removeStatusEffects()
+{
+	this->statusEffects.clear();
+}
+
+
+void Character::updateStatusOfCharacter()
+{
+	updateStatusEffects();
+}
+
 void Character::swap(Character& other)noexcept
 {
 	std::swap(this->name, other.name);
@@ -262,5 +358,18 @@ void Character::swap(Character& other)noexcept
 	std::swap(this->goldCoinsOwned, other.goldCoinsOwned);
 	std::swap(this->statusEffects, other.statusEffects);
 	
+}
+
+unsigned int Character::calculateChanceOfMiss()const
+{
+	return this->mainStats.AGI  * AGI_TO_MISS_CHANCE_MULTIPLIER;
+}
+unsigned int Character::calculateDamage()const
+{
+	return this->mainStats.STR * STR_TO_ATTACK_DMG_MULTIPLIER;
+}
+unsigned int Character::calculateDefence()const
+{
+	return this->mainStats.DEF;
 }
 

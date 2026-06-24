@@ -3,6 +3,13 @@
 #include <vector>
 #include "CharacterStats.h"
 #include "DamageTypeAndEffects.h"
+#include <random>
+
+enum class TypeOfCharacter
+{
+	HERO,
+	ENEMY,
+};
 
 struct StatusEffect
 {
@@ -25,6 +32,12 @@ class Character
 {
 public:
 	
+	Character(const CharacterData& data , TypeOfCharacter type);
+	Character& operator=(const Character& other);
+	virtual ~Character() = default;
+	
+	virtual Character* clone()const = 0;
+
 	const std::string& getName()const;
 	int getHP()const;
 	int getMP()const;
@@ -35,9 +48,15 @@ public:
 	unsigned int getMaxHP()const;
 	unsigned int getMaxMP()const;
 
+	const CharacterStats& getStats()const;
+
+	TypeOfCharacter getType()const;
+
 	float getCurrentLevel()const;
 	unsigned int getGoldCoins()const;
-	const std::vector<StatusEffect>& getStatusEffects()const;
+
+	StatusEffect getStatusEffect(size_t index)const;
+	size_t getNumberOfStatusEffects()const;
 
 	void setHP(int newHP);
 	void setMP(int newMP);
@@ -46,29 +65,32 @@ public:
 	void setAGI(int newAGI);
 	void setDEF(int newDEF);
 
-	
 	void addCharacterStatsModifiers(const CharacterStats& stats);
 	void removeCharacterStatsModifiers(const CharacterStats& stats);
 	void updateMaxHP(unsigned int newMaxHP);
 	void updateMaxMP(unsigned int newMaxMP);
+	
 	void setGoldCoins(unsigned int newGoldCoins);
 	void setLevel(float newLevel);
-	void addNewStatusEffect(StatusEffect effect);
-	void updateStatusEffects();
+	void addStatusEffect(StatusEffect effect);
+	void removeStatusEffect(StatusEffectType effect);
+
+	virtual void updateStatusOfCharacter();
 	
-
+	virtual unsigned int calculateChanceOfMiss()const;
+	virtual unsigned int calculateDamage()const;
+	virtual unsigned int calculateDefence()const;
 protected:
-	Character(const CharacterData& data);
-	Character(const Character& other) = default;
-	Character& operator=(const Character& other);
+	static std::random_device rd;
+	static std::mt19937 gen;
 	void swap(Character& other)noexcept;
+	virtual void updateMainStats(int numberOfTimes) = 0;
 
-	static constexpr unsigned int STR_TO_ATTACK_DMG_MULTIPLIER = 2;
-	static constexpr unsigned int INT_TO_SPELL_DMG_MULTIPLIER = 1;
-	static constexpr unsigned int AGI_TO_MISS_CHANCE_MULTIPLIER = 1;
+	static constexpr float STR_TO_ATTACK_DMG_MULTIPLIER = 2;
+	static constexpr float INT_TO_SPELL_DMG_MULTIPLIER = 1;
+	static constexpr float AGI_TO_MISS_CHANCE_MULTIPLIER = 0.2f;
 
 private:
-
 	std::string name;
 	CharacterStats mainStats;
 	unsigned int maxHP;
@@ -76,8 +98,11 @@ private:
 	float currentLevel;
 	unsigned int goldCoinsOwned;
 	std::vector<StatusEffect> statusEffects;
-	
 
-	
+
+	TypeOfCharacter type;
+
+	void removeStatusEffects();
+	void updateStatusEffects();
 };
 

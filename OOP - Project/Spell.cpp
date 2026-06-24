@@ -1,7 +1,8 @@
 #include "Spell.h"
 #include <stdexcept>
-Spell::Spell(const std::string& name, const std::string& description ,TypeOfSpell type, AgmentationType damageType , unsigned int manaCost)
-	:name(name) , description(description) , type(type) , damageType(damageType) , manaCost(manaCost)
+Spell::Spell(const std::string& name, const std::string& description ,TypeOfSpell type, AugmentationType damageType , 
+	unsigned int manaCost , unsigned int levelRequired)
+	:name(name) , description(description) , type(type) , damageType(damageType) , manaCost(manaCost) , levelRequired(levelRequired)
 {
 	if (name.empty() || description.empty())
 	{
@@ -14,7 +15,7 @@ TypeOfSpell Spell::getEffect()const
 {
 	return this->type;
 }
-AgmentationType Spell::getType()const
+AugmentationType Spell::getType()const
 {
 	return this->damageType;
 }
@@ -23,6 +24,10 @@ unsigned int Spell::getManaCost()const
 	return this->manaCost;
 }
 
+unsigned int Spell::getLevelRequired()const
+{
+	return this->levelRequired;
+}
 const std::string& Spell::getName()const
 {
 	return this->name;

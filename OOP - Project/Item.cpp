@@ -3,10 +3,10 @@
 #include <stdexcept>
 #include <iostream>
 
-uint64_t Item::nextId = 0;
+uint64_t Item::nextId = 1;
 
-Item::Item(const ItemData& data) : id(nextId), name(data.name), rarity(data.rarity), type(data.type) , costInGoldCoins(data.costInGoldCoins), 
-weightInKg(data.weightInKg), requiredLevel(data.requiredLevel), compatibleClasses(data.compatibleClasses)
+Item::Item(const ItemData& data , TypeOfItem type) : id(nextId), name(data.name), rarity(data.rarity), type(type) , 
+	costInGoldCoins(data.costInGoldCoins), weightInKg(data.weightInKg), requiredLevel(data.requiredLevel), compatibleClasses(data.compatibleClasses)
 {
 	if (name.empty())
 	{
@@ -44,6 +44,21 @@ void Item::printInfo()const
 		<< "Required level: " << this->requiredLevel << '\n';
 	printCompatibleClasses();
 
+}
+
+void Item::applyEffectsOfItem(Character* character)const
+{
+	return; 
+}
+
+void Item::removeEffectsOfItem(Character* character)const
+{
+	return; 
+}
+
+ AugmentationType Item::getAugmentationType()const
+{
+	return AugmentationType::NONE;
 }
 
 uint64_t Item::getId()const

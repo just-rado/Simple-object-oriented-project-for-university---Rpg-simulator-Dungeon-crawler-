@@ -1,6 +1,6 @@
 #include "Battle.h"
 
-uint64_t Battle::nextID = 0;
+uint64_t Battle::nextID = 1;
 
 
 Battle::Battle(const std::string& nameOfRoom, const std::vector<std::string>& namesOfHeroes, const std::vector<uint64_t>& IDsOfEnemies) :
@@ -9,11 +9,7 @@ Battle::Battle(const std::string& nameOfRoom, const std::vector<std::string>& na
 	++nextID;
 }
 
-Battle::Battle(const Battle& other): ID(nextID), nameOfRoom(other.nameOfRoom), namesOfHeroes(other.namesOfHeroes), 
-					IDsOfEnemies(other.IDsOfEnemies)
-{
-	++nextID;
-}
+
 
 uint64_t Battle::getID()const
 {
@@ -36,4 +32,13 @@ const std::string& Battle::getNameOfHero(size_t index)const
 uint64_t Battle::getIdOfEnemy(size_t index)const
 {
 	return this->IDsOfEnemies[index];
+}
+
+bool Battle::setNextID(uint64_t ID)
+{
+	if (ID == 0)
+	{
+		return false;
+	}
+	nextID = ID;
 }

@@ -1,13 +1,14 @@
 #pragma once
 
-enum class AgmentationType
+enum class AugmentationType
 {
 	PHYSICAL,
 	FIRE,
 	ICE,
 	LIGHTNING,
-	Holy,
+	HOLY,
 	Nature,
+	NONE,
 
 };
 
@@ -17,5 +18,6 @@ enum class StatusEffectType
 	CURSE,
 	BLESSING,
 	PROTECTION,
+	NONE,
 
 };

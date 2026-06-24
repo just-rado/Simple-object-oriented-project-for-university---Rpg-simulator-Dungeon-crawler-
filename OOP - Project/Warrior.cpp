@@ -1,73 +1,103 @@
 #include "Warrior.h"
 #include "Item.h"
 #include "Weapon.h"
-#include <random>
+#include <iostream>
 
-Warrior::Warrior(const std::string& name) : Hero(createWarriorData(name) , Warrior::heroClass) , tauntUsed(false) , 
+Warrior::Warrior(const std::string& name) : Hero(createWarriorData(name) , Warrior::HERO_CLASS) , tauntUsed(false) , 
 					remainingTurnsOfTauntEffect(0)
 {
 	
 }
 
-void Warrior::tauntEnemies()
+
+bool Warrior::abilityTauntEnemies()
 {
-	int costOfAbility = 25;
-	if (this->getMP() - costOfAbility >= 0)
+	if (this->tauntUsed)
 	{
-		this->tauntUsed = true;
-		this->remainingTurnsOfTauntEffect = 2;
-		this->setMP(this->getMP() - costOfAbility);
+		std::cout << "Taunt already used\n";
+		return false;
+	}
+	int costOfAbility = 25;
+	if (costOfAbility > this->getMP())
+	{
+		std::cout << "Not enough mana\n";
+		return false;
 	}
 	
+	this->tauntUsed = true;
+	this->remainingTurnsOfTauntEffect = 2;
+	this->setMP(this->getMP() - costOfAbility);
+	
+	return true;
+}
+bool Warrior::isTauntUsed()const
+{
+	return this->tauntUsed;
 }
 
-void Warrior::attackEnemy(Enemy* enemy)
+void Warrior::printAbilities()const
 {
-	// check if it hits agility =miss chance
-	int inflictDamage = 0;
-	inflictDamage = this->getSTR() * Character::STR_TO_ATTACK_DMG_MULTIPLIER;
-	const Weapon* weapon = dynamic_cast<const Weapon*>(this->getItemFromEquippedItems(TypeOfItem::WEAPON));
-	if (weapon)
+	std::cout << "Abilities:\n" << "Ability 1: " << "Taunt enemies(For two turns enemies will only attack this character)\n";
+}
+
+size_t Warrior::getNumberOfAbilites()const
+{
+	return NUMBER_OF_ABILITIES;
+}
+
+bool Warrior::requiresATarget(size_t ability)const
+{
+	if (ability == 1)
 	{
-		std::random_device rd;
-		std::mt19937 gen(rd());
-
-		std::uniform_int_distribution<> chance(1, 100);
-
-		int amplifier = 1;
-		if (chance(gen) <= weapon->getCriticalChance())
-		{
-			amplifier = 2;
-		}
-
-		inflictDamage += weapon->getDmgValue() * amplifier;
-
-		size_t size = enemy->getNumberOfWeaknesses();
-		AgmentationType damageTypeOfWeapon = weapon->getDmgType();
-		for (size_t i = 0; i < size; ++i)
-		{
-			if (enemy->getWeakTo(i) == damageTypeOfWeapon)
-			{
-				inflictDamage *= 2;
-				break;
-			}
-		}
+		return false;
 	}
+	return false;
+}
 
-	inflictDamage /=  enemy->getDEF();
-	int newHP = enemy->getHP() - inflictDamage;
-	enemy->setHP(newHP);
-	if (enemy->getHP() == 0)
+bool Warrior::useAbility(size_t ability, Character* character)
+{
+	if (ability == 1)
 	{
-		this->setGoldCoins(this->getGoldCoins() + enemy->getGoldCoins());
-		this->setLevel(this->getCurrentLevel() + enemy->getExpGainedForKilling());
-		// chance to drop a item
+		return abilityTauntEnemies();
 	}
+	return false;
 }
 
 Hero* Warrior::clone()const
 {
 	return new Warrior(*this);
+}
+
+void Warrior::updateMainStats(int numberOfTimes)
+{
+	this->setSTR(this->getSTR() + 5 * numberOfTimes);
+	this->setINT(this->getINT() + 1 * numberOfTimes);
+	this->setAGI(this->getAGI() + 1 * numberOfTimes);
+
+	this->updateMaxHP(this->getMaxHP() + 50 * numberOfTimes);
+	this->updateMaxMP(this->getMaxMP() + 5 * numberOfTimes);
+
+	this->setHP(this->getMaxHP());
+	this->setMP(this->getMaxMP());
+
+}
+
+void Warrior::updateStatusOfCharacter()
+{
+	Character::updateStatusOfCharacter();
+
+	if (!this->tauntUsed)
+	{
+		return;
+	}
+	
+	this->remainingTurnsOfTauntEffect -= 1;
+	if (this->remainingTurnsOfTauntEffect == 0)
+	{
+		this->tauntUsed = false;
+	}
+	
+	
 }
 
 CharacterData Warrior::createWarriorData(const std::string& name)
@@ -78,14 +108,14 @@ CharacterData Warrior::createWarriorData(const std::string& name)
 	data.mainStats.STR = 30;
 	data.mainStats.INT = 10;
 	data.mainStats.AGI = 5;
-	data.mainStats.DEF = BASE_DEFENCE;
+	data.mainStats.DEF = 5;
 
-	data.maxHP = BASE_HP;
-	data.maxMP = BASE_MP;
+	data.maxHP = 500;
+	data.maxMP = 100;
 	
 	
-	data.mainStats.HP = data.maxHP;
-	data.mainStats.MP = data.maxMP;
+	data.mainStats.currentHP = data.maxHP;
+	data.mainStats.currentMP = data.maxMP;
 
 	data.currentLevel = 1;
 	data.goldCoinsOwned = 0;

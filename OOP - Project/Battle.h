@@ -7,9 +7,8 @@ class Battle
 public:
 
 	Battle(const std::string& nameOfRoom, const std::vector<std::string>& namesOfHeroes, const std::vector<uint64_t>& IDsOfEnemies);
-	Battle(const Battle& other);
+	
 
-	Battle& operator=(const Battle& other) = delete;
 	uint64_t getID()const;
 
 	size_t getNumberOfHeroes()const;
@@ -24,6 +23,8 @@ private:
 	std::string nameOfRoom;
 	std::vector<std::string> namesOfHeroes;
 	std::vector<uint64_t> IDsOfEnemies;
+
+	static bool setNextID(uint64_t ID);
 
 	static uint64_t nextID;
 };
