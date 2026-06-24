@@ -7,6 +7,10 @@ class Mage: public Hero
 {
 public:
 	Mage(const std::string& name);
+
+	Mage(std::ifstream& read);
+	virtual void writeToFile(std::ofstream& write)const override;
+
 	Mage(const Mage& other);
 	Mage& operator=(const Mage& other);
 	virtual ~Mage()override;
@@ -30,11 +34,10 @@ protected:
 	void swap(Mage& other)noexcept;
 	virtual void updateMainStats(int numberOfTimes)override;
 	bool abilityCastSpellAtCharacter(Character* character, size_t numberOfSpell);
+	void writeOwnDataToFile(std::ofstream& write)const;
 private:
 	
 	std::vector<Spell*> spells;
-
-
 
 	void deepCopySpells(const std::vector<Spell*>& spells);
 	void free(std::vector<Spell*>& spells);

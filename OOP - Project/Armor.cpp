@@ -6,6 +6,36 @@ Armor::Armor(const ItemData& data , unsigned int protectionValue, const Characte
 	
 }
 
+Armor::Armor(std::ifstream& read, uint64_t ID) : Item(read , ITEM_TYPE , ID)
+{
+	read.read(reinterpret_cast<char*>(&this->protectionValue), sizeof(this->protectionValue));
+
+	read.read(reinterpret_cast<char*>(&this->modifiers), sizeof(this->modifiers));
+	
+
+	if (!read)
+	{
+		throw std::runtime_error("Could not read armor");
+	}
+
+}
+void Armor::writeDataToFile(std::ofstream& write)const
+{
+	Item::writeDataToFile(write);
+
+	write.write(reinterpret_cast<const char*>(&this->protectionValue), sizeof(this->protectionValue));
+
+	write.write(reinterpret_cast<const char*>(&this->modifiers), sizeof(this->modifiers));
+
+	if (!write)
+	{
+		throw std::runtime_error("Could not write armor");
+	}
+
+}
+
+
+
 Item* Armor::clone()const
 {
 	return new Armor(*this);

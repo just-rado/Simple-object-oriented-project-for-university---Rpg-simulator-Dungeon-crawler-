@@ -5,6 +5,10 @@ class Consumable: public Item
 {
 public:
 	Consumable(const ItemData& data, int hp_modifier, int mp_modifier, StatusEffectType removeStatusEffect);
+	
+	Consumable(std::ifstream& read, uint64_t ID);
+	virtual void writeDataToFile(std::ofstream& write)const override;
+
 
 	Consumable& operator=(const Consumable& other) = delete;
 

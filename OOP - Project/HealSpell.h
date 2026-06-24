@@ -9,6 +9,10 @@ public:
 		unsigned int levelRequired ,unsigned int healValue);
 
 
+	HealSpell(std::ifstream& read);
+
+	virtual void writeDataToFile(std::ofstream& write)const override;
+
 	virtual Spell* clone()const override;
 	unsigned int getHealValue()const;
 

@@ -7,6 +7,10 @@ class Scroll: public Item
 public:
 
 	Scroll(const ItemData& data, const Spell* spell);
+
+	Scroll(std::ifstream& read, uint64_t ID);
+	virtual void writeDataToFile(std::ofstream& write)const override;
+
 	Scroll(const Scroll& other);
 	virtual ~Scroll()override;
 

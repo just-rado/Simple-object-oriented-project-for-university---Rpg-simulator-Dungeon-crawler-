@@ -8,7 +8,10 @@
 #include "Scroll.h"
 #include "Consumable.h"
 #include "Information.h"
+#include "StringFunctionsForFiles.h"
 #include <random>
+#include <fstream>
+
 class Enemy;
 
 class Hero: public Character
@@ -16,6 +19,10 @@ class Hero: public Character
 public:
 
 	Hero(const CharacterData& mainStats , HeroClass heroClass);
+
+	Hero(std::ifstream& read , HeroClass heroClass);
+	virtual void writeToFile(std::ofstream& write)const;
+
 	Hero(const Hero& other);
 	Hero& operator=(const Hero& other);
 	virtual ~Hero()override;
@@ -49,6 +56,7 @@ protected:
 	virtual void updateMainStats(int numberOfTimes)override = 0;
 	static size_t getItemSlotFor(TypeOfItem type);
 
+	void writeOwnDataToFile(std::ofstream& write)const;
 
 	void swap(Hero& hero)noexcept;
 private:
@@ -67,6 +75,8 @@ private:
 
 	static void copyPointers(Item* lhs[], Item* rhs[], size_t size);
 
+	static void readItemsFromFile(std::ifstream& read , Item* items[], size_t size);
+	static void writeItemsToFile(std::ofstream& write, Item* const items[], size_t size);
 
 	static constexpr TypeOfCharacter TYPE = TypeOfCharacter::HERO;
 	

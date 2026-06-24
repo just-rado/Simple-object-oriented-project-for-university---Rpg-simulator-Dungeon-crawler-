@@ -7,6 +7,10 @@ class Healer: public virtual Hero
 {
 public:
 	Healer(const std::string& name);
+
+	Healer(std::ifstream& read);
+	virtual void writeToFile(std::ofstream& write)const override;
+
 	Healer(const Healer& other);
 	Healer& operator=(const Healer& other);
 	virtual ~Healer()override;
@@ -31,10 +35,9 @@ protected:
 	void swap(Healer& other)noexcept;
 	virtual void updateMainStats(int numberOfTimes)override;
 	bool abilityCastHealSpellAtCharacter(Character* character, size_t numberOfSpell);
+	void writeOwnDataToFile(std::ofstream& write)const;
 private:
 	std::vector<HealSpell*> healSpells;
-
-	
 
 	static CharacterData createHealerData(const std::string& name);
 

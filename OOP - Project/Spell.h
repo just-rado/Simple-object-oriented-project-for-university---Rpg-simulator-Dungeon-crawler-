@@ -2,6 +2,8 @@
 #include <string>
 #include "DamageTypeAndEffects.h"
 #include "Character.h"
+#include <fstream>
+
 
 enum class TypeOfSpell
 {
@@ -19,6 +21,10 @@ public:
 	Spell(const std::string& name , const std::string& description , TypeOfSpell type, AugmentationType damageType , 
 		unsigned int manaCost , unsigned int levelRequired);
 
+	Spell(std::ifstream& read , TypeOfSpell type);
+
+	virtual void writeDataToFile(std::ofstream& write)const;
+
 	virtual ~Spell() = default;
 
 	virtual Spell* clone()const = 0;
@@ -33,13 +39,14 @@ public:
 	const std::string& getDescription()const;
 
 private:
+	TypeOfSpell type;
 	const std::string name;
 	std::string description;
-	TypeOfSpell type;
 	AugmentationType damageType;
 	unsigned int manaCost;
 	unsigned int levelRequired;
 
+	
 
 };
 

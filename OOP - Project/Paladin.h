@@ -9,6 +9,9 @@ class Paladin : public Warrior , public Healer
 public:
 	Paladin(const std::string& name);
 
+	Paladin(std::ifstream& read);
+	virtual void writeToFile(std::ofstream& write)const override;
+
 	virtual void updateStatusOfCharacter()override;
 
 	virtual void printAbilities()const override;
@@ -22,6 +25,7 @@ public:
 
 protected:
 	virtual void updateMainStats(int numberOfTimes)override;
+	void writeOwnDataToFile(std::ofstream& write)const;
 private:
 
 	static CharacterData createPaladinData(const std::string& name);

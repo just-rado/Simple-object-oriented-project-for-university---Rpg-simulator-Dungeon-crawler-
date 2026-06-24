@@ -1,6 +1,6 @@
 #pragma once
 
-enum class AugmentationType
+enum class AugmentationType : uint32_t
 {
 	PHYSICAL,
 	FIRE,
@@ -12,7 +12,7 @@ enum class AugmentationType
 
 };
 
-enum class StatusEffectType
+enum class StatusEffectType : uint32_t
 {
 	POISON,
 	CURSE,

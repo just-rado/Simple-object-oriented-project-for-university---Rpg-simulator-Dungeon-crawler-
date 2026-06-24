@@ -8,6 +8,9 @@ public:
 
 	Armor(const ItemData& data , unsigned int protectionValue , const CharacterStats& modifiers);
 
+	Armor(std::ifstream& read, uint64_t ID);
+	virtual void writeDataToFile(std::ofstream& write)const override;
+
 	Armor& operator=(const Armor& other) = delete;
 
 	virtual Item* clone()const override;

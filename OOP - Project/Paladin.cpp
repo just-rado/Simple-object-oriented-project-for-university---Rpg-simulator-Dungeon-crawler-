@@ -6,6 +6,23 @@ Paladin::Paladin(const std::string& name) : Hero(createPaladinData(name) , HERO_
 
 }
 
+Paladin::Paladin(std::ifstream& read):Hero(read , HERO_CLASS) , Warrior(read) , Healer(read)
+{
+
+}
+void Paladin::writeToFile(std::ofstream& write)const
+{
+	Hero::writeOwnDataToFile(write);
+	Warrior::writeOwnDataToFile(write);
+	Healer::writeOwnDataToFile(write);
+	writeOwnDataToFile(write);
+}
+
+void Paladin::writeOwnDataToFile(std::ofstream& write)const
+{
+	return;
+}
+
 
 void Paladin::updateStatusOfCharacter()
 {

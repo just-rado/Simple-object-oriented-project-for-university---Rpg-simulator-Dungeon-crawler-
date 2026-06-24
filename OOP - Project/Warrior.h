@@ -9,6 +9,9 @@ class Warrior: public virtual Hero
 public:
 	Warrior(const std::string& name);
 
+	Warrior(std::ifstream& read);
+	virtual void writeToFile(std::ofstream& write)const override;
+
 	virtual void updateStatusOfCharacter()override;
 	virtual void printAbilities()const override;
 	virtual size_t getNumberOfAbilites()const override;
@@ -22,6 +25,7 @@ public:
 protected:
 	virtual void updateMainStats(int numberOfTimes)override;
 	bool abilityTauntEnemies();
+	void writeOwnDataToFile(std::ofstream& write)const;
 	
 private:
 	bool tauntUsed;

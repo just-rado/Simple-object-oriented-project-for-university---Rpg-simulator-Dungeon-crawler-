@@ -6,6 +6,10 @@ class Weapon: public Item
 public:
 	Weapon(const ItemData& data, AugmentationType type , unsigned int dmgValue , unsigned int criticalChance);
 
+	Weapon(std::ifstream& read, uint64_t ID);
+	virtual void writeDataToFile(std::ofstream& write)const override;
+
+
 	Weapon& operator=(const Weapon& other) = delete;
 
 	unsigned int getDmgValue()const;

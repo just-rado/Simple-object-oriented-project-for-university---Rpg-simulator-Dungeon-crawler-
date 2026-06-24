@@ -10,6 +10,35 @@ Warrior::Warrior(const std::string& name) : Hero(createWarriorData(name) , Warri
 }
 
 
+Warrior::Warrior(std::ifstream& read) : Hero(read , HERO_CLASS)
+{
+	read.read(reinterpret_cast<char*>(&this->tauntUsed), sizeof(this->tauntUsed));
+
+	read.read(reinterpret_cast<char*>(&this->remainingTurnsOfTauntEffect), sizeof(this->remainingTurnsOfTauntEffect));
+
+	if (!read)
+	{
+		throw std::runtime_error("error");
+	}
+}
+void Warrior::writeToFile(std::ofstream& write)const
+{
+	Hero::writeOwnDataToFile(write);
+	writeOwnDataToFile(write);
+}
+void Warrior::writeOwnDataToFile(std::ofstream& write)const
+{
+	write.write(reinterpret_cast<const char*>(&this->tauntUsed), sizeof(this->tauntUsed));
+
+	write.write(reinterpret_cast<const char*>(&this->remainingTurnsOfTauntEffect), sizeof(this->remainingTurnsOfTauntEffect));
+
+	if (!write)
+	{
+		throw std::runtime_error("error");
+	}
+}
+
+
 bool Warrior::abilityTauntEnemies()
 {
 	if (this->tauntUsed)

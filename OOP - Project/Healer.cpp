@@ -6,6 +6,68 @@ Healer::Healer(const std::string& name) : Hero(createHealerData(name) , HERO_CLA
 {
 
 }
+
+
+
+Healer::Healer(std::ifstream& read): Hero(read , HERO_CLASS)
+{
+	uint32_t size = 0;
+	read.read(reinterpret_cast<char*>(&size), sizeof(size));
+
+	if (size > 0)
+	{
+	
+		try
+		{
+			this->healSpells.resize(size);
+			uint32_t typeValue = 0;
+			read.read(reinterpret_cast<char*>(&typeValue), sizeof(typeValue));
+
+			for (uint32_t i = 0; i < size; ++i)
+			{
+				
+				this->healSpells[i] = new HealSpell(read);
+			}
+		}
+		catch (...)
+		{
+			size_t currentSize = this->healSpells.size();
+			for (size_t i = 0; i < currentSize; ++i)
+			{
+				delete this->healSpells[i];
+			}
+			this->healSpells.clear();
+			throw;
+		}
+		
+		if (!read)
+		{
+			throw std::runtime_error("Error");
+		}
+	}
+
+}
+void Healer::writeToFile(std::ofstream& write)const
+{
+	Hero::writeOwnDataToFile(write);
+	writeOwnDataToFile(write);
+}
+void Healer::writeOwnDataToFile(std::ofstream& write)const
+{
+	uint32_t size = static_cast<uint32_t>(this->healSpells.size());
+	write.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+	for (uint32_t i = 0; i < size; ++i)
+	{
+		this->healSpells[i]->writeDataToFile(write);
+	}
+	if (!write)
+	{
+		throw std::runtime_error("Error");
+	}
+}
+
+
 Healer::Healer(const Healer& other) : Hero(other)
 {
 	deepCopySpells(other.healSpells);

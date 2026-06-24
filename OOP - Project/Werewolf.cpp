@@ -5,6 +5,20 @@ Werewolf::Werewolf(const std::string& name): Enemy(createWerewolfData(name) , EN
 	
 }
 
+Werewolf::Werewolf(std::ifstream& read): Enemy(read , ENEMY_TYPE)
+{
+
+}
+void Werewolf::writeToFile(std::ofstream& write)const
+{
+	Enemy::writeOwnDataToFile(write);
+	writeOwnDataToFile(write);
+}
+
+void Werewolf::writeOwnDataToFile(std::ofstream& write)const
+{
+	return;
+}
 Enemy* Werewolf::clone()const
 {
 	return new Werewolf(*this);

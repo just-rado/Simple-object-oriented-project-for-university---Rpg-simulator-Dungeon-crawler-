@@ -1,15 +1,64 @@
 #include "Enemy.h"
 
-uint64_t Enemy::nextID = 0;
+uint64_t Enemy::nextID = 1;
 
 Enemy::Enemy(const CharacterData& mainStats, TypeOfEnemy type,  float baseExpGiven): 
-	Character(mainStats , TYPE), ID(nextID) , enemyType(type) , weakTo(), baseExperienceGivenIfKilled(baseExpGiven)
+	Character(mainStats , TYPE), enemyType(type),  ID(nextID) , weakTo(), baseExperienceGivenIfKilled(baseExpGiven)
 {
 	++nextID;
 }
 
-Enemy::Enemy(const Enemy& other): Character(other) , ID(nextID)
+
+Enemy::Enemy(std::ifstream& read, TypeOfEnemy enemyType):Character(read) , enemyType(enemyType)
 {
+	read.read(reinterpret_cast<char*>(&this->ID), sizeof(this->ID));
+
+	uint32_t size = 0;
+	read.read(reinterpret_cast<char*>(&size), sizeof(size));
+
+	if (size > 0)
+	{
+		this->weakTo.resize(size);
+
+		read.read(reinterpret_cast<char*>(this->weakTo.data()), size * sizeof(AugmentationType));
+	}
+
+	read.read(reinterpret_cast<char*>(&this->baseExperienceGivenIfKilled), sizeof(this->baseExperienceGivenIfKilled));
+
+	if (!read)
+	{
+		throw std::runtime_error("Error");
+	}
+
+}
+void Enemy::writeToFile(std::ofstream& write)const
+{
+	writeOwnDataToFile(write);
+}
+
+void Enemy::writeOwnDataToFile(std::ofstream& write)const
+{
+	Character::writeDataToFile(write);
+
+	uint32_t enemyTypeValue = static_cast<uint32_t>(this->enemyType);
+	write.write(reinterpret_cast<const char*>(&enemyTypeValue), sizeof(enemyTypeValue));
+
+	write.write(reinterpret_cast<const char*>(&this->ID), sizeof(this->ID));
+
+	uint32_t size = static_cast<uint32_t>(this->weakTo.size());
+	write.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+	write.write(reinterpret_cast<const char*>(&this->baseExperienceGivenIfKilled), sizeof(this->baseExperienceGivenIfKilled));
+
+	if (!write)
+	{
+		throw std::runtime_error("Error");
+	}
+}
+
+Enemy::Enemy(const Enemy& other): Character(other) 
+{
+	this->ID = nextID;
 	this->enemyType = other.enemyType;
 	this->weakTo = other.weakTo;
 	this->baseExperienceGivenIfKilled = other.baseExperienceGivenIfKilled;

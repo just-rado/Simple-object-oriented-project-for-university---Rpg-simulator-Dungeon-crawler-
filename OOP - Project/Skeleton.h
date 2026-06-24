@@ -5,6 +5,10 @@ class Skeleton : public Enemy
 {
 public:
 	Skeleton(const std::string& name);
+
+	Skeleton(std::ifstream& read);
+	virtual void writeToFile(std::ofstream& write)const;
+
 	Skeleton(const Skeleton& other);
 	Skeleton& operator=(const Skeleton& other) = delete;
 	virtual ~Skeleton()override;
@@ -16,6 +20,7 @@ public:
 
 protected:
 	virtual void updateMainStats(int numberOfTimes)override;
+	void writeOwnDataToFile(std::ofstream& write)const;
 
 private:
 	Item* item;

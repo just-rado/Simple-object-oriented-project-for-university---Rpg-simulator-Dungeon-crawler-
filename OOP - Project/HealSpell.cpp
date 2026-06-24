@@ -7,6 +7,28 @@ HealSpell::HealSpell(const std::string& name, const std::string& description ,Au
 	
 }
 
+HealSpell::HealSpell(std::ifstream& read): Spell(read , TYPE)
+{
+	read.read(reinterpret_cast<char*>(&this->healValue), sizeof(this->healValue));
+
+	if (!read)
+	{
+		throw std::runtime_error("Failed to load heal spell from file");
+	}
+}
+
+void HealSpell::writeDataToFile(std::ofstream& write)const
+{
+	Spell::writeDataToFile(write);
+
+	write.write(reinterpret_cast<const char*>(&this->healValue), sizeof(this->healValue));
+
+	if (!write)
+	{
+		throw std::runtime_error("Failed writing heal spell");
+	}
+
+}
 
 Spell* HealSpell::clone()const
 {

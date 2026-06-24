@@ -6,6 +6,26 @@ Relic::Relic(const ItemData& data , const CharacterStats& modifiers): Item(data 
 {}
 
 
+Relic::Relic(std::ifstream& read, uint64_t ID): Item(read , ITEM_TYPE , ID)
+{
+	read.read(reinterpret_cast<char*>(&this->modifiers), sizeof(this->modifiers));
+
+	if (!read)
+	{
+		throw std::runtime_error("Could not load relic data");
+	}
+}
+void Relic::writeDataToFile(std::ofstream& write)const
+{
+	write.write(reinterpret_cast<const char*>(&this->modifiers), sizeof(this->modifiers));
+
+	if (!write)
+	{
+		throw std::runtime_error("Could not save relic data");
+	}
+}
+
+
 CharacterStats Relic::getStats()const
 {
 	return this->modifiers;

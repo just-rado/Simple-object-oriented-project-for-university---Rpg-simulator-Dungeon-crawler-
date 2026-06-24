@@ -1,11 +1,12 @@
 #include "Character.h"
 #include <stdexcept>
+#include "StringFunctionsForFiles.h"
 
 std::random_device Character::rd;
 std::mt19937 Character::gen(Character::rd());
 
-Character::Character(const CharacterData& data , TypeOfCharacter type) : name(data.name) , mainStats(data.mainStats) , maxHP(data.maxHP) , 
-	maxMP(data.maxMP), currentLevel(data.currentLevel), goldCoinsOwned(data.goldCoinsOwned) , statusEffects(data.statusEffects), type(type)
+Character::Character(const CharacterData& data , TypeOfCharacter type) : type(type) ,name(data.name) , mainStats(data.mainStats) , maxHP(data.maxHP) ,
+	maxMP(data.maxMP), currentLevel(data.currentLevel), goldCoinsOwned(data.goldCoinsOwned) , statusEffects(data.statusEffects)
 {
 	if (name.empty())
 	{
@@ -23,6 +24,76 @@ Character::Character(const CharacterData& data , TypeOfCharacter type) : name(da
 	
 
 }
+
+Character::Character(std::ifstream& read)
+{
+	uint32_t typeOfCharacterValue = 0;
+	read.read(reinterpret_cast<char*>(&typeOfCharacterValue), sizeof(typeOfCharacterValue));
+
+	this->type = static_cast<TypeOfCharacter>(typeOfCharacterValue);
+
+	this->name = readString(read);
+
+	read.read(reinterpret_cast<char*>(&this->mainStats), sizeof(this->mainStats));
+
+	read.read(reinterpret_cast<char*>(&this->maxHP), sizeof(this->maxHP));
+
+	read.read(reinterpret_cast<char*>(&this->maxMP), sizeof(this->maxMP));
+
+	read.read(reinterpret_cast<char*>(&this->currentLevel), sizeof(this->currentLevel));
+
+	read.read(reinterpret_cast<char*>(&this->goldCoinsOwned), sizeof(this->goldCoinsOwned));
+
+	uint32_t size = 0;
+	read.read(reinterpret_cast<char*>(&size), sizeof(size));
+
+	if (size > 0)
+	{
+		this->statusEffects.resize(size);
+		read.read(reinterpret_cast<char*>(this->statusEffects.data()), size * sizeof(StatusEffect));
+	}
+
+	if (!read)
+	{
+		throw std::runtime_error("Error");
+	}
+
+}
+void Character::writeDataToFile(std::ofstream& write)const
+{
+	uint32_t typeOfCharacterValue = static_cast<uint32_t>(this->type);
+
+	write.write(reinterpret_cast<const char*>(&typeOfCharacterValue), sizeof(typeOfCharacterValue));
+
+	writeString(write, this->name);
+
+	write.write(reinterpret_cast<const char*>(&this->mainStats), sizeof(this->mainStats));
+
+	write.write(reinterpret_cast<const char*>(&this->maxHP), sizeof(this->maxHP));
+
+	write.write(reinterpret_cast<const char*>(&this->maxMP), sizeof(this->maxMP));
+
+	write.write(reinterpret_cast<const char*>(&this->currentLevel), sizeof(this->currentLevel));
+
+	write.write(reinterpret_cast<const char*>(&this->goldCoinsOwned), sizeof(this->goldCoinsOwned));
+
+	uint32_t size = this->statusEffects.size();
+
+	write.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+	if (size > 0)
+	{
+		write.write(reinterpret_cast<const char*>(statusEffects.data()), size * sizeof(StatusEffect));
+	}
+
+
+	if (!write)
+	{
+		throw std::runtime_error("Error");
+	}
+
+}
+
 
 Character& Character::operator=(const Character& other)
 {
@@ -326,6 +397,10 @@ void Character::updateStatusEffects()
 	size_t size = this->statusEffects.size();
 	for (size_t i = 0; i < size; )
 	{
+		if (this->statusEffects[i].typeOfEffect == StatusEffectType::POISON)
+		{
+			this->setHP(this->getHP() - 50);
+		}
 		this->statusEffects[i].duration -= 1;
 		if (this->statusEffects[i].duration == 0)
 		{
@@ -346,6 +421,7 @@ void Character::removeStatusEffects()
 
 void Character::updateStatusOfCharacter()
 {
+	this->setMP(this->getMP() + this->getINT() * INT_TO_MANA_REGEN_MULTIPLIER);
 	updateStatusEffects();
 }
 

@@ -4,6 +4,7 @@
 #include "CharacterStats.h"
 #include "DamageTypeAndEffects.h"
 #include <random>
+#include <fstream>
 
 enum class TypeOfCharacter
 {
@@ -11,11 +12,13 @@ enum class TypeOfCharacter
 	ENEMY,
 };
 
+#pragma pack(push , 1)
 struct StatusEffect
 {
 	unsigned duration;
 	StatusEffectType typeOfEffect;
 };
+#pragma pack(pop)
 
 struct CharacterData
 {
@@ -33,6 +36,11 @@ class Character
 public:
 	
 	Character(const CharacterData& data , TypeOfCharacter type);
+
+	Character(std::ifstream& read);
+	void writeDataToFile(std::ofstream& write)const;
+
+
 	Character& operator=(const Character& other);
 	virtual ~Character() = default;
 	
@@ -87,10 +95,11 @@ protected:
 	virtual void updateMainStats(int numberOfTimes) = 0;
 
 	static constexpr float STR_TO_ATTACK_DMG_MULTIPLIER = 2;
-	static constexpr float INT_TO_SPELL_DMG_MULTIPLIER = 1;
+	static constexpr float INT_TO_MANA_REGEN_MULTIPLIER = 0.1f;
 	static constexpr float AGI_TO_MISS_CHANCE_MULTIPLIER = 0.2f;
 
 private:
+	TypeOfCharacter type;
 	std::string name;
 	CharacterStats mainStats;
 	unsigned int maxHP;
@@ -98,9 +107,6 @@ private:
 	float currentLevel;
 	unsigned int goldCoinsOwned;
 	std::vector<StatusEffect> statusEffects;
-
-
-	TypeOfCharacter type;
 
 	void removeStatusEffects();
 	void updateStatusEffects();

@@ -1,11 +1,85 @@
 #include "Mage.h"
 #include <stdexcept>
 #include <iostream>
+#include "DamageSpell.h"
+#include "HealSpell.h"
+#include "CleanseSpell.h"
 
 Mage::Mage(const std::string& name): Hero(createMageData(name) , HERO_CLASS) , spells()
 {
 
 }
+
+Mage::Mage(std::ifstream& read): Hero(read , HERO_CLASS)
+{
+	uint32_t size = 0;
+	read.read(reinterpret_cast<char*>(&size), sizeof(size));
+
+	if (size > 0)
+	{
+		try
+		{
+			this->spells.resize(size);
+			for (uint32_t i = 0; i < size; ++i)
+			{
+				uint32_t typeOfSpellValue = 0;
+				read.read(reinterpret_cast<char*>(&typeOfSpellValue), sizeof(typeOfSpellValue));
+
+				TypeOfSpell type = static_cast<TypeOfSpell>(typeOfSpellValue);
+
+				switch (type)
+				{
+				case TypeOfSpell::DAMAGE:
+					this->spells[i] = new DamageSpell(read);
+					break;
+
+				case TypeOfSpell::HEAL:
+					this->spells[i] = new HealSpell(read);
+					break;
+
+				case TypeOfSpell::CLEANSE:
+					this->spells[i] = new CleanseSpell(read);
+					break;
+
+				default:
+					throw std::runtime_error("Error");
+				}
+
+			}
+		}
+		catch (...)
+		{
+			size_t currentSize = this->spells.size();
+			for (size_t i = 0; i < currentSize; ++i)
+			{
+				delete this->spells[i];
+			}
+			this->spells.clear();
+			throw;
+		}
+	}
+}
+void Mage::writeToFile(std::ofstream& write)const
+{
+	Hero::writeOwnDataToFile(write);
+	writeOwnDataToFile(write);
+}
+void Mage::writeOwnDataToFile(std::ofstream& write)const
+{
+	uint32_t size = static_cast<uint32_t>(this->spells.size());
+	write.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+	for (uint32_t i = 0; i < size; ++i)
+	{
+		this->spells[i]->writeDataToFile(write);
+	}
+	if (!write)
+	{
+		throw std::runtime_error("error");
+	}
+}
+
+
 Mage::Mage(const Mage& other): Hero(other)
 {
 	deepCopySpells(other.spells);

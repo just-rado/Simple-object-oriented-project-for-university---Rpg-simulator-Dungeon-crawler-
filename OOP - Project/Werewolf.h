@@ -4,6 +4,10 @@ class Werewolf: public Enemy
 {
 public:
 	Werewolf(const std::string& name);
+
+	Werewolf(std::ifstream& read);
+	virtual void writeToFile(std::ofstream& write)const;
+
 	Werewolf& operator=(const Werewolf& other) = delete;
 
 	virtual Enemy* clone()const override;
@@ -13,6 +17,7 @@ public:
 	virtual unsigned int calculateDamage()const override;
 protected:
 	virtual void updateMainStats(int numberOfTimes)override;
+	void writeOwnDataToFile(std::ofstream& write)const;
 private:
 
 	static CharacterData createWerewolfData(const std::string& name);

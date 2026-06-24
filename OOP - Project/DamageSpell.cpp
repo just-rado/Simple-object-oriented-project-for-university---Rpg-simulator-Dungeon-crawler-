@@ -11,6 +11,27 @@ DamageSpell::DamageSpell(const std::string& name, const std::string& description
 	}
 }
 
+DamageSpell::DamageSpell(std::ifstream& read) : Spell(read , TYPE)
+{
+	read.read(reinterpret_cast<char*>(&this->damageValue), sizeof(this->damageValue));
+	if (!read)
+	{
+		throw std::runtime_error("Failed to load damage spell from file");
+	}
+}
+
+void DamageSpell::writeDataToFile(std::ofstream& write)const
+{
+	Spell::writeDataToFile(write);
+
+	write.write(reinterpret_cast<const char*>(&this->damageValue), sizeof(this->damageValue));
+
+	if (!write)
+	{
+		throw std::runtime_error("Failed writing damage spell");
+	}
+ }
+
 
 Spell* DamageSpell::clone()const
 {

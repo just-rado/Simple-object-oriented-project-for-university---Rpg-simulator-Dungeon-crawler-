@@ -11,6 +11,126 @@ Hero::Hero(const CharacterData& mainStats , HeroClass heroClass): Character(main
 {
 
 }
+
+
+Hero::Hero(std::ifstream& read , HeroClass heroClass): Character(read) , heroClass(heroClass)
+{
+	readItemsFromFile(read, this->inventory, CAPACITY_OF_INVENTORY);
+	readItemsFromFile(read, this->equippedItems, MAX_EQUIPPED_ITEMS);
+
+	uint32_t size = 0;
+	read.read(reinterpret_cast<char*>(&size), sizeof(size));
+
+	if (size > 0)
+	{
+		this->history.reserve(size);
+
+		for (uint32_t i = 0; i < size; ++i)
+		{
+			this->history.emplace_back(read);
+		}
+	}
+}
+void Hero::writeToFile(std::ofstream& write)const
+{
+	writeOwnDataToFile(write);
+}
+void Hero::writeOwnDataToFile(std::ofstream& write)const
+{
+	Character::writeDataToFile(write);
+
+	uint32_t heroClassValue = static_cast<uint32_t>(this->heroClass);
+	write.write(reinterpret_cast<const char*>(&heroClassValue), sizeof(heroClassValue));
+
+	writeItemsToFile(write, this->inventory, CAPACITY_OF_INVENTORY);
+	writeItemsToFile(write, this->equippedItems, MAX_EQUIPPED_ITEMS);
+
+	uint32_t size = static_cast<uint32_t>(this->history.size());
+	write.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+	for (uint32_t i = 0; i < size; ++i)
+	{
+		this->history[i].writeToFile(write);
+	}
+
+}
+
+void Hero::readItemsFromFile(std::ifstream& read, Item* items[], size_t size)
+{
+	try
+	{
+		for (size_t i = 0; i < size; ++i)
+		{
+			bool exists = false;
+			read.read(reinterpret_cast<char*>(&exists), sizeof(exists));
+
+			if (!exists)
+			{
+				items[i] = nullptr;
+				continue;
+			}
+
+			uint32_t typeOfItem = 0;
+			read.read(reinterpret_cast<char*>(&typeOfItem), sizeof(typeOfItem));
+
+			TypeOfItem type = static_cast<TypeOfItem>(typeOfItem);
+
+			uint64_t ID = 0;
+			read.read(reinterpret_cast<char*>(&ID), sizeof(ID));
+
+			Item* item = nullptr;
+			switch (type)
+			{
+			case TypeOfItem::WEAPON:
+				item = new Weapon(read, ID);
+
+			case TypeOfItem::ARMOR:
+				item = new Armor(read, ID);
+
+			case TypeOfItem::CONSUMABLE:
+				item = new Consumable(read, ID);
+
+			case TypeOfItem::SCROLL:
+				item = new Scroll(read, ID);
+
+			case TypeOfItem::RELIC:
+				item = new Relic(read, ID);
+			default:
+				throw std::runtime_error("Unknown item type");
+			}
+
+			items[i] = item;
+
+		}
+	}
+	catch (...)
+	{
+		for (size_t i = 0; i < size; ++i)
+		{
+			delete items[i];
+			items[i] = nullptr;
+		}
+		throw;
+	}
+	
+}
+void Hero::writeItemsToFile(std::ofstream& write, Item* const items[], size_t size)
+{
+	for (size_t i = 0; i < size; ++i)
+	{
+		bool exists = (items[i] != nullptr);
+		write.write(reinterpret_cast<const char*>(&exists), sizeof(exists));
+
+		if (!exists)
+		{
+			continue;
+		}
+
+		items[i]->writeDataToFile(write);
+
+	}
+}
+
 Hero::Hero(const Hero& other): Character(other)
 {
 	this->history = other.history;
@@ -72,6 +192,7 @@ Hero::~Hero()
 bool Hero::addInformation(const Battle& battle, const CharacterStats& stats)
 {
 	this->history.emplace_back(battle, stats);
+	return true;
 }
 
 

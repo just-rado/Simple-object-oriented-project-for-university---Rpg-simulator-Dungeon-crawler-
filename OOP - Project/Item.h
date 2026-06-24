@@ -3,7 +3,7 @@
 #include <vector>
 #include "Classes.h"
 #include "Character.h"
-#include "DamageTypeAndEffects.h"
+#include <fstream>
 enum class Rarity
 {
 	COMMON,
@@ -37,7 +37,10 @@ public:
 
 	Item(const ItemData& data , TypeOfItem type);
 
-	Item(const Item& othwer);
+	Item(std::ifstream& read , TypeOfItem type , uint64_t ID);
+	virtual void writeDataToFile(std::ofstream& write)const;
+	
+	Item(const Item& other);
 	Item& operator=(const Item& other) = delete;
 
 	virtual ~Item() = default;
@@ -60,11 +63,13 @@ public:
 
 protected:
 	void setTypeOfItem(TypeOfItem type);
+
+
 private:
+	TypeOfItem type;
 	const uint64_t id;
 	const std::string name;
 	Rarity rarity;
-	TypeOfItem type;
 	unsigned int costInGoldCoins;
 	float weightInKg;
 	unsigned int requiredLevel;

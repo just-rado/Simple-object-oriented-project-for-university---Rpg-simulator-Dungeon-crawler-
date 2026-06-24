@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <fstream>
 
 class Battle
 {
@@ -8,8 +9,13 @@ public:
 
 	Battle(const std::string& nameOfRoom, const std::vector<std::string>& namesOfHeroes, const std::vector<uint64_t>& IDsOfEnemies);
 	
+	Battle(std::ifstream& read);
+	void writeToFile(std::ofstream& write)const;
 
 	uint64_t getID()const;
+
+	static void writeNextID(std::ofstream& write);
+	static void setNextID(std::ifstream& read);
 
 	size_t getNumberOfHeroes()const;
 	size_t getNumberOfEnemies()const;
@@ -19,12 +25,12 @@ public:
 
 
 private:
-	const uint64_t ID;
+	uint64_t ID;
 	std::string nameOfRoom;
 	std::vector<std::string> namesOfHeroes;
 	std::vector<uint64_t> IDsOfEnemies;
 
-	static bool setNextID(uint64_t ID);
+	
 
 	static uint64_t nextID;
 };

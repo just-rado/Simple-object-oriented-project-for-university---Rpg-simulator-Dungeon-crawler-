@@ -8,6 +8,9 @@ public:
 
 	Relic(const ItemData& data , const CharacterStats& modifiers);
 
+	Relic(std::ifstream& read, uint64_t ID);
+	virtual void writeDataToFile(std::ofstream& write)const override;
+
 	Relic& operator=(const Relic& other) = delete;
 
 	virtual Item* clone()const override;

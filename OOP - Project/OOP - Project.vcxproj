@@ -145,6 +145,7 @@
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Spell.h" />
     <ClInclude Include="DamageTypeAndEffects.h" />
+    <ClInclude Include="StringFunctionsForFiles.h" />
     <ClInclude Include="Warrior.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Werewolf.h" />
