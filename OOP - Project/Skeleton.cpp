@@ -5,6 +5,8 @@
 #include "Consumable.h"
 #include "Scroll.h"
 #include "Relic.h"
+#include <iostream>
+
 Skeleton::Skeleton(const std::string& name): Enemy(createSkeletonData(name) , ENEMY_TYPE , BASE_EXP_GIVEN) , item(nullptr)
 {
 
@@ -30,18 +32,23 @@ Skeleton::Skeleton(std::ifstream& read) : Enemy(read , ENEMY_TYPE)
 		{
 		case TypeOfItem::WEAPON:
 			this->item = new Weapon(read, ID);
+			break;
 
 		case TypeOfItem::ARMOR:
 			this->item = new Armor(read, ID);
+			break;
 
 		case TypeOfItem::CONSUMABLE:
 			this->item = new Consumable(read, ID);
+			break;
 
 		case TypeOfItem::SCROLL:
 			this->item = new Scroll(read, ID);
+			break;
 
 		case TypeOfItem::RELIC:
 			this->item = new Relic(read, ID);
+			break;
 		default:
 			throw std::runtime_error("Unknown item type");
 		}
@@ -72,7 +79,16 @@ void Skeleton::writeOwnDataToFile(std::ofstream& write)const
 
 Skeleton::Skeleton(const Skeleton& other): Enemy(other)
 {
-	this->item = other.item->clone();
+	
+	if (other.item)
+	{
+		this->item = other.item->clone();
+	}
+	else
+	{
+		this->item = nullptr;
+	}
+	
 
 }
 
@@ -97,10 +113,15 @@ bool Skeleton::addItem(const Item* item)
 	return true;
 }
 
+const Item* Skeleton::getItem()const
+{
+	return this->item;
+}
+
 const Item* Skeleton::itemDropped()
 {
 	std::uniform_int_distribution<> chance(1, 100);
-	if (chance(Character::gen) <= this->getCurrentLevel() + BASE_EXP_GIVEN)
+	if (chance(Character::gen) <= this->getCurrentLevel() + BASE_CHANCE_OF_ITEM_DROP)
 	{
 		Item* toReturn = this->item;
 		this->item = nullptr;

@@ -17,6 +17,7 @@ public:
 	Scroll& operator=(const Scroll& other) = delete;
 	virtual Item* clone()const override;
 
+	virtual void applyEffectsOfItem(Character* character)const override;
 
 	const Spell* getSpell()const;
 

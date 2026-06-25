@@ -17,6 +17,8 @@ Relic::Relic(std::ifstream& read, uint64_t ID): Item(read , ITEM_TYPE , ID)
 }
 void Relic::writeDataToFile(std::ofstream& write)const
 {
+	Item::writeDataToFile(write);
+
 	write.write(reinterpret_cast<const char*>(&this->modifiers), sizeof(this->modifiers));
 
 	if (!write)

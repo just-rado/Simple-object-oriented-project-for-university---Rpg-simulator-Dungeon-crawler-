@@ -36,8 +36,8 @@ public:
 	bool collectItem(Item*& item);
 	Item* dropItemFromInventory(uint64_t itemID);
 	
-	bool usePotion(Consumable* consumable);
-	bool useScroll(Character* character , Scroll* scroll);
+	bool usePotion(uint64_t itemID);
+	bool useScroll(Character* character , uint64_t itemID);
 	
 	bool addInformation(const Battle& battle, const CharacterStats& stats);
 

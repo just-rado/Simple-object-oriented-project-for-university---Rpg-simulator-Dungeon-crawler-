@@ -179,6 +179,7 @@ bool Item::checkIfClassIsCompatible(HeroClass classOfHero)const
 			uint64_t find = 1;
 			find = (find << numberOfHeroClass);
 			uint64_t check = (find & this->compatibleClasses[index - 1]);
+
 			return check;
 		}
 		++index;
@@ -251,3 +252,19 @@ void Item::printCompatibleClasses()const
 }
 
 
+void Item::setNextID(std::ifstream& read)
+{
+	read.read(reinterpret_cast<char*>(&nextId), sizeof(nextId));
+	if (!read)
+	{
+		throw std::runtime_error("Error");
+	}
+}
+void Item::writeNextID(std::ofstream& write)
+{
+	write.write(reinterpret_cast<const char*>(&nextId), sizeof(nextId));
+	if (!write)
+	{
+		throw std::runtime_error("Error");
+	}
+}

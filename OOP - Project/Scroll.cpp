@@ -101,6 +101,15 @@ Item* Scroll::clone()const
 	return new Scroll(*this);
 }
 
+void Scroll::applyEffectsOfItem(Character* character)const
+{
+	if (!character)
+	{
+		return;
+	}
+	this->getSpell()->applyEffectOfSpell(character);
+}
+
 const Spell* Scroll::getSpell()const
 {
 	return this->spell;

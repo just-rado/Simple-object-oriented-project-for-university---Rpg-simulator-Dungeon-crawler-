@@ -14,6 +14,7 @@ public:
 	virtual ~Skeleton()override;
 
 	bool addItem(const Item* item);
+	const Item* getItem()const;
 
 	virtual const Item* itemDropped()override;
 	virtual Enemy* clone()const override;

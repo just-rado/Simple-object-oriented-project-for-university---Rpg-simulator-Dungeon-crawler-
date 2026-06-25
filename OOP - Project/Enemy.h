@@ -19,6 +19,9 @@ public:
 	Enemy(std::ifstream& read, TypeOfEnemy enemyType);
 	virtual void writeToFile(std::ofstream& write)const;
 
+	static void setNextID(std::ifstream& read);
+	static void writeNextID(std::ofstream& write);
+
 	Enemy(const Enemy& other);
 	Enemy& operator=(const Enemy& other) = delete;
 

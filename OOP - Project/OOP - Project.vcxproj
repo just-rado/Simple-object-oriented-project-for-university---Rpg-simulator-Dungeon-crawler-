@@ -131,7 +131,9 @@
     <ClInclude Include="CleanseSpell.h" />
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="DamageSpell.h" />
+    <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Healer.h" />
     <ClInclude Include="HealSpell.h" />
     <ClInclude Include="Hero.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="Spell.h" />
     <ClInclude Include="DamageTypeAndEffects.h" />
     <ClInclude Include="StringFunctionsForFiles.h" />
+    <ClInclude Include="System.h" />
     <ClInclude Include="Warrior.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Werewolf.h" />
@@ -158,7 +161,9 @@
     <ClCompile Include="CleanseSpell.cpp" />
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="DamageSpell.cpp" />
+    <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Healer.cpp" />
     <ClCompile Include="HealSpell.cpp" />
     <ClCompile Include="Hero.cpp" />
@@ -171,6 +176,7 @@
     <ClCompile Include="Scroll.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Spell.cpp" />
+    <ClCompile Include="System.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="Warrior.cpp" />
     <ClCompile Include="Weapon.cpp" />

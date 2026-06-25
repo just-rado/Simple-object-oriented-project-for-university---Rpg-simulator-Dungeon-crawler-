@@ -11,6 +11,10 @@ public:
 	Room& operator=(const Room& other) = delete;
 	~Room();
 
+	Room(std::ifstream& read);
+	void writeToFile(std::ofstream& write)const;
+
+	const std::string& getNameOfroom()const;
 	size_t getNumberOfEnemies()const;
 	size_t getNumberOfItems()const;
 

@@ -6,6 +6,8 @@
 #include "Consumable.h"
 
 
+
+
 Hero::Hero(const CharacterData& mainStats , HeroClass heroClass): Character(mainStats , TYPE) , heroClass(heroClass) ,
 			inventory() , equippedItems() , history()
 {
@@ -17,10 +19,9 @@ Hero::Hero(std::ifstream& read , HeroClass heroClass): Character(read) , heroCla
 {
 	readItemsFromFile(read, this->inventory, CAPACITY_OF_INVENTORY);
 	readItemsFromFile(read, this->equippedItems, MAX_EQUIPPED_ITEMS);
-
 	uint32_t size = 0;
 	read.read(reinterpret_cast<char*>(&size), sizeof(size));
-
+	
 	if (size > 0)
 	{
 		this->history.reserve(size);
@@ -28,6 +29,7 @@ Hero::Hero(std::ifstream& read , HeroClass heroClass): Character(read) , heroCla
 		for (uint32_t i = 0; i < size; ++i)
 		{
 			this->history.emplace_back(read);
+			
 		}
 	}
 }
@@ -37,10 +39,10 @@ void Hero::writeToFile(std::ofstream& write)const
 }
 void Hero::writeOwnDataToFile(std::ofstream& write)const
 {
-	Character::writeDataToFile(write);
-
 	uint32_t heroClassValue = static_cast<uint32_t>(this->heroClass);
 	write.write(reinterpret_cast<const char*>(&heroClassValue), sizeof(heroClassValue));
+
+	Character::writeDataToFile(write);
 
 	writeItemsToFile(write, this->inventory, CAPACITY_OF_INVENTORY);
 	writeItemsToFile(write, this->equippedItems, MAX_EQUIPPED_ITEMS);
@@ -79,22 +81,28 @@ void Hero::readItemsFromFile(std::ifstream& read, Item* items[], size_t size)
 			read.read(reinterpret_cast<char*>(&ID), sizeof(ID));
 
 			Item* item = nullptr;
+			
 			switch (type)
 			{
 			case TypeOfItem::WEAPON:
 				item = new Weapon(read, ID);
+				break;
 
 			case TypeOfItem::ARMOR:
 				item = new Armor(read, ID);
+				break;
 
 			case TypeOfItem::CONSUMABLE:
 				item = new Consumable(read, ID);
+				break;
 
 			case TypeOfItem::SCROLL:
 				item = new Scroll(read, ID);
+				break;
 
 			case TypeOfItem::RELIC:
 				item = new Relic(read, ID);
+				break;
 			default:
 				throw std::runtime_error("Unknown item type");
 			}
@@ -295,28 +303,67 @@ bool Hero::unequipItem(size_t slot)
 }
 
 
-bool Hero::usePotion(Consumable* potion)
+bool Hero::usePotion(uint64_t itemID)
 {
-	if (!potion)
+	for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
 	{
-		return false;
+		if (!inventory[i] || this->inventory[i]->getId() != itemID)
+		{
+			continue;
+		}
+
+		if (!this->inventory[i]->checkIfClassIsCompatible(this->heroClass) || this->getCurrentLevel() < this->inventory[i]->getRequiredLevel())
+		{
+			return false;
+		}
+
+		TypeOfItem typeOfItem = this->inventory[i]->getTypeOfItem();
+		if (typeOfItem != TypeOfItem::CONSUMABLE)
+		{
+			return false;
+		}
+
+		this->inventory[i]->applyEffectsOfItem(this);
+		delete this->inventory[i];
+		this->inventory[i] = nullptr;
+		return true;
 	}
-			
-	potion->applyEffectsOfItem(this);
 			
 	return true;	
 }
 
-bool Hero::useScroll(Character* character , Scroll* scroll)
+bool Hero::useScroll(Character* character , uint64_t itemID)
 {
-	if (!character || !scroll)
+	if (!character)
 	{
 		return false;
 	}
+	for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
+	{
+		if (!inventory[i] || this->inventory[i]->getId() != itemID)
+		{
+			continue;
+		}
 
-	scroll->getSpell()->applyEffectOfSpell(character);
+	
+		if (!this->inventory[i]->checkIfClassIsCompatible(this->heroClass) || this->getCurrentLevel() < this->inventory[i]->getRequiredLevel())
+		{
+			return false;
+		}
 
-	return true;
+		TypeOfItem typeOfItem = this->inventory[i]->getTypeOfItem();
+		if (typeOfItem != TypeOfItem::SCROLL)
+		{
+			return false;
+		}
+
+		this->inventory[i]->applyEffectsOfItem(character);
+		delete this->inventory[i];
+		this->inventory[i] = nullptr;
+		return true;
+	}
+
+	return false;
 }
 
 unsigned int Hero::calculateDamage()const

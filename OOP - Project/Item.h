@@ -43,6 +43,9 @@ public:
 	Item(const Item& other);
 	Item& operator=(const Item& other) = delete;
 
+	static void setNextID(std::ifstream& read);
+	static void writeNextID(std::ofstream& write);
+
 	virtual ~Item() = default;
 	virtual Item* clone()const = 0;
 	virtual void printInfo()const;

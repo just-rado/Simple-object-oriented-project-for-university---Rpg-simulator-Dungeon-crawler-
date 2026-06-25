@@ -1,5 +1,6 @@
 #include "Enemy.h"
 
+
 uint64_t Enemy::nextID = 1;
 
 Enemy::Enemy(const CharacterData& mainStats, TypeOfEnemy type,  float baseExpGiven): 
@@ -11,10 +12,12 @@ Enemy::Enemy(const CharacterData& mainStats, TypeOfEnemy type,  float baseExpGiv
 
 Enemy::Enemy(std::ifstream& read, TypeOfEnemy enemyType):Character(read) , enemyType(enemyType)
 {
+	
 	read.read(reinterpret_cast<char*>(&this->ID), sizeof(this->ID));
-
+	
 	uint32_t size = 0;
 	read.read(reinterpret_cast<char*>(&size), sizeof(size));
+
 
 	if (size > 0)
 	{
@@ -29,6 +32,7 @@ Enemy::Enemy(std::ifstream& read, TypeOfEnemy enemyType):Character(read) , enemy
 	{
 		throw std::runtime_error("Error");
 	}
+	
 
 }
 void Enemy::writeToFile(std::ofstream& write)const
@@ -38,10 +42,10 @@ void Enemy::writeToFile(std::ofstream& write)const
 
 void Enemy::writeOwnDataToFile(std::ofstream& write)const
 {
-	Character::writeDataToFile(write);
-
 	uint32_t enemyTypeValue = static_cast<uint32_t>(this->enemyType);
 	write.write(reinterpret_cast<const char*>(&enemyTypeValue), sizeof(enemyTypeValue));
+
+	Character::writeDataToFile(write);
 
 	write.write(reinterpret_cast<const char*>(&this->ID), sizeof(this->ID));
 
@@ -177,3 +181,21 @@ bool Enemy::attackHero(Hero* hero)
 
 }
 
+
+
+void Enemy::setNextID(std::ifstream& read)
+{
+	read.read(reinterpret_cast<char*>(&nextID), sizeof(nextID));
+	if (!read)
+	{
+		throw std::runtime_error("Error");
+	}
+}
+void Enemy::writeNextID(std::ofstream& write)
+{
+	write.write(reinterpret_cast<const char*>(&nextID), sizeof(nextID));
+	if (!write)
+	{
+		throw std::runtime_error("Error");
+	}
+}
