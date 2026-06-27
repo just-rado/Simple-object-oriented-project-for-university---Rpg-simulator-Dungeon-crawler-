@@ -64,6 +64,18 @@ bool Warrior::isTauntUsed()const
 	return this->tauntUsed;
 }
 
+
+int Warrior::calculatePriority()const
+{
+	if (this->tauntUsed)
+	{
+		return -1;
+	}
+	
+	return this->getHP();
+
+}
+
 void Warrior::printAbilities()const
 {
 	std::cout << "Abilities:\n" << "Ability 1: " << "Taunt enemies(For two turns enemies will only attack this character)\n";

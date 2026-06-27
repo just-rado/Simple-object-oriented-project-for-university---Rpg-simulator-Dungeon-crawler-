@@ -22,8 +22,10 @@
 #include "Room.h"
 #include "Game.h"
 #include "Dungeon.h"
+#include "System.h"
 int main()
 {
+	System system;
 	// first dungeon - depths
 
 	

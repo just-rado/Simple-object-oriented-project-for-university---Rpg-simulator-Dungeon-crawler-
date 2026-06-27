@@ -10,12 +10,14 @@ public:
 
 
 private:
+	std::string userName;
+	std::string password;
 	std::vector<std::string> nameOfGames;
 	Game* currentGame;
 
-	void heroManage();
+	
 
-	bool isNameValid(const std::string& name)const;
+	
 
 };
 

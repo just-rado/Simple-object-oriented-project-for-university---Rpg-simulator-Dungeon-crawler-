@@ -14,11 +14,17 @@ public:
 	Game& operator=(const Game& other) = delete;
 	~Game();
 
-	void loadHeroData(size_t index);
-	void loadDungeon(size_t index);
+	Game(std::string& nameOfGame);
 
-	void addNewHero(std::string name, HeroClass heroClass);
+	void gameStart();
+
+	bool loadHeroData(size_t index);
+	bool loadDungeon(size_t index);
+
+	bool addNewHero(std::string name, HeroClass heroClass);
 	void addNewDungeon(std::string name);
+
+	void printInfoOfHeroes()const;
 
 	void storeGame(std::ofstream& write)const;
 
@@ -29,6 +35,8 @@ private:
 	std::vector<std::string> namesOfHeroes;
 	
 	std::vector<std::string> nameOfDungeons;
+
+	void storeCurrentHeroes();
 
 
 	std::vector<Hero*> heroes;

@@ -2,6 +2,8 @@
 #include <string>
 #include "Room.h"
 #include <fstream>
+#include <vector>
+#include "Hero.h"
 class Dungeon
 {
 public:
@@ -16,6 +18,8 @@ public:
 	Dungeon(const Dungeon& other);
 	Dungeon& operator=(const Dungeon& other);
 	~Dungeon();
+
+	void enter(std::vector<Hero*>& heroes);
 
 
 	const std::string& getNameOfDungeon()const;

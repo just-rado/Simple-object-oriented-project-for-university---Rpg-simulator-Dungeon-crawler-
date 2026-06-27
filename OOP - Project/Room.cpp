@@ -111,7 +111,7 @@ Room::Room(std::ifstream& read): name(readString(read))
 		throw;
 	}
 	
-
+	
 }
 void Room::writeToFile(std::ofstream& write)const
 {
@@ -159,13 +159,13 @@ size_t Room::getNumberOfItems()const
 }
 
 
-Enemy& Room::getEnemy(size_t index)const
+Enemy* Room::getEnemy(size_t index)const
 {
-	return *this->enemies[index];
+	return this->enemies[index];
 }
-Item& Room::getItem(size_t index)const
+Item* Room::getItem(size_t index)const
 {
-	return *this->items[index];
+	return this->items[index];
 }
 
 

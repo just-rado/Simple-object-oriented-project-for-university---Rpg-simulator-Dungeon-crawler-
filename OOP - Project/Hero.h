@@ -47,7 +47,9 @@ public:
 	virtual bool requiresATarget(size_t ability)const = 0;
 	virtual Hero* clone()const override = 0;
 	virtual bool attackEnemy(Enemy* enemy);
+	virtual int calculatePriority()const;
 
+	HeroClass getClass()const;
 
 	virtual unsigned int calculateDamage()const override;
 	virtual unsigned int calculateDefence()const override;

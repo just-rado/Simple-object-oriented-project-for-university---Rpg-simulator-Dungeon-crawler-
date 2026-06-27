@@ -197,12 +197,22 @@ Hero::~Hero()
 }
 
 
+
+int Hero::calculatePriority()const
+{
+	return this->getHP();
+}
+
 bool Hero::addInformation(const Battle& battle, const CharacterStats& stats)
 {
 	this->history.emplace_back(battle, stats);
 	return true;
 }
 
+HeroClass Hero::getClass()const
+{
+	return this->heroClass;
+}
 
 bool Hero::collectItem(Item*& item)
 {

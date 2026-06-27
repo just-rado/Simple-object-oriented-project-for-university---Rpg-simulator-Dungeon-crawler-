@@ -39,3 +39,19 @@ inline void writeString(std::ofstream& file, const std::string& string)
 	}
 }
 
+inline bool isNameValid(const std::string& name)
+{
+	if (name.empty())
+	{
+		return false;
+	}
+
+	for (char c : name)
+	{
+		if (!std::isalnum(static_cast<unsigned char>(c)) && c != '_' && c != '-')
+		{
+			return false;
+		}
+	}
+	return true;
+}

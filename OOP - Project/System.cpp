@@ -25,28 +25,33 @@ System::System()
 					if (!account.is_open())
 					{
 						std::cout << "No account with this username exists\n" << "Try again\n";
-						continue;
+						break;
 					}
 
-					std::string actualPassword = readString(account);
-
-					std::string password;
-					std::cout << "Enter password: ";
-					std::cin >> password;
 					
-					if (password != actualPassword)
-					{
-						std::cout << "Wrong password.\n" << "Try again\n";
-						continue;
-					}
+					this->password = readString(account);
 
+					while (true)
+					{
+						std::string password;
+						std::cout << "Enter password: ";
+						std::cin >> password;
+						if (password != this->password)
+						{
+							std::cout << "Wrong password.\n" << "Try again\n";
+							continue;
+						}
+						break;
+					}
+					this->userName = user;
+					
 					uint32_t numberOfGames = 0;
 					account.read(reinterpret_cast<char*>(&numberOfGames), sizeof(numberOfGames));
 
 					this->nameOfGames.resize(numberOfGames);
 					if (numberOfGames == 0)
 					{
-						std::cout << "Successfully logged in account. There are no current games\n";
+						account.close();
 						break;
 					}
 					for (uint32_t i = 0; i < numberOfGames; ++i)
@@ -54,20 +59,13 @@ System::System()
 						this->nameOfGames[i] = readString(account);
 					}
 					account.close();
-
-					std::cout << "Successfully logged in account. Current games:\n";
-					for (size_t i = 0; i < this->nameOfGames.size(); ++i)
-					{
-						std::cout << this->nameOfGames[i] << '\n';
-					}
-
 					std::cout << std::endl;
 					break;
 
 				}
 				else
 				{
-					std::cout << "Invalid username . Try again\n";
+					std::cout << "Invalid username. Try again\n";
 				}
 			}
 			break;
@@ -91,7 +89,7 @@ System::System()
 					}
 
 					std::string password;
-					std::cout << "Enter passwor: ";
+					std::cout << "Enter password: ";
 					std::cin >> password;
 
 					std::ofstream newAccount(user, std::ios::binary);
@@ -101,15 +99,23 @@ System::System()
 						throw std::runtime_error("Error");
 					}
 
-					writeString(newAccount, password);
+					this->userName = user;
+					this->password = password;
+
+					writeString(newAccount , this->password);
+
+					uint32_t initiaNumberOfGames = 0;
+					newAccount.write(reinterpret_cast<const char*>(&initiaNumberOfGames), sizeof(initiaNumberOfGames));
 
 					newAccount.close();
 					std::cout << "Account successfully created.\n";
 					break;
 					
 				}
-				
-
+				else
+				{
+					std::cout << "Name is invalid. Try again\n";
+				}
 			
 			}
 			break;
@@ -120,7 +126,7 @@ System::System()
 			continue;
 		}
 	}
-	
+	gameManage();
 }
 
 
@@ -128,7 +134,7 @@ void System::gameManage()
 {
 	while (true)
 	{
-		std::cout << "Chose option:\n" << "1.Create new game\n" << "2.Load game\n" << "3.Save current game\n" << "4.See all create games\n";
+		std::cout << "Chose option:\n" << "1.Create new game\n" << "2.Load game\n" << "3.See all created games\n" <<"4.Quit\n";
 		int option = 0;
 		std::cin >> option;
 
@@ -137,7 +143,7 @@ void System::gameManage()
 			while(true)
 			{
 				std::string nameOfGame;
-				std::cout << "Give a name for the new game";
+				std::cout << "Enter a name for  new game: ";
 				std::cin >> nameOfGame;
 				if (!isNameValid(nameOfGame))
 				{
@@ -159,79 +165,97 @@ void System::gameManage()
 					continue;
 				}
 				this->nameOfGames.push_back(nameOfGame);
-				heroManage();
-				break;
 
+				this->currentGame = new Game(nameOfGame);
+				break;
+			
 			}
 			
 		}
 		else if (option == 2)
 		{
-			std::cout << "Chose which game to load:\n";
+			std::cout << "Choose which game to load:\n";
 			if (this->nameOfGames.size() == 0)
 			{
 				std::cout << "No games exist\n";
-				break;
+				continue;
 			}
 
 			std::cout << "Games are:\n";
 			for (size_t i = 0; i < this->nameOfGames.size(); ++i)
 			{
+				std::cout << i + 1 << ". " << this->nameOfGames[i] << '\n';
+			}
+
+		
+			bool foundGame = false;
+			while (!foundGame)
+			{
+				std::cout << "Choose game:";
+				int game = 0;
+				std::cin >> game;
+
+				if (game < 1 || game > this->nameOfGames.size())
+				{
+					continue;
+				}
+
+				std::ifstream current(this->nameOfGames[game - 1], std::ios::binary);
+				if (!current.is_open())
+				{
+					std::cout << "Could not open game\n";
+					std::cout << "Do you wish to try again.\n" << "1.Yes\n" << "2.No";
+					int exit = 0;
+					std::cin >> exit;
+					if (exit == 2)
+					{
+						foundGame = true;
+					}
+					continue;
+				}
+
+				delete this->currentGame;
+				this->currentGame = new Game(current);
+
+				foundGame = true;
+						
+			}
+
+		}
+		else if (option == 3)
+		{
+			size_t size = this->nameOfGames.size();
+			if (size == 0)
+			{
+				std::cout << "No games\n";
+				continue;
+			}
+			for (size_t i = 0; i < size; ++i)
+			{
 				std::cout << this->nameOfGames[i] << '\n';
 			}
-
-			std::string nameOfGame;
-			std::cin >> nameOfGame;
-			bool foundGame = false;
-			for (size_t i = 0; i < this->nameOfGames.size(); ++i)
-			{
-				if (nameOfGame == this->nameOfGames[i])
-				{
-					std::ifstream current(nameOfGame, std::ios::binary);
-					if (!current.is_open())
-					{
-						throw std::runtime_error("Error");
-					}
-
-					delete this->currentGame;
-
-					this->currentGame = new Game(current);
-					foundGame = true;
-					break;
-				}
-			}
-			if (foundGame)
-			{
-				break;
-			}
-
 		}
-		break;
-	}
-	
-
-	
-
-}
-
-bool System::isNameValid(const std::string& name)const
-{
-	if (name.empty())
-	{
-		return false;
-	}
-
-	for (char c : name)
-	{
-		if (!std::isalnum(static_cast<unsigned char>(c)) && c != '_' && c != '-')
+		else if (option == 4)
 		{
-			return false;
+			std::ofstream storeAccount(this->userName , std::ios::binary);
+
+			writeString(storeAccount, this->password);
+
+			uint32_t numberOfGames = static_cast<uint32_t>(this->nameOfGames.size());
+			storeAccount.write(reinterpret_cast<const char*>(&numberOfGames), sizeof(numberOfGames));
+
+			for (uint32_t i = 0; i < numberOfGames; ++i)
+			{
+				writeString(storeAccount, this->nameOfGames[i]);
+			}
+			break;
 		}
+		
 	}
-	return true;
-}
+	
 
-void System::heroManage()
-{
+	
 
 }
+
+

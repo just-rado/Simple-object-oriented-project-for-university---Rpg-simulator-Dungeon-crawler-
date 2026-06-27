@@ -18,8 +18,8 @@ public:
 	size_t getNumberOfEnemies()const;
 	size_t getNumberOfItems()const;
 
-	Enemy& getEnemy(size_t index)const;
-	Item& getItem(size_t index)const;
+	Enemy* getEnemy(size_t index)const;
+	Item* getItem(size_t index)const;
 
 	bool isEmpty()const;
 
