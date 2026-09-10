@@ -4,7 +4,7 @@
 #include "Relic.h"
 #include "Weapon.h"
 #include "Consumable.h"
-
+#include "ItemFactory.h"
 
 
 
@@ -79,34 +79,14 @@ void Hero::readItemsFromFile(std::ifstream& read, Item* items[], size_t size)
 
 			uint64_t ID = 0;
 			read.read(reinterpret_cast<char*>(&ID), sizeof(ID));
-
-			Item* item = nullptr;
+			ItemFactory factory;
+			Item* item = factory.loadItemFromFile(read , type , ID);
 			
-			switch (type)
+			if (!item)
 			{
-			case TypeOfItem::WEAPON:
-				item = new Weapon(read, ID);
-				break;
-
-			case TypeOfItem::ARMOR:
-				item = new Armor(read, ID);
-				break;
-
-			case TypeOfItem::CONSUMABLE:
-				item = new Consumable(read, ID);
-				break;
-
-			case TypeOfItem::SCROLL:
-				item = new Scroll(read, ID);
-				break;
-
-			case TypeOfItem::RELIC:
-				item = new Relic(read, ID);
-				break;
-			default:
 				throw std::runtime_error("Unknown item type");
 			}
-
+				
 			items[i] = item;
 
 		}

@@ -4,6 +4,7 @@
 #include "DamageSpell.h"
 #include "HealSpell.h"
 #include "CleanseSpell.h"
+#include "SpellFactory.h"
 
 Mage::Mage(const std::string& name): Hero(createMageData(name) , HERO_CLASS) , spells()
 {
@@ -26,24 +27,15 @@ Mage::Mage(std::ifstream& read): Hero(read , HERO_CLASS)
 				read.read(reinterpret_cast<char*>(&typeOfSpellValue), sizeof(typeOfSpellValue));
 
 				TypeOfSpell type = static_cast<TypeOfSpell>(typeOfSpellValue);
-
-				switch (type)
+				SpellFactory factory;
+				this->spells[i] = factory.readSpellFromFile(read, type);
+				
+				if (!this->spells[i])
 				{
-				case TypeOfSpell::DAMAGE:
-					this->spells[i] = new DamageSpell(read);
-					break;
-
-				case TypeOfSpell::HEAL:
-					this->spells[i] = new HealSpell(read);
-					break;
-
-				case TypeOfSpell::CLEANSE:
-					this->spells[i] = new CleanseSpell(read);
-					break;
-
-				default:
 					throw std::runtime_error("Error");
 				}
+					
+				
 
 			}
 		}

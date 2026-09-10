@@ -2,6 +2,7 @@
 #include "DamageSpell.h"
 #include "HealSpell.h"
 #include "CleanseSpell.h"
+#include "SpellFactory.h"
 
 Scroll::Scroll(const ItemData& data, const Spell* spell): Item(data , ITEM_TYPE)
 {
@@ -35,23 +36,13 @@ Scroll::Scroll(std::ifstream& read, uint64_t ID) : Item(read , ITEM_TYPE , ID)
 	{
 		throw std::runtime_error("Error");
 	}
-	this->spell = nullptr;
-
 	TypeOfSpell type = static_cast<TypeOfSpell>(typeOfSpellValue);
-	if (type == TypeOfSpell::DAMAGE)
-	{
-		this->spell = new DamageSpell(read);
-	}
-	else if (type == TypeOfSpell::HEAL)
-	{
-		this->spell = new HealSpell(read);
-	}
-	else if (type == TypeOfSpell::CLEANSE)
-	{
-		this->spell = new CleanseSpell(read);
-	}
-
-	if (!read)
+	
+	
+	SpellFactory factory;
+	this->spell = factory.readSpellFromFile(read, type);
+	
+	if (!read || !this->spell)
 	{
 		delete this->spell;
 		throw std::runtime_error("Error");

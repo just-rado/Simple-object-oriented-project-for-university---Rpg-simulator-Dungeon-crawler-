@@ -14,6 +14,7 @@ System::System()
 
 		if (option == 1)
 		{
+			// add a back option , right now if no accounts are created and option 1 is chosen , an infinite cycle will happen
 			while (true)
 			{
 				std::string user;
@@ -25,7 +26,7 @@ System::System()
 					if (!account.is_open())
 					{
 						std::cout << "No account with this username exists\n" << "Try again\n";
-						break;
+						continue;
 					}
 
 					

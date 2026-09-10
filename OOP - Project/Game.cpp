@@ -4,6 +4,7 @@
 #include "Mage.h"
 #include "Healer.h"
 #include "Paladin.h"
+#include "HeroFactory.h"
 #include <iostream>
 
 
@@ -65,28 +66,15 @@ bool Game::loadHeroData(size_t index)
 	}
 	
 	
-
-	Hero* toStore = nullptr;
 	uint32_t heroClassValue = 0;
 	heroFile.read(reinterpret_cast<char*>(&heroClassValue), sizeof(heroClassValue));
 
 	HeroClass type = static_cast<HeroClass>(heroClassValue);
-
-	switch (type)
+	
+	HeroFactory factory;
+	Hero* toStore = factory.loadHeroFromFile(heroFile , type);
+	if (!toStore)
 	{
-	case HeroClass::WARRIOR:
-		toStore = new Warrior(heroFile);
-		break;
-	case HeroClass::MAGE:
-		toStore = new Mage(heroFile);
-		break;
-	case HeroClass::HEALER:
-		toStore = new Healer(heroFile);
-		break;
-	case HeroClass::PALADIN:
-		toStore = new Paladin(heroFile);
-		break;
-	default:
 		return false;
 	}
 	heroFile.close();
@@ -105,23 +93,10 @@ bool Game::loadHeroData(size_t index)
 
 bool Game::addNewHero(std::string name, HeroClass heroClass)
 {
-	Hero* toAdd = nullptr;
-	switch (heroClass)
+	HeroFactory factory;
+	Hero* toAdd = factory.createNewHero(name , heroClass);
+	if (!toAdd)
 	{
-	case HeroClass::WARRIOR:
-		toAdd = new Warrior(name);
-		break;
-	case HeroClass::MAGE:
-		toAdd = new Mage(name);
-		break;
-	case HeroClass::HEALER:
-		toAdd = new Healer(name);
-		break;
-	case HeroClass::PALADIN:
-		toAdd = new Paladin(name);
-		break;
-	default:
-		std::cout << "No such hero class exists";
 		return false;
 	}
 	size_t numberOfheroes = this->namesOfHeroes.size();
@@ -231,7 +206,8 @@ void Game::gameStart()
 				size_t numberOfheroes = this->namesOfHeroes.size();
 				for (size_t i = 0; i < numberOfheroes; ++i)
 				{
-					if (this->namesOfHeroes[i] == nameOfhero)//fix 
+					if (this->namesOfHeroes[i] == nameOfhero)//the break option breaks this cycle and you still create a hero with the same name ,
+						//and if you press yes you again create a hero with the same name
 					{
 						std::cout << "Hero with that name already exists\n";
 						std::cout << "Do you wish to try again.\n" << "1.Yes\n" << "2.No";
@@ -302,7 +278,7 @@ void Game::gameStart()
 					std::cout << "Hero does not exist\n";
 					continue;
 				}
-
+				// prevent a hero from being picked more than once
 				bool loadedHero = loadHeroData(number - 1);
 				if (!loadedHero)
 				{

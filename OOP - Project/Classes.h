@@ -1,6 +1,6 @@
 #pragma once
 // keeps track of how many hero classes have been created
-enum  class HeroClass 
+enum class HeroClass 
 {
 	WARRIOR,
 	MAGE,

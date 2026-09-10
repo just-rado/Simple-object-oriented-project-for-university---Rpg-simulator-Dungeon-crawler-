@@ -8,6 +8,8 @@
 #include "Relic.h"
 #include "Scroll.h"
 #include "Consumable.h"
+#include "ItemFactory.h"
+#include "EnemyFactory.h"
 #include <iostream>
 
 Room::Room(const std::string& name, const std::vector<Enemy*>& enemies, const std::vector<Item*>& items) : name(name)
@@ -36,17 +38,13 @@ Room::Room(std::ifstream& read): name(readString(read))
 				read.read(reinterpret_cast<char*>(&typeOfEnemyValue), sizeof(typeOfEnemyValue));
 
 				TypeOfEnemy type = static_cast<TypeOfEnemy>(typeOfEnemyValue);
-				switch (type)
+				EnemyFactory factory;
+				this->enemies[i] = factory.readEnemyFromFile(read, type);
+				if (!this->enemies[i])
 				{
-				case TypeOfEnemy::SKELETON:
-					this->enemies[i] = new Skeleton(read);
-					break;
-				case TypeOfEnemy::WEREWOLF:
-					this->enemies[i] = new Werewolf(read);
-					break;
-				default:
 					throw std::runtime_error("Error");
 				}
+			
 			}
 		}
 
@@ -66,27 +64,13 @@ Room::Room(std::ifstream& read): name(readString(read))
 
 				uint64_t ID = 0;
 				read.read(reinterpret_cast<char*>(&ID), sizeof(ID));
-
-				switch (type)
+				ItemFactory factory;
+				this->items[i] = factory.loadItemFromFile(read, type, ID);
+				if (!this->items[i])
 				{
-				case TypeOfItem::WEAPON:
-					this->items[i] = new Weapon(read, ID);
-					break;
-				case TypeOfItem::ARMOR:
-					this->items[i] = new Armor(read, ID);
-					break;
-				case TypeOfItem::CONSUMABLE:
-					this->items[i] = new Consumable(read, ID);
-					break;
-				case TypeOfItem::SCROLL:
-					this->items[i] = new Scroll(read, ID);
-					break;
-				case TypeOfItem::RELIC:
-					this->items[i] = new Relic(read, ID);
-					break;
-				default:
 					throw std::runtime_error("Error");
 				}
+					
 			}
 
 		}
