@@ -12,3 +12,5 @@ enum class HeroClass
 size_t getAmountOfHeroClasses();
 
 void printHeroClass(HeroClass heroClass);
+
+void printClasses();

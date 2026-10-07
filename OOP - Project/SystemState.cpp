@@ -25,6 +25,6 @@ std::string SystemState::getString(const std::string& output)
 {
 	std::string str;
 	std::cout << "Enter " << output << ": ";
-	std::cin >> str;
+	std::getline(std::cin, str);
 	return str;
 }

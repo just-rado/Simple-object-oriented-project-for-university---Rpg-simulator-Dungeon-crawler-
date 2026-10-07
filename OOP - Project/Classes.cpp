@@ -29,3 +29,11 @@ void printHeroClass(HeroClass heroClass)
 	}
 
 }
+
+void printClasses()
+{
+	std::cout << "1.WARRIOR\n";
+	std::cout << "2.MAGE\n";
+	std::cout << "3.HEALER\n";
+	std::cout << "4.PALADIN\n";
+}
