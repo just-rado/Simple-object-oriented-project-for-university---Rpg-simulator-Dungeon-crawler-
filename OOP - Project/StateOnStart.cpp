@@ -1,5 +1,6 @@
 #include "StateOnStart.h"
 #include <iostream>
+#include "SafeInputReading.h"
 int StateOnStart::display()
 {
 	while (true)
@@ -11,15 +12,19 @@ int StateOnStart::display()
 		std::cout << "4.Quit\n";
 
 		int action = 0;
-		std::cin >> action;
-		if (action > 0 && action < 5)
+		
+		if (!readValidInt(1, 4, action))
 		{
-			return action;
+			if (!tryAgain("Invalid input"))
+			{
+				return 4;
+			}
+			else
+			{
+				continue;
+			}
 		}
-		else
-		{
-			std::cout << "Invalid input. Try again\n\n\n\n\n";
-		}
+		return action;
 	}
 }
 

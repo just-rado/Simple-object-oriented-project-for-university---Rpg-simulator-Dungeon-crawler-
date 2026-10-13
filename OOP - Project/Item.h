@@ -64,6 +64,10 @@ public:
 	unsigned int getRequiredLevel()const;
 	const std::vector<uint64_t>& getCompatibleClasses()const;
 
+	static void printItemTypes();
+	static TypeOfItem convertIntToItemType(int type);
+	static int numberOfItemTypes();
+
 protected:
 	void setTypeOfItem(TypeOfItem type);
 

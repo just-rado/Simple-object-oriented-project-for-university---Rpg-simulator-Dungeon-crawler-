@@ -140,6 +140,7 @@
     <ClInclude Include="Healer.h" />
     <ClInclude Include="HealSpell.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="HeroesState.h" />
     <ClInclude Include="HeroFactory.h" />
     <ClInclude Include="Information.h" />
     <ClInclude Include="Item.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="RegisterState.h" />
     <ClInclude Include="Relic.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="SafeInputReading.h" />
     <ClInclude Include="Scroll.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Spell.h" />
@@ -179,6 +181,7 @@
     <ClCompile Include="Healer.cpp" />
     <ClCompile Include="HealSpell.cpp" />
     <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="HeroesState.cpp" />
     <ClCompile Include="HeroFactory.cpp" />
     <ClCompile Include="Information.cpp" />
     <ClCompile Include="Item.cpp" />

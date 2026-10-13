@@ -27,11 +27,18 @@ public:
 	Hero& operator=(const Hero& other);
 	virtual ~Hero()override;
 
+	void printItemsFromInventory()const;
+	void printEquippedItems()const;
+	void printItemsOfParticularType(TypeOfItem itemType)const;
+
 	bool equipItem(uint64_t itemID);
 	bool unequipItem(size_t slot);
 
 	const Item* getItemFromInvetoryAtIndex(size_t index)const;
-	const Item* getItemFromEquippedItems(TypeOfItem type)const;
+	const Item* getItemFromEquippedItems(size_t index)const;
+
+	static size_t getCapacityForEquippedItems();
+	static size_t getCapacityForInventory();
 
 	bool collectItem(Item*& item);
 	Item* dropItemFromInventory(uint64_t itemID);
@@ -79,6 +86,8 @@ private:
 
 	static void readItemsFromFile(std::ifstream& read , Item* items[], size_t size);
 	static void writeItemsToFile(std::ofstream& write, Item* const items[], size_t size);
+
+	static bool printMore(size_t numberOfItemsPrinted);
 
 	static constexpr TypeOfCharacter TYPE = TypeOfCharacter::HERO;
 	

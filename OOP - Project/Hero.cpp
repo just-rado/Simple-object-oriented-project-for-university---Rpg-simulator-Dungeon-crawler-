@@ -5,6 +5,8 @@
 #include "Weapon.h"
 #include "Consumable.h"
 #include "ItemFactory.h"
+#include <iostream>
+#include "SafeInputReading.h"
 
 
 
@@ -177,6 +179,14 @@ Hero::~Hero()
 }
 
 
+size_t Hero::getCapacityForEquippedItems()
+{
+	return Hero::MAX_EQUIPPED_ITEMS;
+}
+size_t Hero::getCapacityForInventory()
+{
+	return Hero::CAPACITY_OF_INVENTORY;
+}
 
 int Hero::calculatePriority()const
 {
@@ -193,6 +203,89 @@ HeroClass Hero::getClass()const
 {
 	return this->heroClass;
 }
+
+bool Hero::printMore(size_t numberOfItemsPrinted)
+{
+	if (numberOfItemsPrinted % 10 != 0)
+	{
+		return true;
+	}
+
+	std::cout << "1.Show more\n";
+	std::cout << "2.Go back\n";
+	int command = 0;
+	if (readValidInt(1, 1, command))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void Hero::printEquippedItems()const
+{
+	for (size_t i = 0; i < MAX_EQUIPPED_ITEMS; ++i)
+	{
+		if (this->equippedItems[i])
+		{
+			std::cout << i << "Slot\n";
+			this->equippedItems[i]->printInfo();
+		}
+	}
+}
+void Hero::printItemsOfParticularType(TypeOfItem itemType)const
+{
+	std::cout << "Equipped item:\n";
+	size_t numberOfItemsPrinted = 0;
+	for (size_t i = 0; i < MAX_EQUIPPED_ITEMS; ++i)
+	{
+		if (this->equippedItems[i] && this->equippedItems[i]->getTypeOfItem() == itemType)
+		{
+			this->equippedItems[i]->printInfo();
+			std::cout << "\n\n";
+			++numberOfItemsPrinted; 
+		}
+	}
+
+	std::cout << "Item in invetory:\n";
+	for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
+	{
+		if (this->inventory[i] && this->inventory[i]->getTypeOfItem() == itemType)
+		{
+			this->inventory[i]->printInfo();
+			std::cout << "\n\n";
+			++numberOfItemsPrinted;
+		}
+
+		if (!printMore(numberOfItemsPrinted))
+		{
+			break;
+		}
+		
+	}
+}
+void Hero::printItemsFromInventory()const
+{
+	size_t numberOfItemsPrinted = 0;
+	for (size_t i = 0; i < CAPACITY_OF_INVENTORY; ++i)
+	{
+		if (this->inventory[i])
+		{
+			this->inventory[i]->printInfo();
+			std::cout << "\n\n";
+			++numberOfItemsPrinted;
+		}
+		
+		if (!printMore(numberOfItemsPrinted))
+		{
+			break;
+		}
+
+	}
+}
+
 
 bool Hero::collectItem(Item*& item)
 {
@@ -492,9 +585,13 @@ const Item* Hero::getItemFromInvetoryAtIndex(size_t index)const
 	}
 	return nullptr;
 }
-const Item* Hero::getItemFromEquippedItems(TypeOfItem type)const
+const Item* Hero::getItemFromEquippedItems(size_t index)const
 {
-	return this->equippedItems[getItemSlotFor(type)];
+	if (index < MAX_EQUIPPED_ITEMS)
+	{
+		return this->equippedItems[index];
+	}
+	return nullptr;
 }
 
 

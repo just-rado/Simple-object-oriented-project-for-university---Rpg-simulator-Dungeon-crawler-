@@ -3,44 +3,47 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "SafeInputReading.h"
 
 int GameSelectState::display()
 {
 	while (true)
 	{
-		std::cout << "Choose option:" << '\n';
-		std::cout << "1.Create new game" << '\n';
-		std::cout << "2.Load game" << '\n';
-		std::cout << "3.Show all games" << '\n';
-		std::cout << "4.Save and quit" << '\n';
+		std::cout << "Choose option:\n";
+		std::cout << "1.Create new game\n";
+		std::cout << "2.Load game\n";
+		std::cout << "3.Show all games\n";
+		std::cout << "4.Save and quit\n";
 
 		int action = 0;
-		std::cin >> action;
-
-		if (action == 1)
+		
+		if (!readValidInt(1, 4, action))
 		{
+			if (!tryAgain("Invalid input"))
+			{
+				return 4;
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+
+		switch (action)
+		{
+		case 1:
 			createNewGame();
 			continue;
-		}
-		else if(action == 2)
-		{
+		case 2:
 			return 2;
-		}
-		else if(action == 3)
-		{
+		case 3: 
 			printGames();
 			continue;
-		}
-		else if (action == 4)
-		{
+		case 4:
 			return 4;
 		}
-		else
-		{
-			std::cout << "Please enter a valid option";
-			std::cout << "\n\n\n";
-			continue;
-		}
+		
 	}
 }
 SystemState* GameSelectState::execute(int action)

@@ -23,12 +23,12 @@
 #include "Game.h"
 #include "Dungeon.h"
 #include "System.h"
-
-
+  
 // make the all factories's method static and call each method with factoryname::method()
+// in the different item derived classes implement print info
 int main()
 {
-
+	
 	//System system;
 	// first dungeon - depths
 

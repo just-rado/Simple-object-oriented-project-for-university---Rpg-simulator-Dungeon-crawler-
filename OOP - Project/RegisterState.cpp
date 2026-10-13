@@ -41,7 +41,7 @@ SystemState* RegisterState::execute(int action)
 {
 	if (action == 1)
 	{
-
+		return nullptr;
 	}
 	else
 	{
@@ -54,6 +54,7 @@ bool RegisterState::doesAccountAlreadyExist(const std::string& userName)
 	std::ifstream check(userName, std::ios::binary);
 	if (check.is_open())
 	{
+		check.close();
 		return true;
 	}
 

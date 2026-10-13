@@ -13,16 +13,14 @@ public:
 	// rule of three
 
 private:
-	// divide the different actions into different states , e.g inventory state / dungeon selection state and so on
+	// divide the different actions into different states , e.g adding newHero / inventory state / dungeon selection state and so on
 	std::string nameOfGame;
 	std::vector<std::string> namesOfHeroes;
 	std::vector<std::string> nameOfDungeons;
 	
-	std::vector<Hero*> loadedHeroes;
-	
 	static bool isBlank(const std::string& string);
 
-	bool isHeroAlreadyLoaded(const std::string& name)const;
+	/*bool isHeroAlreadyLoaded(const std::string& name)const;*/
 
 	bool doesHeroExist(const std::string& name)const;
 
@@ -30,11 +28,7 @@ private:
 
 	void addNewHero();
 
-	Hero* loadHeroData(const std::string& name);
-
-	Hero* getLoadedHero(const std::string& name)const;
-
-	void heroInfo();
+	//Hero* getLoadedHero(const std::string& name)const;
 
 	void printNameOfHeroes()const;
 
@@ -42,7 +36,7 @@ private:
 
 	void manageItemsOfASingleHero(const Hero* hero);
 
-	void manageItems();
+	//void manageItems();
 	
 	void dungeonInfo()const;
 

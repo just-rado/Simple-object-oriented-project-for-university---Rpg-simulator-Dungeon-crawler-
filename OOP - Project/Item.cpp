@@ -119,6 +119,40 @@ void Item::printInfo()const
 
 }
 
+
+void Item::printItemTypes()
+{
+	std::cout << "1.Weapon\n";
+	std::cout << "2.Armor\n";
+	std::cout << "3.Consumable\n";
+	std::cout << "4.Scroll\n";
+	std::cout << "5.Relic\n";
+}
+
+TypeOfItem Item::convertIntToItemType(int type)
+{
+	switch (type)
+	{
+	case 1:
+		return TypeOfItem::WEAPON;
+	case 2:
+		return TypeOfItem::ARMOR;
+	case 3:
+		return TypeOfItem::CONSUMABLE;
+	case 4:
+		return TypeOfItem::SCROLL;
+	case 5:
+		return TypeOfItem::RELIC;
+	default:
+		throw std::exception();
+	}
+}
+
+int Item::numberOfItemTypes()
+{
+	return static_cast<int>(TypeOfItem::RELIC);
+}
+
 void Item::applyEffectsOfItem(Character* character)const
 {
 	return; 
