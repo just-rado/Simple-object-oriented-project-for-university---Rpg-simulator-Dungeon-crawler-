@@ -18,6 +18,10 @@ private:
 
 	static void heroInfo(const std::string& heroName , const std::vector<std::string>& heroNames);
 
+	static void storeHeroData(const Hero* hero);
+
+	static void giveItem(Hero* giver, Hero* reciever);
+
 	static void SwitchItemsBetweenTwoHeroes(const std::string& firstHeroName, const std::string& secondHeroName);
 
 	static void manageItemsOfASingleHero(const std::string& heroName);

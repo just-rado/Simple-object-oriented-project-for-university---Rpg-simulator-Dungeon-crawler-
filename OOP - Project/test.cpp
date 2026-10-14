@@ -26,6 +26,8 @@
   
 // make the all factories's method static and call each method with factoryname::method()
 // in the different item derived classes implement print info
+// write a info method for dungeon;
+
 int main()
 {
 	

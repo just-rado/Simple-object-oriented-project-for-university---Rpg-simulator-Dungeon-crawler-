@@ -135,6 +135,9 @@
     <ClInclude Include="SafeInputReading.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HeroManagerState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Item.cpp">
@@ -246,6 +249,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HeroesState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HeroManagerState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -142,6 +142,7 @@
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HeroesState.h" />
     <ClInclude Include="HeroFactory.h" />
+    <ClInclude Include="HeroManagerState.h" />
     <ClInclude Include="Information.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemFactory.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="HeroesState.cpp" />
     <ClCompile Include="HeroFactory.cpp" />
+    <ClCompile Include="HeroManagerState.cpp" />
     <ClCompile Include="Information.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemFactory.cpp" />

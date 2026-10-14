@@ -3,6 +3,7 @@
 #include "HeroFactory.h"
 #include "Item.h"
 #include "SafeInputReading.h"
+#include <fstream>
 
 
 bool  HeroesState::doesHeroExist(const std::string& name , const std::vector<std::string>& heroNames)
@@ -71,7 +72,69 @@ void HeroesState::heroInfo(const std::string& heroName , const std::vector<std::
 
 void HeroesState::SwitchItemsBetweenTwoHeroes(const std::string& firstHeroName, const std::string& secondHeroName)
 {
+	Hero* firstHero = loadHeroData(firstHeroName);
+	if (!firstHero)
+	{
+		std::cout << "Could not load first hero's data\n\n\n";
+		return;
+	}
+	Hero* secondHero = loadHeroData(secondHeroName);
+	if (!secondHero)
+	{
+		delete firstHero;
+		std::cout << "Could not load second hero's data\n\n\n";
+		return;
+	}
 
+	while (true)
+	{
+		std::cout << "Choose which hero receives item\n";
+		std::cout << "1.First hero\n";
+		std::cout << "2.Second hero\n";
+
+		int action = 0;
+		if (!readValidInt(1, 2, action))
+		{
+			if (!tryAgain("Wrong input"))
+			{
+				storeHeroData(firstHero);
+				delete firstHero;
+
+				storeHeroData(secondHero);
+				delete secondHero;
+				return;
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		switch (action)
+		{
+		case 1:
+			giveItem(secondHero, firstHero);
+			break;
+		case 2:
+			giveItem(firstHero, secondHero);
+			break;
+		}
+
+		std::cout << "Continue exchanging items?\n";
+		std::cout << "1.Yes\n";
+		std::cout << "2.No\n";
+
+		if (!readValidInt(1, 1, action))
+		{
+			storeHeroData(firstHero);
+			delete firstHero;
+
+			storeHeroData(secondHero);
+			delete secondHero;
+
+			return;
+		}
+	}
 }
 
 void HeroesState::manageItemsOfASingleHero(const std::string& heroName)
@@ -98,6 +161,8 @@ void HeroesState::manageItemsOfASingleHero(const std::string& heroName)
 		{
 			if (!tryAgain("Wrong input"))
 			{
+				storeHeroData(hero);
+				delete hero;
 				return;
 			}
 			else
@@ -130,6 +195,8 @@ void HeroesState::manageItemsOfASingleHero(const std::string& heroName)
 				continue;
 			}
 		case 6:
+			storeHeroData(hero);
+			delete hero;
 			return;
 		}
 
@@ -259,5 +326,33 @@ int HeroesState::InputItemSlot()
 		}
 
 		return slot;
+	}
+}
+
+void HeroesState::storeHeroData(const Hero* hero)
+{
+	std::ofstream store(hero->getName(), std::ios::binary);
+	if (store.is_open())
+	{
+		hero->writeToFile(store);
+		store.close();
+	}
+	else
+	{
+		std::cout << "Could not store data\n\n\n";
+	}
+}
+
+void HeroesState::giveItem(Hero* giver, Hero* reciever)
+{
+	std::cout << "Giver's inventory:\n";
+	giver->printItemsFromInventory();
+	std::cout << "Pick item to give:\n";
+	Item* toGive = giver->dropItemFromInventory(InputItemID());
+
+	if (!reciever->collectItem(toGive))
+	{
+		std::cout << "Could not give item\n";
+		giver->collectItem(toGive);
 	}
 }

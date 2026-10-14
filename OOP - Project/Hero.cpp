@@ -228,10 +228,15 @@ void Hero::printEquippedItems()const
 {
 	for (size_t i = 0; i < MAX_EQUIPPED_ITEMS; ++i)
 	{
+		std::cout << i << "Slot\n";
 		if (this->equippedItems[i])
 		{
-			std::cout << i << "Slot\n";
+			
 			this->equippedItems[i]->printInfo();
+		}
+		else
+		{
+			std::cout << "Empty\n";
 		}
 	}
 }
