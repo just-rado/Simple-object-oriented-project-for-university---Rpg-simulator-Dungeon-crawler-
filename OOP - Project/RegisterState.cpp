@@ -2,6 +2,7 @@
 #include <iostream>
 #include "StringFunctionsForFiles.h"
 #include <fstream>
+#include "GameSelectState.h"
 int RegisterState::display()
 {
 	while (true)
@@ -39,12 +40,11 @@ int RegisterState::display()
 }
 SystemState* RegisterState::execute(int action)
 {
-	if (action == 1)
+	switch (action)
 	{
-		return nullptr;
-	}
-	else
-	{
+	case 1:
+		return new GameSelectState();
+	case 2:
 		return nullptr;
 	}
 }

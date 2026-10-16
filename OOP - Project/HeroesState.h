@@ -6,17 +6,16 @@
 class HeroesState: public SystemState
 {
 public:
+	HeroesState(const std::vector<std::string>& heroNames);
+
 	int display()override;
 	SystemState* execute(int action)override;
 
 
 private:
-
-	static bool doesHeroExist(const std::string& name , const std::vector<std::string>& heroNames);
-
 	static Hero* loadHeroData(const std::string& name);
 
-	static void heroInfo(const std::string& heroName , const std::vector<std::string>& heroNames);
+	static void heroInfo(const std::vector<std::string>& heroNames);
 
 	static void storeHeroData(const Hero* hero);
 

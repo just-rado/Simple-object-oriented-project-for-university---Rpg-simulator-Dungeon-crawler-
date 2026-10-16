@@ -139,6 +139,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Healer.h" />
     <ClInclude Include="HealSpell.h" />
+    <ClInclude Include="StringHelpers.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HeroesState.h" />
     <ClInclude Include="HeroFactory.h" />

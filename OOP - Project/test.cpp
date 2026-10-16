@@ -24,6 +24,7 @@
 #include "Dungeon.h"
 #include "System.h"
   
+// fix the whole state logic // maybe add a third method that goes back idk :((
 // make the all factories's method static and call each method with factoryname::method()
 // in the different item derived classes implement print info
 // write a info method for dungeon;

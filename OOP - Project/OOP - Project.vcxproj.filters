@@ -138,6 +138,9 @@
     <ClInclude Include="HeroManagerState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StringHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Item.cpp">

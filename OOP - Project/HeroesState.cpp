@@ -4,19 +4,52 @@
 #include "Item.h"
 #include "SafeInputReading.h"
 #include <fstream>
+#include "StringHelpers.h"
 
-
-bool  HeroesState::doesHeroExist(const std::string& name , const std::vector<std::string>& heroNames)
+HeroesState::HeroesState(const std::vector<std::string>& heroNames)
 {
-	size_t size = heroNames.size();
-	for (size_t i = 0; i < size; ++i)
+	while (true)
 	{
-		if (heroNames[i] == name)
+		std::cout << "Choose\n";
+		std::cout << "1.Show information of a particular hero\n";
+		std::cout << "2.Manage items\n";
+		std::cout << "3.Back\n";
+		int action = 0;
+		if (!readValidInt(1, 3, action))
 		{
-			return true;
+			if (!tryAgain("Wrong input"))
+			{
+				break;
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		switch (action)
+		{
+		case 1:
+			heroInfo(heroNames);
+			continue;
+		case 2:
+			manageItems(heroNames);
+			continue;
+		case 3:
+			break;
+		default:
+			break;
 		}
 	}
-	return false;
+}
+int HeroesState::display()
+{
+	return 1;
+}
+
+SystemState* HeroesState::execute(int action)
+{
+	return nullptr;
 }
 
 Hero* HeroesState::loadHeroData(const std::string& name)
@@ -43,7 +76,7 @@ Hero* HeroesState::loadHeroData(const std::string& name)
 	return toStore;
 }
 
-void HeroesState::heroInfo(const std::string& heroName , const std::vector<std::string>& heroNames)
+void HeroesState::heroInfo(const std::vector<std::string>& heroNames)
 {
 	std::string nameOfHero = getString("name of hero");
 
@@ -216,7 +249,7 @@ void HeroesState::manageItems(const std::vector<std::string>& heroNames)
 	{
 		std::string heroName = getString("name of hero");
 
-		if (doesHeroExist(heroName , heroNames))
+		if (doesStringExist(heroName , heroNames))
 		{
 			manageItemsOfASingleHero(heroName);
 		}
@@ -242,11 +275,11 @@ void HeroesState::manageItems(const std::vector<std::string>& heroNames)
 		size_t size = heroNames.size();
 		for (size_t i = 0; i < size; ++i)
 		{
-			if (!firstExists && heroNames[i] == firstHeroName)
+			if (!firstExists && areEqual(heroNames[i],firstHeroName))
 			{
 				firstExists = true;
 			}
-			else if (!secondExists && heroNames[i] == secondHeroName)
+			else if (!secondExists && areEqual(heroNames[i] , secondHeroName))
 			{
 				secondExists = true;
 			}
@@ -356,3 +389,6 @@ void HeroesState::giveItem(Hero* giver, Hero* reciever)
 		giver->collectItem(toGive);
 	}
 }
+
+
+

@@ -4,6 +4,13 @@
 #include <vector>
 #include <iostream>
 #include "SafeInputReading.h"
+#include "StringHelpers.h"
+#include "GameState.h"
+
+GameSelectState::GameSelectState(const std::string& nameOfFile)
+{
+
+}
 
 int GameSelectState::display()
 {
@@ -48,9 +55,24 @@ int GameSelectState::display()
 }
 SystemState* GameSelectState::execute(int action)
 {
-	return nullptr;
+	switch (action)
+	{
+	case 2:
+	{
+		std::string toLoad = loadGame();
+		if (toLoad.empty())
+		{
+			// save into file
+			return nullptr;
+		}
+		return new GameState(toLoad);
+	}
+	case 4:
+		// save into file
+		return nullptr;
+	}
 }
-
+// 
 void GameSelectState::printGames()const
 {
 	size_t size = this->nameOfGames.size();
@@ -89,7 +111,7 @@ bool GameSelectState::createNewGame()
 
 		for (size_t i = 0; i < nameOfGames.size(); ++i)
 		{
-			if (nameOfGame == nameOfGames[i])
+			if (areEqual(nameOfGame , nameOfGames[i]))
 			{
 				errorOccurred = true;
 				if (!tryAgain("Game with this name already exists"))
@@ -108,5 +130,30 @@ bool GameSelectState::createNewGame()
 		this->nameOfGames.push_back(nameOfGame);
 
 		return true;
+	}
+}
+
+std::string GameSelectState::loadGame()const
+{
+	std::string newGame;
+	while (true)
+	{
+		printGames();
+		newGame = getString("which game to play");
+
+		if (!doesStringExist(newGame , this->nameOfGames))
+		{
+			if (tryAgain("No game with that name exists"))
+			{
+				continue;
+			}
+			else
+			{
+				newGame.clear();
+				return newGame;
+			}
+		}
+
+		return newGame;
 	}
 }

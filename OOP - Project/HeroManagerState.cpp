@@ -5,7 +5,56 @@
 #include "Hero.h"
 #include "HeroFactory.h"
 #include <stdexcept>
+#include "StringHelpers.h"
 
+
+HeroManagerState::HeroManagerState(std::vector<std::string>& heroNames)
+{
+	while (true)
+	{
+		std::cout << "Choose\n";
+		std::cout << "1.Create a new hero\n";
+		std::cout << "2.Remove a hero\n";
+		std::cout << "3.Back\n";
+
+		int action = 0;
+		if (!readValidInt(1, 3, action))
+		{
+			if (!tryAgain("Wrong input"))
+			{
+				break;
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		switch (action)
+		{
+		case 1:
+			createNewhero(heroNames);
+			continue;
+		case 2:
+			removeAHero(heroNames);
+			continue;
+		case 3:
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+int HeroManagerState::display()
+{
+	return 1;
+}
+
+SystemState* HeroManagerState::execute(int action)
+{
+	return nullptr;
+}
 void HeroManagerState::createNewhero(std::vector<std::string>& heroNames)
 {
 	std::string heroName = inputNewHeroName(heroNames);
@@ -114,7 +163,7 @@ std::string HeroManagerState::inputNewHeroName(const std::vector<std::string>& h
 			continue;
 		}
 
-		if (!doesHeroExist(name , heroNames))
+		if (!doesStringExist(name , heroNames))
 		{
 			return name;
 		}
@@ -125,18 +174,6 @@ std::string HeroManagerState::inputNewHeroName(const std::vector<std::string>& h
 		}
 
 	}
-}
-bool HeroManagerState::doesHeroExist(const std::string& heroName, const std::vector<std::string>& heroNames)
-{
-	size_t size = heroNames.size();
-	for (size_t i = 0; i < size; ++i)
-	{
-		if (heroNames[i] == heroName)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 bool HeroManagerState::isBlank(const std::string& string)

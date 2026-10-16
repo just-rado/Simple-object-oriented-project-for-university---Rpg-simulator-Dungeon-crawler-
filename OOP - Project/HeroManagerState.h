@@ -5,6 +5,8 @@
 class HeroManagerState: public SystemState
 {
 public:
+	HeroManagerState(std::vector<std::string>& heroNames);
+
 	int display()override;
 	SystemState* execute(int action)override;
 
@@ -14,7 +16,6 @@ private:
 	void removeAHero(std::vector<std::string>& heroNames);
 
 	static bool isBlank(const std::string& string);
-	static bool doesHeroExist(const std::string& heroName , const std::vector<std::string>& heroNames);
 	static std::string inputNewHeroName(const std::vector<std::string>& heroNames);
 
 };
