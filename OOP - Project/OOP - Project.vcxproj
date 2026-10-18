@@ -139,6 +139,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Healer.h" />
     <ClInclude Include="HealSpell.h" />
+    <ClInclude Include="LoginState.h" />
     <ClInclude Include="StringHelpers.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HeroesState.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Information.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemFactory.cpp" />
+    <ClCompile Include="LoginState.cpp" />
     <ClCompile Include="Mage.cpp" />
     <ClCompile Include="Paladin.cpp" />
     <ClCompile Include="RegisterState.cpp" />

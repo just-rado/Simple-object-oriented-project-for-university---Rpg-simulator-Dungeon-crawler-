@@ -5,6 +5,11 @@
 #include "GameSelectState.h"
 int RegisterState::display()
 {
+	return 1;
+}
+
+std::string RegisterState::regPrompt()
+{
 	while (true)
 	{
 		std::string username = getString("username");
@@ -17,7 +22,7 @@ int RegisterState::display()
 			}
 			else
 			{
-				return 2;
+				return std::string();
 			}
 		}
 
@@ -31,22 +36,25 @@ int RegisterState::display()
 			}
 			else
 			{
-				return 2;
+				return std::string();
 			}
 		}
-		
-		return 1;
+
+		return username;
 	}
 }
+
 SystemState* RegisterState::execute(int action)
 {
-	switch (action)
+	std::string successfullyCreated = regPrompt();
+	changeState();
+
+	if (successfullyCreated.empty())
 	{
-	case 1:
-		return new GameSelectState();
-	case 2:
 		return nullptr;
 	}
+	
+	return new (std::nothrow) GameSelectState(successfullyCreated);
 }
 
 bool RegisterState::doesAccountAlreadyExist(const std::string& userName)

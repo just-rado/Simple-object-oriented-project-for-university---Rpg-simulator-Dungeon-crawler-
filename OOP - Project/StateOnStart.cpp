@@ -2,6 +2,7 @@
 #include <iostream>
 #include "SafeInputReading.h"
 #include "RegisterState.h"
+#include "LoginState.h"
 int StateOnStart::display()
 {
 	while (true)
@@ -36,12 +37,12 @@ SystemState* StateOnStart::execute(int action)
 	case 1:
 		return new RegisterState();
 	case 2:
-		//login
-		return nullptr;
+		return new LoginState();
 	case 3:
 		// creator
 		return nullptr;
 	case 4:
+		changeState();
 		return nullptr;
 
 	}

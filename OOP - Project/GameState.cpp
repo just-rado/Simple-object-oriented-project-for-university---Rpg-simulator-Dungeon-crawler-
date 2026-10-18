@@ -91,7 +91,7 @@ int GameState::display()
 	}
 }
 
-SystemState* GameState::execute(int action)
+SystemState* GameState::execute(int action) // write safe data method
 {
 	switch (action)
 	{
@@ -103,9 +103,10 @@ SystemState* GameState::execute(int action)
 		//dungeon
 		break;
 	case 8:
+		
+		changeState();
 		return nullptr;
-	default:
-		return nullptr;
+
 	}
 }
 

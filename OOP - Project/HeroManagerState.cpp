@@ -40,8 +40,7 @@ HeroManagerState::HeroManagerState(std::vector<std::string>& heroNames)
 			continue;
 		case 3:
 			break;
-		default:
-			break;
+	
 		}
 	}
 }
@@ -53,6 +52,7 @@ int HeroManagerState::display()
 
 SystemState* HeroManagerState::execute(int action)
 {
+	changeState();
 	return nullptr;
 }
 void HeroManagerState::createNewhero(std::vector<std::string>& heroNames)

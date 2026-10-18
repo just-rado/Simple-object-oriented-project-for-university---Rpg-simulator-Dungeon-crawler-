@@ -11,7 +11,7 @@ public:
 private:
 	static bool doesAccountAlreadyExist(const std::string& userName);
 	static bool createAccount(const std::string& userName, const std::string& password);
-	
+	static std::string regPrompt();
 
 };
 

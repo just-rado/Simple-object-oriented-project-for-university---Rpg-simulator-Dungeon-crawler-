@@ -37,8 +37,6 @@ HeroesState::HeroesState(const std::vector<std::string>& heroNames)
 			continue;
 		case 3:
 			break;
-		default:
-			break;
 		}
 	}
 }
@@ -49,6 +47,7 @@ int HeroesState::display()
 
 SystemState* HeroesState::execute(int action)
 {
+	changeState();
 	return nullptr;
 }
 

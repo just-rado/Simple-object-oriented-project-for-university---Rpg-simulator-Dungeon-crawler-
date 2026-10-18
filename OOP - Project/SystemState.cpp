@@ -4,6 +4,13 @@
 #include <stdexcept>
 #include "SafeInputReading.h"
 
+
+
+SystemState::SystemState()
+{
+	this->state = State::DEFAULT;
+}
+
 bool SystemState::tryAgain(const std::string& error)
 {
 	int action = 0;
@@ -34,4 +41,14 @@ std::string SystemState::getString(const std::string& output)
 	}
 
 	return str;
+}
+
+
+void SystemState::changeState()
+{
+	this->state = State::BACK;
+}
+State SystemState::getState()const
+{
+	return this->state;
 }
