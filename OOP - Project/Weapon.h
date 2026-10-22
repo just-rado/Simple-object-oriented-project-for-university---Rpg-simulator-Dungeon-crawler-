@@ -9,6 +9,7 @@ public:
 	Weapon(std::ifstream& read, uint64_t ID);
 	virtual void writeDataToFile(std::ofstream& write)const override;
 
+	virtual void printInfo()const override;
 
 	Weapon& operator=(const Weapon& other) = delete;
 

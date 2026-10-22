@@ -128,6 +128,13 @@ Character& Character::operator=(const Character& other)
 	return *this;
 }
 
+void Character::printBasicInfo()const
+{
+	std::cout << "Name: " << this->name << "    Current level: " << this->currentLevel << '\n';
+	std::cout << "Health: " << this->mainStats.currentHP << '/' << this->maxHP << '\n';
+	std::cout << "Mana: " << this->mainStats.currentMP << '/' << this->maxMP << '\n';
+	
+}
 
 const CharacterStats& Character::getStats()const
 {

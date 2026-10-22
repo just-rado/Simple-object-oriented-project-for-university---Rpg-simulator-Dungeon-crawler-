@@ -22,8 +22,6 @@ public:
 	virtual bool requiresATarget(size_t ability)const override;
 	virtual bool useAbility(size_t ability, Character* character)override;
 	
-	
-
 	size_t getNumberOfSpells()const;
 	const Spell* getSpell(size_t index)const;
 

@@ -23,15 +23,36 @@
 #include "Game.h"
 #include "Dungeon.h"
 #include "System.h"
-  
-// fix the whole state logic // maybe add a third method that goes back idk :((
-// make the all factories's method static and call each method with factoryname::method()
-// in the different item derived classes implement print info
+#include "SystemState.h"
+#include "StateOnStart.h"
+#include <stack>
+// add size limits to the length of names , to number of heroes , to number of games
 // write a info method for dungeon;
+// rewrite room logic / dungeon logic
 
 int main()
 {
+	std::stack<SystemState*> stack;
+	SystemState* start = new StateOnStart();
+	stack.push(start);
+	while (!stack.empty())
+	{
+		SystemState* current = stack.top();
+		if (current->getState() == State::BACK)
+		{
+			stack.pop();
+			delete current;
+			continue;
+		}
+		SystemState* next = current->execute(current->display());
+		if (next)
+		{
+			stack.push(next);
+		}
 	
+	}
+
+
 	//System system;
 	// first dungeon - depths
 

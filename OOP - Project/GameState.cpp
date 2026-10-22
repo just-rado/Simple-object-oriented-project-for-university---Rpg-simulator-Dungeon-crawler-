@@ -5,6 +5,7 @@
 #include "StringHelpers.h"
 #include "HeroesState.h"
 #include "HeroManagerState.h"
+#include <stdexcept>
 
 //bool GameState::isHeroAlreadyLoaded(const std::string& name)const
 //{
@@ -36,7 +37,25 @@
 
 GameState::GameState(const std::string& nameOfGame)
 {
-	// load data from file
+	std::ifstream account(nameOfGame, std::ios::binary);
+	if (!account.is_open())
+	{
+		throw std::exception();
+	}
+	this->nameOfGame = nameOfGame;
+
+	try
+	{
+		readStrings(account, this->namesOfHeroes);
+		readStrings(account, this->nameOfDungeons);
+		readStrings(account, this->nameOfCompletedDungeons);
+	}
+	catch (...)
+	{
+		account.close();
+		throw;
+	}
+	account.close();
 }
 int GameState::display()
 {
@@ -50,7 +69,7 @@ int GameState::display()
 		std::cout << "5.Create a new hero\\Remove a hero\n";
 		std::cout << "6.Manage items of heroes\n";
 		std::cout << "7.Enter a dungeon\n";
-		std::cout << "8.Back\n";
+		std::cout << "8.Save and back\n";
 		int action = 0;
 		if (!readValidInt(1, 8, action))
 		{
@@ -91,19 +110,26 @@ int GameState::display()
 	}
 }
 
-SystemState* GameState::execute(int action) // write safe data method
+SystemState* GameState::execute(int action)
 {
 	switch (action)
 	{
 	case 5:
-		return new HeroManagerState(this->namesOfHeroes);
+		return new (std::nothrow) HeroManagerState(this->namesOfHeroes);
 	case 6:
-		return new HeroesState(this->namesOfHeroes);
+		return new (std::nothrow) HeroesState(this->namesOfHeroes);
 	case 7:
 		//dungeon
 		break;
 	case 8:
-		
+		if (!safeData())
+		{
+			if (!tryAgain("Could not save progess"))
+			{
+				changeState();
+			}
+			return nullptr;
+		}
 		changeState();
 		return nullptr;
 
@@ -247,6 +273,30 @@ void GameState::printNameOfCompletedDungeons()const
 {
 	std::cout << "Name of completed dungeons\n";
 	printStrings(this->nameOfCompletedDungeons);
+}
+
+bool GameState::safeData()const
+{
+	std::ofstream toStore(this->nameOfGame, std::ios::binary);
+	if (!toStore.is_open())
+	{
+		return false;
+	}
+
+	try
+	{
+		writeStrings(toStore, this->namesOfHeroes);
+		writeStrings(toStore, this->nameOfDungeons);
+		writeStrings(toStore, this->nameOfCompletedDungeons);
+	}
+	catch (...)
+	{
+		toStore.close();
+		return false;
+	}
+
+	toStore.close();
+	return true;
 }
 
 Dungeon* GameState::loadDungeon(const std::string& nameOfDungeon)const

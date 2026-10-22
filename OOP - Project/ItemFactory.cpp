@@ -11,15 +11,15 @@ Item* ItemFactory::loadItemFromFile(std::ifstream& is, TypeOfItem type , uint64_
 	switch (type)
 	{
 	case TypeOfItem::WEAPON:
-		return new Weapon(is, ID);
+		return new (std::nothrow)Weapon(is, ID);
 	case TypeOfItem::ARMOR:
-		return new Armor(is, ID);
+		return new (std::nothrow)Armor(is, ID);
 	case TypeOfItem::CONSUMABLE:
-		return new Consumable(is, ID);
+		return new (std::nothrow)Consumable(is, ID);
 	case TypeOfItem::SCROLL:
-		return new Scroll(is, ID);
+		return new (std::nothrow)Scroll(is, ID);
 	case TypeOfItem::RELIC:
-		return new Relic(is, ID);
+		return new (std::nothrow)Relic(is, ID);
 	default:
 		return nullptr;
 	}

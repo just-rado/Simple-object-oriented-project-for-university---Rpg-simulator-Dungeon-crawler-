@@ -10,6 +10,8 @@ public:
 	virtual void writeDataToFile(std::ofstream& write)const override;
 
 
+	virtual void printInfo()const override;
+
 	Consumable& operator=(const Consumable& other) = delete;
 
 	virtual Item* clone()const override;

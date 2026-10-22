@@ -46,6 +46,9 @@ public:
 	
 	virtual Character* clone()const = 0;
 
+	void printBasicInfo()const;
+	
+
 	const std::string& getName()const;
 	int getHP()const;
 	int getMP()const;
@@ -110,5 +113,7 @@ private:
 
 	void removeStatusEffects();
 	void updateStatusEffects();
+
+
 };
 

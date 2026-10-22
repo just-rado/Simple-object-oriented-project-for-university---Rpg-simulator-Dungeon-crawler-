@@ -115,6 +115,7 @@ void Item::printInfo()const
 	printRarity();
 	std::cout << "Cost: " << this->costInGoldCoins << '\n' << "Weight: " << this->weightInKg << "kg\n"
 		<< "Required level: " << this->requiredLevel << '\n';
+	std::cout << "Compatible classes:\n";
 	printCompatibleClasses();
 
 }

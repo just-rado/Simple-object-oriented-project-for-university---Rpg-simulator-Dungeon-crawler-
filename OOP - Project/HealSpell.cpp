@@ -29,6 +29,12 @@ void HealSpell::writeDataToFile(std::ofstream& write)const
 	}
 
 }
+void HealSpell::printInfo()const
+{
+	Spell::printInfo();
+	std::cout << "Heal value: " << this->healValue << '\n';
+}
+
 
 Spell* HealSpell::clone()const
 {

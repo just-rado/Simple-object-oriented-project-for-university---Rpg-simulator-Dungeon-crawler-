@@ -31,6 +31,8 @@ public:
 
 	virtual bool applyEffectOfSpell(Character* character)const = 0;
 
+	virtual void printInfo()const;
+
 	TypeOfSpell getEffect()const;
 	AugmentationType getType()const;
 	unsigned int getManaCost()const;
@@ -47,6 +49,6 @@ private:
 	unsigned int levelRequired;
 
 	
-
+	static void printTypeOfSpell(TypeOfSpell type);
 };
 

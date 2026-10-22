@@ -22,19 +22,14 @@ GameSelectState::GameSelectState(const std::string& nameOfAccount)
 
 	this->nameOfAccount = nameOfAccount;
 
-	uint32_t numberOfGames = 0;
-	account.read(reinterpret_cast<char*>(&numberOfGames), sizeof(numberOfGames));
-
-	this->nameOfGames.resize(numberOfGames);
-	
-	for (uint32_t i = 0; i < numberOfGames; ++i)
+	try
 	{
-		if (!account.good())
-		{
-			account.close();
-			throw std::exception();
-		}
-		this->nameOfGames[i] = readString(account);
+		readStrings(account, this->nameOfGames);
+	}
+	catch (...)
+	{
+		account.close();
+		throw;
 	}
 	account.close();
 }
@@ -44,25 +39,21 @@ bool GameSelectState::storeAccount()const
 	std::ofstream storeAccount(this->nameOfAccount, std::ios::binary);
 	if (!storeAccount.is_open())
 	{
-		std::cout << "Critical error could not save progress\n";
 		return false;
 	}
 
-	writeString(storeAccount, this->password);
-
-	uint32_t numberOfGames = static_cast<uint32_t>(this->nameOfGames.size());
-	storeAccount.write(reinterpret_cast<const char*>(&numberOfGames), sizeof(numberOfGames));
-
-	for (uint32_t i = 0; i < numberOfGames; ++i)
+	try
 	{
-		if (!storeAccount)
-		{
-			std::cout << "Error occurred. Could not save everything\n";
-			return false;
-		}
-		writeString(storeAccount, this->nameOfGames[i]);
-	}
+		writeString(storeAccount, this->password);
+		writeStrings(storeAccount, this->nameOfGames);
 
+	}
+	catch (...)
+	{
+		storeAccount.close();
+		return false;
+	}
+	
 	return true;
 }
 int GameSelectState::display()
@@ -95,6 +86,11 @@ int GameSelectState::display()
 			createNewGame();
 			continue;
 		case 2:
+			if (this->nameOfGames.size() == 0)
+			{
+				std::cout << "No games exist\n";
+				continue;
+			}
 			return 2;
 		case 3: 
 			printGames();
@@ -116,6 +112,7 @@ SystemState* GameSelectState::execute(int action)
 		{
 			return nullptr;
 		}
+		// create file for game
 		return new (std::nothrow) GameState(selectedGame);
 	}
 	case 4:
@@ -200,6 +197,7 @@ std::string GameSelectState::selectGame()const
 	std::string newGame;
 	while (true)
 	{
+		std::cout << "Games:\n";
 		printGames();
 		newGame = getString("which game to play");
 

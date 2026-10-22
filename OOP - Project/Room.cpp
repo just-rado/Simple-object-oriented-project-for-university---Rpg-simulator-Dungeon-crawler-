@@ -38,8 +38,7 @@ Room::Room(std::ifstream& read): name(readString(read))
 				read.read(reinterpret_cast<char*>(&typeOfEnemyValue), sizeof(typeOfEnemyValue));
 
 				TypeOfEnemy type = static_cast<TypeOfEnemy>(typeOfEnemyValue);
-				EnemyFactory factory;
-				this->enemies[i] = factory.readEnemyFromFile(read, type);
+				this->enemies[i] = EnemyFactory::readEnemyFromFile(read, type);
 				if (!this->enemies[i])
 				{
 					throw std::runtime_error("Error");
@@ -64,8 +63,7 @@ Room::Room(std::ifstream& read): name(readString(read))
 
 				uint64_t ID = 0;
 				read.read(reinterpret_cast<char*>(&ID), sizeof(ID));
-				ItemFactory factory;
-				this->items[i] = factory.loadItemFromFile(read, type, ID);
+				this->items[i] = ItemFactory::loadItemFromFile(read, type, ID);
 				if (!this->items[i])
 				{
 					throw std::runtime_error("Error");

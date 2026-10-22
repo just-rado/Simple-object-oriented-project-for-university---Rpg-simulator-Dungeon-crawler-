@@ -27,8 +27,8 @@ Mage::Mage(std::ifstream& read): Hero(read , HERO_CLASS)
 				read.read(reinterpret_cast<char*>(&typeOfSpellValue), sizeof(typeOfSpellValue));
 
 				TypeOfSpell type = static_cast<TypeOfSpell>(typeOfSpellValue);
-				SpellFactory factory;
-				this->spells[i] = factory.readSpellFromFile(read, type);
+				
+				this->spells[i] = SpellFactory::readSpellFromFile(read, type);
 				
 				if (!this->spells[i])
 				{

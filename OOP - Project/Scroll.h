@@ -14,6 +14,8 @@ public:
 	Scroll(const Scroll& other);
 	virtual ~Scroll()override;
 
+	virtual void printInfo()const override;
+
 	Scroll& operator=(const Scroll& other) = delete;
 	virtual Item* clone()const override;
 

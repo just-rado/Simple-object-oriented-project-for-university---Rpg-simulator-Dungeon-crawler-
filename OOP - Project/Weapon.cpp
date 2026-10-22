@@ -46,6 +46,15 @@ void Weapon::writeDataToFile(std::ofstream& write)const
 }
 
 
+void Weapon::printInfo()const
+{
+	Item::printInfo();
+	std::cout << "Damage value: " << this->dmgValue << '\n';
+	std::cout << "Critical chance: " << this->criticalChance << '\n';
+	std::cout << "Augmentation type:\n";
+	printAugmentationType(this->type);
+}
+
 Item* Weapon::clone()const
 {
 	return new Weapon(*this);

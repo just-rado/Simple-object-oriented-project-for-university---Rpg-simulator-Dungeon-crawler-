@@ -1,4 +1,5 @@
 #include "Armor.h"
+#include <iostream>
 
 Armor::Armor(const ItemData& data , unsigned int protectionValue, const CharacterStats& modifiers):
 		Item(data , ITEM_TYPE), protectionValue(protectionValue) , modifiers(modifiers)
@@ -32,6 +33,13 @@ void Armor::writeDataToFile(std::ofstream& write)const
 		throw std::runtime_error("Could not write armor");
 	}
 
+}
+
+void Armor::printInfo()const
+{
+	Item::printInfo();
+	std::cout << "Protection value: " << this->protectionValue << '\n';
+	printCharacterStats(this->modifiers);
 }
 
 

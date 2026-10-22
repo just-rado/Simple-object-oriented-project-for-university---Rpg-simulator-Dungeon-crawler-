@@ -13,6 +13,8 @@ public:
 
 	virtual void writeDataToFile(std::ofstream& write)const override;
 
+	virtual void printInfo()const override;
+
 	virtual Spell* clone()const override;
 	unsigned int getHealValue()const;
 

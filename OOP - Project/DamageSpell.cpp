@@ -42,6 +42,12 @@ int DamageSpell::getDamageValue()const
 	return this->damageValue;
 }
 
+void DamageSpell::printInfo()const
+{
+	Spell::printInfo();
+	std::cout << "Damage value: " << this->damageValue << '\n';
+}
+
 bool DamageSpell::applyEffectOfSpell(Character* character)const
 {
 	if (!character)

@@ -9,13 +9,13 @@
 	switch (type)
 	{
 	case HeroClass::WARRIOR:
-		return new Warrior(is);
+		return new (std::nothrow)Warrior(is);
 	case HeroClass::MAGE:
-		return new Mage(is);
+		return new (std::nothrow)Mage(is);
 	case HeroClass::PALADIN:
-		return new Paladin(is);
+		return new (std::nothrow)Paladin(is);
 	case HeroClass::HEALER:
-		return new Healer(is);
+		return new (std::nothrow)Healer(is);
 	default:
 		return nullptr;
 	}
@@ -27,13 +27,13 @@ Hero* HeroFactory::createNewHero(const std::string& name, HeroClass cl)
 	switch (cl)
 	{
 	case HeroClass::WARRIOR:
-		return new Warrior(name);
+		return new (std::nothrow)Warrior(name);
 	case HeroClass::MAGE:
-		return new Mage(name);
+		return new (std::nothrow)Mage(name);
 	case HeroClass::PALADIN:
-		return new Paladin(name);
+		return new (std::nothrow)Paladin(name);
 	case HeroClass::HEALER:
-		return new Healer(name);
+		return new (std::nothrow)Healer(name);
 	default:
 		return nullptr;
 	}

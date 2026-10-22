@@ -58,3 +58,10 @@ bool CleanseSpell::applyEffectOfSpell(Character* character)const
 	character->removeStatusEffect(this->removeStatusEffect);
 	return true;
 }
+
+void CleanseSpell::printInfo()const
+{
+	Spell::printInfo();
+	std::cout << "Status effect that will be cleansed: ";
+	printStatusEffect(this->removeStatusEffect);
+}

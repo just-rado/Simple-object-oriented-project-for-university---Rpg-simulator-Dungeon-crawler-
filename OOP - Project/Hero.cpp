@@ -81,8 +81,8 @@ void Hero::readItemsFromFile(std::ifstream& read, Item* items[], size_t size)
 
 			uint64_t ID = 0;
 			read.read(reinterpret_cast<char*>(&ID), sizeof(ID));
-			ItemFactory factory;
-			Item* item = factory.loadItemFromFile(read , type , ID);
+			
+			Item* item = ItemFactory::loadItemFromFile(read , type , ID);
 			
 			if (!item)
 			{

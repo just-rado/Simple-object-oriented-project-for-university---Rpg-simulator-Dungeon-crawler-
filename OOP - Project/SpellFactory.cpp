@@ -8,11 +8,11 @@ Spell* SpellFactory::readSpellFromFile(std::ifstream& is, TypeOfSpell type)
 	switch (type)
 	{
 	case TypeOfSpell::DAMAGE:
-		return new DamageSpell(is);
+		return new (std::nothrow)DamageSpell(is);
 	case TypeOfSpell::HEAL:
-		return new HealSpell(is);
+		return new (std::nothrow)HealSpell(is);
 	case TypeOfSpell::CLEANSE:
-		return new CleanseSpell(is);
+		return new (std::nothrow)CleanseSpell(is);
 	default:
 		return nullptr;
 	}

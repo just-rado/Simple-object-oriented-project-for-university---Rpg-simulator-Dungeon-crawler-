@@ -37,6 +37,37 @@ Spell::Spell(std::ifstream& read , TypeOfSpell type):type(type) , name(readStrin
 }
 
 
+void Spell::printInfo()const
+{
+	std::cout << "Name: " << this->name << '\n';
+	std::cout << "Type of spell:\n";
+	printTypeOfSpell(this->type);
+	std::cout << "Mana cost:\n" << this->manaCost << '\n';
+	std::cout << "Level required to cast spell:\n" << this->levelRequired << '\n';
+	std::cout << "Augmentation type: ";
+	printAugmentationType(this->damageType);
+	std::cout << "Description:\n" << this->description << '\n';
+}
+
+void Spell::printTypeOfSpell(TypeOfSpell type)
+{
+	switch (type)
+	{
+	case TypeOfSpell::DAMAGE:
+		std::cout << "Damage spell\n";
+		break;
+	case TypeOfSpell::HEAL:
+		std::cout << "Heal spell\n";
+		break;
+	case TypeOfSpell::CLEANSE:
+		std::cout << "Cleanse spell\n";
+		break;
+	default:
+		std::cout << "Unknown\n";
+		break;
+	}
+}
+
 void Spell::writeDataToFile(std::ofstream& write)const
 {
 	

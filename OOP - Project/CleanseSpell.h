@@ -12,6 +12,7 @@ public:
 
 	virtual void writeDataToFile(std::ofstream& write)const override;
 
+	virtual void printInfo()const override;
 
 	virtual Spell* clone()const override;
 	virtual bool applyEffectOfSpell(Character* character)const override;

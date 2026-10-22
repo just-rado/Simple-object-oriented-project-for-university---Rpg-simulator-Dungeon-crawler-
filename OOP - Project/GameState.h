@@ -28,6 +28,8 @@ private:
 
 	void printNameOfCompletedDungeons()const;
 
+	bool safeData()const;
+
 	std::vector<std::string> selectHeroesToEnterDungeon();
 
 	const std::string& selectDungeonToEnter();

@@ -12,15 +12,17 @@ public:
 
 	virtual int display() = 0;
 	virtual SystemState* execute(int action) = 0;
+	State getState()const;
 
 	virtual ~SystemState() = default;
 protected:
-	State state;
+	void changeState();
 	static bool tryAgain(const std::string& error);
 	static std::string getString(const std::string& output);
 	
-
-	void changeState();
-	State getState()const;
+private:
+	State state;
+	
+	
 };
 

@@ -1,5 +1,5 @@
 #include "Consumable.h"
-
+#include <iostream>
 Consumable::Consumable(const ItemData& data, int hp_modifier, int mp_modifier, StatusEffectType removeStatusEffect) :
 	Item(data , ITEM_TYPE), HP_Modifier(hp_modifier), MP_Modifier(mp_modifier), removeStatusEffect(removeStatusEffect)
 {
@@ -39,6 +39,14 @@ void Consumable::writeDataToFile(std::ofstream& write)const
 	{
 		throw std::runtime_error("Could not load consumable data");
 	}
+}
+
+void Consumable::printInfo()const
+{
+	Item::printInfo();
+	std::cout << "Health modifier: " << this->HP_Modifier << '\n';
+	std::cout << "Mana modifier: " << this->MP_Modifier << '\n';
+	printStatusEffect(this->removeStatusEffect);
 }
 
 

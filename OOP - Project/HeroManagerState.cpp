@@ -85,7 +85,7 @@ void HeroManagerState::createNewhero(std::vector<std::string>& heroNames)
 		break;
 	}
 
-	Hero* toAdd = HeroFactory::createNewHero(heroName, heroClass); // make so all factories, in case of new fail ,return nullptr instead of throwing and exception
+	Hero* toAdd = HeroFactory::createNewHero(heroName, heroClass); 
 	if (!toAdd)
 	{
 		std::cout << "Could not create hero\n";

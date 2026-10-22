@@ -39,8 +39,8 @@ Scroll::Scroll(std::ifstream& read, uint64_t ID) : Item(read , ITEM_TYPE , ID)
 	TypeOfSpell type = static_cast<TypeOfSpell>(typeOfSpellValue);
 	
 	
-	SpellFactory factory;
-	this->spell = factory.readSpellFromFile(read, type);
+ 
+	this->spell = SpellFactory::readSpellFromFile(read, type);
 	
 	if (!read || !this->spell)
 	{
@@ -86,6 +86,19 @@ Scroll::~Scroll()
 	this->spell = nullptr;
 }
 
+
+void Scroll::printInfo()const
+{
+	Item::printInfo();
+	if (this->spell)
+	{
+		this->spell->printInfo();
+	}
+	else
+	{
+		"Scroll is empty\n";
+	}
+}
 
 Item* Scroll::clone()const
 {

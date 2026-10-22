@@ -34,6 +34,12 @@ CharacterStats Relic::getStats()const
 }
 
 
+void Relic::printInfo()const
+{
+	Item::printInfo();
+	printCharacterStats(this->modifiers);
+}
+
 void Relic::applyEffectsOfItem(Character* character)const
 {
 	if (!character)

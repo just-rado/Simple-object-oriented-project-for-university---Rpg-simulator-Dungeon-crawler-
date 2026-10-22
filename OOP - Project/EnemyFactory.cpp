@@ -7,9 +7,9 @@ Enemy* EnemyFactory::readEnemyFromFile(std::ifstream& is , TypeOfEnemy type)
 	switch (type)
 	{
 	case TypeOfEnemy::SKELETON:
-		return new Skeleton(is);
+		return new (std::nothrow)Skeleton(is);
 	case TypeOfEnemy::WEREWOLF:
-		return new Werewolf(is);
+		return new (std::nothrow)Werewolf(is);
 	default:
 		return nullptr;
 	}
