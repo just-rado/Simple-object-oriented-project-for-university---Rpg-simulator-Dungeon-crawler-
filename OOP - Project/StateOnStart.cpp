@@ -32,6 +32,7 @@ int StateOnStart::display()
 
 SystemState* StateOnStart::execute(int action)
 {
+	newScreen();
 	switch (action)
 	{
 	case 1:

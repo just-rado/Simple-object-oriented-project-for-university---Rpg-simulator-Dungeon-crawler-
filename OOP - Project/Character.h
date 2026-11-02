@@ -56,8 +56,8 @@ public:
 	int getINT()const;
 	int getAGI()const;
 	int getDEF()const;
-	unsigned int getMaxHP()const;
-	unsigned int getMaxMP()const;
+	int getMaxHP()const;
+	int getMaxMP()const;
 
 	const CharacterStats& getStats()const;
 
@@ -105,8 +105,8 @@ private:
 	TypeOfCharacter type;
 	std::string name;
 	CharacterStats mainStats;
-	unsigned int maxHP;
-	unsigned int maxMP;
+	int maxHP;
+	int maxMP;
 	float currentLevel;
 	unsigned int goldCoinsOwned;
 	std::vector<StatusEffect> statusEffects;

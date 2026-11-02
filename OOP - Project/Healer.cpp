@@ -92,6 +92,11 @@ void Healer::swap(Healer& other)noexcept
 	std::swap(this->healSpells, other.healSpells);
 }
 
+bool Healer::canTargetOtherHeroes()const
+{
+	return true;
+}
+
 
 bool Healer::attackEnemy(Enemy* enemy)
 {

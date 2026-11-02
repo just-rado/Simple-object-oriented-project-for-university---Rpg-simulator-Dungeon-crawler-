@@ -65,15 +65,9 @@ bool Warrior::isTauntUsed()const
 }
 
 
-int Warrior::calculatePriority()const
+bool Warrior::mustBeAttacked()const
 {
-	if (this->tauntUsed)
-	{
-		return -1;
-	}
-	
-	return this->getHP();
-
+	return this->tauntUsed;
 }
 
 void Warrior::printAbilities()const

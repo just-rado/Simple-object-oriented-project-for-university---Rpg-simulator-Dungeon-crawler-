@@ -337,7 +337,6 @@ void Game::gameStart()
 				break;
 			}
 			
-			this->currentDungeon->enter(this->heroes);
 			
 		}
 		else if (option == 4)

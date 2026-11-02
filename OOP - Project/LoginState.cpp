@@ -57,6 +57,7 @@ std::string LoginState::loginPrompt()
 SystemState* LoginState::execute(int action)
 {
 	changeState();
+	newScreen();
 	std::string successfullyCreated = loginPrompt();
 	if (successfullyCreated.empty())
 	{

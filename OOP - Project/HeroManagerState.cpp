@@ -42,6 +42,7 @@ HeroManagerState::HeroManagerState(std::vector<std::string>& heroNames)
 			break;
 	
 		}
+		break;
 	}
 }
 

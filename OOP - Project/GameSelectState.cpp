@@ -103,6 +103,7 @@ int GameSelectState::display()
 } 
 SystemState* GameSelectState::execute(int action)
 {
+	newScreen();
 	switch (action)
 	{
 	case 2:
@@ -112,7 +113,6 @@ SystemState* GameSelectState::execute(int action)
 		{
 			return nullptr;
 		}
-		// create file for game
 		return new (std::nothrow) GameState(selectedGame);
 	}
 	case 4:
@@ -186,10 +186,78 @@ void GameSelectState::createNewGame()
 			continue;
 		}
 
-		this->nameOfGames.push_back(nameOfGame);
-
+		if (createFileForGame(nameOfGame))
+		{
+			this->nameOfGames.push_back(nameOfGame);
+		}
+		else if (tryAgain("Could not create game"))
+		{
+			continue;
+		}
+		
+		
+		
 		return;
 	}
+}
+
+bool GameSelectState::createFileForGame(const std::string& nameOfGame)const
+{
+	std::ofstream newFile(nameOfGame, std::ios::binary);
+	if (!newFile.is_open())
+	{
+		return false;
+	}
+
+	uint32_t initialNumberOfHeroes = 0;
+	newFile.write(reinterpret_cast<const char*>(&initialNumberOfHeroes), sizeof(initialNumberOfHeroes));
+
+	if (!newFile)
+	{
+		newFile.close();
+		std::remove(nameOfGame.c_str());
+		return false;
+	}
+
+	std::ifstream fileWithDungeons("dungeons", std::ios::binary);
+	if (!fileWithDungeons.is_open())
+	{
+		newFile.close();
+		std::remove(nameOfGame.c_str());
+		return false;
+	}
+
+	uint32_t numberOfDungeons = 0;
+	fileWithDungeons.read(reinterpret_cast<char*>(&numberOfDungeons), sizeof(numberOfDungeons));
+	newFile.write(reinterpret_cast<const char*>(&numberOfDungeons), sizeof(numberOfDungeons));
+	for (uint32_t i = 0; i < numberOfDungeons; ++i)
+	{
+		const std::string toAdd = readString(fileWithDungeons);
+		writeString(newFile , toAdd);
+
+		if (!fileWithDungeons || !newFile)
+		{
+			newFile.close();
+			fileWithDungeons.close();
+			std::remove(nameOfGame.c_str());
+			return false;
+		}
+	}
+
+	fileWithDungeons.close();
+	uint32_t initialNumberOfCompletedDungeons = 0;
+	newFile.write(reinterpret_cast<const char*>(&initialNumberOfCompletedDungeons), sizeof(initialNumberOfCompletedDungeons));
+
+	if (!newFile)
+	{
+		newFile.close();
+		std::remove(nameOfGame.c_str());
+		return false;
+	}
+
+	newFile.close();
+
+	return true;
 }
 
 std::string GameSelectState::selectGame()const

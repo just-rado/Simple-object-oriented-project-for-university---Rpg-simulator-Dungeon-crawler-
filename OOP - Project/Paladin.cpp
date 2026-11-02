@@ -99,6 +99,11 @@ bool Paladin::useAbility(size_t ability, Character* character)
 	return false;
 }
 
+bool Paladin::canTargetOtherHeroes()const
+{
+	return true;
+}
+
 
 CharacterData Paladin::createPaladinData(const std::string& name)
 {

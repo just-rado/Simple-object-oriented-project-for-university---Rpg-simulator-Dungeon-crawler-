@@ -20,6 +20,8 @@ private:
 
 	void createNewGame();
 
+	bool createFileForGame(const std::string& nameOfGame)const;
+
 	std::string selectGame()const;
 
 	bool storeAccount()const;

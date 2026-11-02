@@ -220,6 +220,11 @@ void Mage::updateMainStats(int numberOfTimes)
 	this->setMP(this->getMaxMP());
 }
 
+bool Mage::canTargetOtherHeroes()const
+{
+	return true;
+}
+
 
 CharacterData Mage::createMageData(const std::string name)
 {

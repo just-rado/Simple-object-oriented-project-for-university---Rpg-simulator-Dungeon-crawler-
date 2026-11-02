@@ -19,6 +19,9 @@ public:
 	virtual bool requiresATarget(size_t ability)const override;
 	virtual bool useAbility(size_t ability, Character* character)override;
 
+
+	virtual bool canTargetOtherHeroes()const override;
+
 	virtual unsigned int calculateDamage()const override;
 	virtual bool attackEnemy(Enemy* enemy)override;
 	virtual Hero* clone()const override;

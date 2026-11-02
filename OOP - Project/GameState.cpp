@@ -5,6 +5,7 @@
 #include "StringHelpers.h"
 #include "HeroesState.h"
 #include "HeroManagerState.h"
+#include "DungeonState.h"
 #include <stdexcept>
 
 //bool GameState::isHeroAlreadyLoaded(const std::string& name)const
@@ -43,9 +44,9 @@ GameState::GameState(const std::string& nameOfGame)
 		throw std::exception();
 	}
 	this->nameOfGame = nameOfGame;
-
 	try
 	{
+		
 		readStrings(account, this->namesOfHeroes);
 		readStrings(account, this->nameOfDungeons);
 		readStrings(account, this->nameOfCompletedDungeons);
@@ -112,6 +113,7 @@ int GameState::display()
 
 SystemState* GameState::execute(int action)
 {
+	newScreen();
 	switch (action)
 	{
 	case 5:
@@ -119,8 +121,24 @@ SystemState* GameState::execute(int action)
 	case 6:
 		return new (std::nothrow) HeroesState(this->namesOfHeroes);
 	case 7:
-		//dungeon
-		break;
+	{
+		std::string dungeonName = selectDungeonToEnter();
+		if (dungeonName.size() == 0)
+		{
+			std::cout << "Could not enter dungeon\n";
+			return nullptr;
+		}
+
+		std::vector<std::string> heroes = selectHeroesToEnterDungeon();
+
+		if (heroes.size() == 0)
+		{
+			std::cout << "Impossible\n";
+			return nullptr;
+		}
+
+		return new (std::nothrow) DungeonState(dungeonName, heroes , this->namesOfHeroes);
+	}
 	case 8:
 		if (!safeData())
 		{
@@ -145,7 +163,7 @@ void GameState::printNameOfHeroes()const
 
 void GameState::printNameOfDungeons() const
 {
-	std::cout << "Name of dungeons\n";
+	std::cout << "Name of dungeons:\n";
 	printStrings(this->nameOfDungeons);
 }
 
@@ -163,7 +181,13 @@ void GameState::dungeonInfo() const
 			if (areEqual(dungeonName , this->nameOfDungeons[i]))
 			{
 				Dungeon* dungeon = loadDungeon(dungeonName);
-				// write a info method for dungeon;
+				if (!dungeon)
+				{
+					std::cout << "Failed to load\n";
+					return;
+				}
+
+				dungeon->printInfo();
 				delete dungeon;
 				return;
 				
@@ -230,7 +254,7 @@ std::vector<std::string> GameState::selectHeroesToEnterDungeon()
 	}
 }
 
-const std::string& GameState::selectDungeonToEnter()
+const std::string GameState::selectDungeonToEnter()
 {
 	std::string dungeonToEnter;
 	while (true)
@@ -306,7 +330,7 @@ Dungeon* GameState::loadDungeon(const std::string& nameOfDungeon)const
 	{
 		return nullptr;
 	}
-
+	
 	Dungeon* dungeon = new (std::nothrow) Dungeon(dungeonFile);
 	if (!dungeon)
 	{

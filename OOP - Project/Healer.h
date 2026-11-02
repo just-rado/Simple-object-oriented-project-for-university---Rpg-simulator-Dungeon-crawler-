@@ -22,6 +22,7 @@ public:
 	virtual void printAbilities()const override;
 	virtual bool requiresATarget(size_t ability)const override;
 	
+	virtual bool canTargetOtherHeroes()const override;
 
 	virtual bool attackEnemy(Enemy* enemy)override;
 

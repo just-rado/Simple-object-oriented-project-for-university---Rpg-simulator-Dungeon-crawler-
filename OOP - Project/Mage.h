@@ -27,6 +27,8 @@ public:
 
 	virtual Hero* clone()const override;
 
+	virtual bool canTargetOtherHeroes()const override;
+
 
 protected:
 	void swap(Mage& other)noexcept;

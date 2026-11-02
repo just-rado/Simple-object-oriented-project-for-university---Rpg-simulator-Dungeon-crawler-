@@ -33,7 +33,6 @@ std::string SystemState::getString(const std::string& output)
 {
 	std::string str;
 	std::cout << "Enter " << output << ": ";
-	std::getline(std::cin, str);
 
 	if (!std::getline(std::cin, str))
 	{
@@ -51,4 +50,13 @@ void SystemState::changeState()
 State SystemState::getState()const
 {
 	return this->state;
+}
+
+
+void SystemState::newScreen()
+{
+	for (size_t i = 0; i < 30; ++i)
+	{
+		std::cout << '\n';
+	}
 }

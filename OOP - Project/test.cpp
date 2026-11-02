@@ -26,12 +26,32 @@
 #include "SystemState.h"
 #include "StateOnStart.h"
 #include <stack>
+#include <fstream>
+#include "StringFunctionsForFiles.h"
 // add size limits to the length of names , to number of heroes , to number of games
-// write a info method for dungeon;
-// rewrite room logic / dungeon logic
+
+
+void createDungeonFile()
+{
+	std::ofstream dungeonfile("dungeons", std::ios::binary);
+	if (!dungeonfile.is_open())
+	{
+
+	}
+	else
+	{
+	
+		uint32_t numberOfDungeons = 1;
+		dungeonfile.write(reinterpret_cast<const char*>(&numberOfDungeons), sizeof(numberOfDungeons));
+		std::string firstDungeon = "depths";
+		writeString(dungeonfile, firstDungeon);
+		dungeonfile.close();
+	}
+}
 
 int main()
 {
+	//createDungeonFile();
 	std::stack<SystemState*> stack;
 	SystemState* start = new StateOnStart();
 	stack.push(start);
@@ -49,50 +69,47 @@ int main()
 		{
 			stack.push(next);
 		}
-	
 	}
-
-
+	
 	//System system;
 	// first dungeon - depths
 
 	
-	/*std::string nameOfRoom("Room2");
+	/*std::string nameofroom("room2");
 
-	std::string nameOfEnemy1("Skeli");
-	Enemy* one = new Skeleton(nameOfEnemy1);
+	std::string nameofenemy1("skeli");
+	Enemy* one = new Skeleton(nameofenemy1);
 
-	std::string nameOfEnemy2("Propi");
-	Enemy* two = new Skeleton(nameOfEnemy2);
+	std::string nameofenemy2("propi");
+	Enemy* two = new Skeleton(nameofenemy2);
 
-	std::string nameOfEnemy3("BigBeast");
-	Enemy* three = new Werewolf(nameOfEnemy3);
+	std::string nameofenemy3("bigbeast");
+	Enemy* three = new Werewolf(nameofenemy3);
 
 	std::vector<Enemy*> enemies;
 	enemies.push_back(one);
 	enemies.push_back(two);
 	enemies.push_back(three);
 
-	ItemData itemData;
-	itemData.name = "meh weapon";
-	itemData.rarity = Rarity::LEGENDARY;
-	itemData.costInGoldCoins = 100;
-	itemData.weightInKg = 10;
-	itemData.requiredLevel = 10;
-	itemData.compatibleClasses.push_back(1);
+	ItemData itemdata;
+	itemdata.name = "meh weapon";
+	itemdata.rarity = Rarity::LEGENDARY;
+	itemdata.costInGoldCoins = 100;
+	itemdata.weightInKg = 10;
+	itemdata.requiredLevel = 10;
+	itemdata.compatibleClasses.push_back(1);
 
 	AugmentationType type = AugmentationType::HOLY;
-	unsigned int dmgVal = 1000;
-	unsigned int criticalChance = 100;
+	unsigned int dmgval = 1000;
+	unsigned int criticalchance = 100;
 
-	Item* first = new Weapon(itemData, type, dmgVal, criticalChance);
+	Item* first = new Weapon(itemdata, type, dmgval, criticalchance);
 
 	std::vector<Item*> items;
 	items.push_back(first);
 
 
-	Room* room1 = new Room(nameOfRoom, enemies, items);
-
+	Room* room1 = new Room(nameofroom, enemies, items);
 
 
 	delete one;
@@ -100,18 +117,19 @@ int main()
 	delete three;
 	delete first;
 
-	std::string dungeonName("depths");
+	std::string dungeonname("depths");
 
-	Dungeon dungeon1(dungeonName, room1);
+	Dungeon dungeon1(dungeonname, 1);
+	dungeon1.addRoomToDungeon(*room1);
 
-	std::ofstream file(dungeonName, std::ios::binary | std::ios::app);
+	std::ofstream file(dungeonname, std::ios::binary);
 	if (!file.is_open())
 	{
 		delete room1;
 		return 1;
 	}
 	
-	dungeon1.writeCurrentRoomToFile(file);
+	dungeon1.writeDataToFile(file);
 
 	file.close();
 	delete room1;*/

@@ -58,7 +58,7 @@ bool Werewolf::attackHero(Hero* hero)
 		}
 	}
 
-	unsigned int def = hero->calculateDefence();
+	int def = hero->calculateDefence();
 	if (def != 0)
 	{
 		inflictDamage /= (def * protectionMultiplier);
@@ -109,7 +109,7 @@ CharacterData Werewolf::createWerewolfData(const std::string& name)
 	data.mainStats.AGI = 10;
 	data.mainStats.DEF = 0;
 
-	data.maxHP = 500;
+	data.maxHP = 10;
 	data.maxMP = 100;
 
 

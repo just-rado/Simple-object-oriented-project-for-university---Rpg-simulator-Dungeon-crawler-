@@ -38,6 +38,7 @@ HeroesState::HeroesState(const std::vector<std::string>& heroNames)
 		case 3:
 			break;
 		}
+		break;
 	}
 }
 int HeroesState::display()
@@ -88,7 +89,7 @@ void HeroesState::heroInfo(const std::vector<std::string>& heroNames)
 
 			if (hero)
 			{
-				// in hero add a function that prints the information of the hero
+				hero->printBasicInfo();
 				delete hero;
 			}
 			else

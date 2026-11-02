@@ -48,7 +48,7 @@ SystemState* RegisterState::execute(int action)
 {
 	std::string successfullyCreated = regPrompt();
 	changeState();
-
+	newScreen();
 	if (successfullyCreated.empty())
 	{
 		return nullptr;

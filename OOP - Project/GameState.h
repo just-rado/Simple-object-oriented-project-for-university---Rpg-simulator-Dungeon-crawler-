@@ -32,7 +32,7 @@ private:
 
 	std::vector<std::string> selectHeroesToEnterDungeon();
 
-	const std::string& selectDungeonToEnter();
+	const std::string selectDungeonToEnter();
 
 	static void printStrings(const std::vector<std::string>& strings);
 

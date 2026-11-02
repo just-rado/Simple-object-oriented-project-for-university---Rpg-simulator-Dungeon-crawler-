@@ -26,6 +26,7 @@ Room::Room(std::ifstream& read): name(readString(read))
 {
 	uint32_t numberOfEnemies = 0;
 	read.read(reinterpret_cast<char*>(&numberOfEnemies), sizeof(numberOfEnemies));
+
 	try
 	{
 		if (numberOfEnemies > 0)
@@ -46,7 +47,7 @@ Room::Room(std::ifstream& read): name(readString(read))
 			
 			}
 		}
-
+	
 		uint32_t numberOfItems = 0;
 		read.read(reinterpret_cast<char*>(&numberOfItems), sizeof(numberOfItems));
 
@@ -70,7 +71,7 @@ Room::Room(std::ifstream& read): name(readString(read))
 				}
 					
 			}
-
+			
 		}
 	}
 	catch (...)

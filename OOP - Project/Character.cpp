@@ -178,11 +178,11 @@ unsigned int Character::getGoldCoins()const
 	return this->goldCoinsOwned;
 }
 
-unsigned int Character::getMaxHP()const
+int Character::getMaxHP()const
 {
 	return this->maxHP;
 }
-unsigned int Character::getMaxMP()const
+int Character::getMaxMP()const
 {
 	return this->maxMP;
 }

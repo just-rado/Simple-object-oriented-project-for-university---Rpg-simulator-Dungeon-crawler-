@@ -144,6 +144,9 @@
     <ClInclude Include="LoginState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DungeonState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Item.cpp">
@@ -261,6 +264,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LoginState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

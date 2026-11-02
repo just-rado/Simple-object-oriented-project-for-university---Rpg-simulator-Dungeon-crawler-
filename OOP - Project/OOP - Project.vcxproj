@@ -132,6 +132,7 @@
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="DamageSpell.h" />
     <ClInclude Include="Dungeon.h" />
+    <ClInclude Include="DungeonState.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="Game.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="DamageSpell.cpp" />
     <ClCompile Include="Dungeon.cpp" />
+    <ClCompile Include="DungeonState.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="Game.cpp" />

@@ -17,7 +17,7 @@ public:
 	virtual size_t getNumberOfAbilites()const override;
 	virtual bool requiresATarget(size_t ability)const override;
 	virtual bool useAbility(size_t ability, Character* character)override;
-	virtual int calculatePriority()const override;
+	virtual bool mustBeAttacked()const override;
 
 	bool isTauntUsed()const;
 

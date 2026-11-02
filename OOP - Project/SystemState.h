@@ -19,6 +19,7 @@ protected:
 	void changeState();
 	static bool tryAgain(const std::string& error);
 	static std::string getString(const std::string& output);
+	static void newScreen();
 	
 private:
 	State state;

@@ -179,6 +179,11 @@ Hero::~Hero()
 }
 
 
+bool Hero::canTargetOtherHeroes()const
+{
+	return false;
+}
+
 size_t Hero::getCapacityForEquippedItems()
 {
 	return Hero::MAX_EQUIPPED_ITEMS;
@@ -188,9 +193,9 @@ size_t Hero::getCapacityForInventory()
 	return Hero::CAPACITY_OF_INVENTORY;
 }
 
-int Hero::calculatePriority()const
+bool Hero::mustBeAttacked()const
 {
-	return this->getHP();
+	return false;
 }
 
 bool Hero::addInformation(const Battle& battle, const CharacterStats& stats)
@@ -554,7 +559,7 @@ bool Hero::attackEnemy(Enemy* enemy)
 	}
 	inflictDamage *= weaknessMultiplier;
 	
-	unsigned int def = enemy->calculateDefence();
+	int def = enemy->calculateDefence();
 	if (def != 0)
 	{
 		inflictDamage /= (def * protectionMultiplier);

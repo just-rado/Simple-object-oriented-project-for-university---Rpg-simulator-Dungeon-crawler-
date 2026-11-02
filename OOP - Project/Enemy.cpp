@@ -162,7 +162,7 @@ bool Enemy::attackHero(Hero* hero)
 		}
 	}
 
-	unsigned int def = hero->calculateDefence();
+	int def = hero->calculateDefence();
 	if (def != 0)
 	{
 		inflictDamage /= (def * protectionMultiplier);

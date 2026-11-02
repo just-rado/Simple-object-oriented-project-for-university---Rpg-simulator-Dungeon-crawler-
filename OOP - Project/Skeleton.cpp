@@ -154,7 +154,7 @@ CharacterData Skeleton::createSkeletonData(const std::string& name)
 	data.mainStats.AGI = 15;
 	data.mainStats.DEF = 5;
 
-	data.maxHP = 500;
+	data.maxHP = 20;
 	data.maxMP = 0;
 
 
